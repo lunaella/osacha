@@ -1,0 +1,190 @@
+//
+//  AppSession.swift
+//  Osacha
+//
+//  Tracks whether someone is browsing as a guest or signed in, and owns the
+//  account data the settings screens read and write. Guests can browse the
+//  whole menu but have to sign in before an order can be placed.
+//
+
+import Foundation
+import Combine
+import UIKit
+
+@MainActor
+final class AppSession: ObservableObject {
+    @Published private(set) var isSignedIn = false
+    @Published private(set) var hasLaunched = false
+
+    @Published var profile = UserProfile.sample
+    @Published var addresses = SavedAddress.samples
+    @Published var paymentMethods = PaymentMethod.samples
+    @Published private(set) var orders = PastOrder.samples
+    @Published var notifications = AppNotification.samples
+
+    @Published var appearance: AppearanceMode = .system
+    @Published var language: AppLanguage = .english
+
+    @Published var locationServices = true
+    @Published var orderTracking = true
+    @Published var personalizedOffers = false
+    @Published var shareAnalytics = false
+
+    /// Number typed on the login screen, shown back on the verification screen.
+    @Published var pendingNumber = ""
+
+    private let signedInKey = "osacha.signedIn"
+    private let profileKey = "osacha.profile"
+    private let addressesKey = "osacha.addresses"
+    private let paymentsKey = "osacha.payments"
+    private let appearanceKey = "osacha.appearance"
+    private let languageKey = "osacha.language"
+
+    private var backgroundObserver: NSObjectProtocol?
+
+    init() {
+        load()
+
+        // Rearm the splash whenever the app leaves the foreground, so reopening
+        // it always starts from the brand screen.
+        backgroundObserver = NotificationCenter.default.addObserver(
+            forName: UIApplication.didEnterBackgroundNotification,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            MainActor.assumeIsolated {
+                self?.hasLaunched = false
+            }
+        }
+    }
+
+    deinit {
+        if let backgroundObserver {
+            NotificationCenter.default.removeObserver(backgroundObserver)
+        }
+    }
+
+    // MARK: - Launch
+
+    func finishLaunching() {
+        hasLaunched = true
+    }
+
+    /// Called when the app goes to the background so the splash plays again
+    /// the next time it is opened, not just on a cold start.
+    func resetLaunch() {
+        hasLaunched = false
+    }
+
+    // MARK: - Authentication
+
+    /// The prototype accepts any six digits; this just flips the session state.
+    func verifyCode() {
+        isSignedIn = true
+        if !pendingNumber.isEmpty {
+            profile.mobileNumber = "+63 " + pendingNumber
+        }
+        persist()
+    }
+
+    func continueAsGuest() {
+        isSignedIn = false
+        persist()
+    }
+
+    func signOut() {
+        isSignedIn = false
+        pendingNumber = ""
+        persist()
+    }
+
+    // MARK: - Addresses
+
+    func addAddress(_ address: SavedAddress) {
+        addresses.append(address)
+        persist()
+    }
+
+    func update(_ address: SavedAddress) {
+        guard let index = addresses.firstIndex(where: { $0.id == address.id }) else { return }
+        addresses[index] = address
+        persist()
+    }
+
+    func removeAddress(_ address: SavedAddress) {
+        addresses.removeAll { $0.id == address.id }
+        persist()
+    }
+
+    // MARK: - Payment methods
+
+    func addPaymentMethod(_ method: PaymentMethod) {
+        paymentMethods.append(method)
+        persist()
+    }
+
+    func removePaymentMethod(_ method: PaymentMethod) {
+        paymentMethods.removeAll { $0.id == method.id }
+        persist()
+    }
+
+    // MARK: - Orders
+
+    /// Files a placed order into the history and returns it for the receipt screen.
+    @discardableResult
+    func recordOrder(itemCount: Int, total: Double) -> PastOrder {
+        let reference = String(format: "A%04d", Int.random(in: 1000...9999))
+        let order = PastOrder(reference: reference,
+                              placedAt: Self.timestampFormatter.string(from: Date()),
+                              itemCount: itemCount,
+                              total: total)
+        orders.insert(order, at: 0)
+        return order
+    }
+
+    private static let timestampFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMM d, h:mm a"
+        return formatter
+    }()
+
+    // MARK: - Persistence
+
+    private func persist() {
+        let defaults = UserDefaults.standard
+        defaults.set(isSignedIn, forKey: signedInKey)
+        defaults.set(appearance.rawValue, forKey: appearanceKey)
+        defaults.set(language.rawValue, forKey: languageKey)
+        if let data = try? JSONEncoder().encode(profile) { defaults.set(data, forKey: profileKey) }
+        if let data = try? JSONEncoder().encode(addresses) { defaults.set(data, forKey: addressesKey) }
+        if let data = try? JSONEncoder().encode(paymentMethods) { defaults.set(data, forKey: paymentsKey) }
+    }
+
+    private func load() {
+        let defaults = UserDefaults.standard
+        isSignedIn = defaults.bool(forKey: signedInKey)
+        if let raw = defaults.string(forKey: appearanceKey), let mode = AppearanceMode(rawValue: raw) {
+            appearance = mode
+        }
+        if let raw = defaults.string(forKey: languageKey), let value = AppLanguage(rawValue: raw) {
+            language = value
+        }
+        if let data = defaults.data(forKey: profileKey),
+           let decoded = try? JSONDecoder().decode(UserProfile.self, from: data) {
+            profile = decoded
+        }
+        if let data = defaults.data(forKey: addressesKey),
+           let decoded = try? JSONDecoder().decode([SavedAddress].self, from: data) {
+            addresses = decoded
+        }
+        if let data = defaults.data(forKey: paymentsKey),
+           let decoded = try? JSONDecoder().decode([PaymentMethod].self, from: data) {
+            paymentMethods = decoded
+        }
+    }
+
+    /// Persist preference changes made directly through the bindings.
+    func savePreferences() {
+        persist()
+    }
+}

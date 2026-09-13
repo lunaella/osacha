@@ -39,13 +39,26 @@ struct SplashView: View {
 /// The matcha cup background shared by the splash and home screens.
 struct MatchaBackground: View {
     var body: some View {
-        ZStack {
-            Color.matchaCream
+        // The cream surround and the rounded bowl are part of the photograph,
+        // so it is shown at full strength — no wash, no separately drawn shape.
+        //
+        // The image is given the measured size explicitly. Left unsized, a
+        // scaledToFill image overflows its container and centres on *that*
+        // container's midpoint, so the splash (laid out against the whole
+        // screen) and the home screen (laid out against a scroll view inset by
+        // the navigation and tab bars) framed the photo differently and it
+        // jumped on the hand-off.
+        GeometryReader { proxy in
             Image("HomeBackground")
                 .resizable()
                 .scaledToFill()
-            Color.matchaCream.opacity(0.45)
+                .frame(width: proxy.size.width, height: proxy.size.height)
+                .clipped()
         }
+        // A thin cream veil, as in the design — enough to soften the greens
+        // without washing them out the way the old 45% overlay did.
+        .overlay(Color.matchaCream.opacity(0.18))
+        .background(Color.matchaCream)
         .ignoresSafeArea()
     }
 }

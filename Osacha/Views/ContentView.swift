@@ -11,6 +11,7 @@ import SwiftUI
 
 struct ContentView: View {
     @EnvironmentObject private var session: AppSession
+    @EnvironmentObject private var navigator: NavigationCoordinator
     @State private var showLogin = false
 
     var body: some View {
@@ -33,7 +34,9 @@ struct ContentView: View {
 
     private var memberTabs: some View {
         TabView {
-            NavigationStack {
+            // Path-driven so the order receipt can pop the whole ordering
+            // flow back to the menu root.
+            NavigationStack(path: $navigator.homePath) {
                 HomeView()
             }
             .tabItem {
@@ -93,4 +96,5 @@ struct ContentView: View {
     ContentView()
         .environmentObject(OrderController())
         .environmentObject(AppSession())
+        .environmentObject(NavigationCoordinator())
 }

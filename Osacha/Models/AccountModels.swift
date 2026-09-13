@@ -14,6 +14,11 @@ struct UserProfile: Codable, Equatable {
     var mobileNumber: String
     var address: String
 
+    /// Leading word of the full name, for greetings that address the customer.
+    var firstName: String {
+        fullName.split(separator: " ").first.map(String.init) ?? fullName
+    }
+
     static let sample = UserProfile(
         fullName: "Mikaela Denise Balasoto",
         mobileNumber: "+63 917 123 4567",
@@ -84,6 +89,12 @@ struct PaymentMethod: Identifiable, Codable, Equatable {
     ]
 }
 
+enum OrderStatus: String {
+    case preparing = "Preparing"
+    case ready = "Ready for pickup"
+    case completed = "Completed"
+}
+
 struct PastOrder: Identifiable, Codable {
     var id = UUID()
     var reference: String
@@ -91,9 +102,30 @@ struct PastOrder: Identifiable, Codable {
     var itemCount: Int
     var total: Double
 
+    /// When the order was actually placed. Optional because the seeded history
+    /// predates the app and carries only a preformatted string — and because
+    /// orders persisted before this field existed must still decode.
+    var placedDate: Date?
+
     var summary: String {
         "\(itemCount) item\(itemCount == 1 ? "" : "s") · \(total.asPHP)"
     }
+
+    /// Derived from how long ago the order was placed, so a drink ordered
+    /// seconds ago isn't reported as already finished. Orders with no real
+    /// date behind them are historical, so they read as completed.
+    var status: OrderStatus {
+        guard let placedDate else { return .completed }
+        switch Date().timeIntervalSince(placedDate) {
+        case ..<Self.preparingDuration: return .preparing
+        case ..<Self.readyDuration: return .ready
+        default: return .completed
+        }
+    }
+
+    /// How long a new order spends in each stage before moving on.
+    static let preparingDuration: TimeInterval = 5 * 60
+    static let readyDuration: TimeInterval = 20 * 60
 
     static let samples: [PastOrder] = [
         PastOrder(reference: "A1042", placedAt: "Today, 3:15 PM", itemCount: 3, total: 870),

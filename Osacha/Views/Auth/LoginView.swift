@@ -16,8 +16,10 @@ struct LoginView: View {
     @State private var showVerification = false
     @FocusState private var numberFocused: Bool
 
+    private let digitCount = 10
+
     private var canContinue: Bool {
-        number.filter(\.isNumber).count >= 10
+        number.count == digitCount
     }
 
     var body: some View {
@@ -84,6 +86,10 @@ struct LoginView: View {
                     .keyboardType(.numberPad)
                     .focused($numberFocused)
                     .font(.subheadline)
+                    .onChange(of: number) { newValue in
+                        let digits = newValue.filter(\.isNumber)
+                        number = String(digits.prefix(digitCount))
+                    }
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 16)

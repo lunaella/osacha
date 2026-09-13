@@ -11,12 +11,14 @@ import SwiftUI
 struct OsachaApp: App {
     @StateObject private var controller = OrderController()
     @StateObject private var session = AppSession()
+    @StateObject private var navigator = NavigationCoordinator()
 
     var body: some Scene {
         WindowGroup {
             RootView()
                 .environmentObject(controller)
                 .environmentObject(session)
+                .environmentObject(navigator)
                 .preferredColorScheme(session.appearance.colorScheme)
         }
     }

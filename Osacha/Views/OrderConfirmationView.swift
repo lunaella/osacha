@@ -11,7 +11,7 @@ struct OrderConfirmationView: View {
     let order: PastOrder
 
     @EnvironmentObject private var session: AppSession
-    @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var navigator: NavigationCoordinator
 
     var body: some View {
         ScrollView {
@@ -51,7 +51,7 @@ struct OrderConfirmationView: View {
                     }
 
                     HStack {
-                        Text("Pickup time")
+                        Text("Placed")
                             .font(.caption)
                             .foregroundStyle(.secondary)
                         Spacer()
@@ -72,7 +72,7 @@ struct OrderConfirmationView: View {
                 .padding(.top, 8)
 
                 Button {
-                    dismiss()
+                    navigator.returnHome()
                 } label: {
                     Text("Back to Home")
                         .font(.subheadline.weight(.semibold))
@@ -97,4 +97,5 @@ struct OrderConfirmationView: View {
         OrderConfirmationView(order: PastOrder.samples[0])
     }
     .environmentObject(AppSession())
+    .environmentObject(NavigationCoordinator())
 }

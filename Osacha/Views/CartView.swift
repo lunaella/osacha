@@ -89,4 +89,5 @@ struct CartView: View {
         CartView()
     }
     .environmentObject(OrderController())
+    .environmentObject(AppSession())
 }

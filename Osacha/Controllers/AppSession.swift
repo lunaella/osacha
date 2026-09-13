@@ -9,6 +9,7 @@
 
 import Foundation
 import Combine
+import SwiftUI
 import UIKit
 
 @MainActor
@@ -39,6 +40,7 @@ final class AppSession: ObservableObject {
     private let paymentsKey = "osacha.payments"
     private let appearanceKey = "osacha.appearance"
     private let languageKey = "osacha.language"
+    private let ordersKey = "osacha.orders"
 
     private var backgroundObserver: NSObjectProtocol?
 
@@ -82,9 +84,20 @@ final class AppSession: ObservableObject {
     func verifyCode() {
         isSignedIn = true
         if !pendingNumber.isEmpty {
-            profile.mobileNumber = "+63 " + pendingNumber
+            profile.mobileNumber = Self.formattedMobileNumber(pendingNumber)
         }
         persist()
+    }
+
+    /// Groups a typed number as "+63 917 123 4567" so it matches the spacing
+    /// the profile screens already display.
+    static func formattedMobileNumber(_ raw: String) -> String {
+        let digits = raw.filter(\.isNumber)
+        guard digits.count == 10 else { return "+63 " + digits }
+        let area = digits.prefix(3)
+        let middle = digits.dropFirst(3).prefix(3)
+        let last = digits.dropFirst(6)
+        return "+63 \(area) \(middle) \(last)"
     }
 
     func continueAsGuest() {
@@ -134,16 +147,23 @@ final class AppSession: ObservableObject {
     @discardableResult
     func recordOrder(itemCount: Int, total: Double) -> PastOrder {
         let reference = String(format: "A%04d", Int.random(in: 1000...9999))
+        let now = Date()
         let order = PastOrder(reference: reference,
-                              placedAt: Self.timestampFormatter.string(from: Date()),
+                              placedAt: Self.timestampFormatter.string(from: now),
                               itemCount: itemCount,
-                              total: total)
+                              total: total,
+                              placedDate: now)
         orders.insert(order, at: 0)
+        persist()
         return order
     }
 
     private static let timestampFormatter: DateFormatter = {
         let formatter = DateFormatter()
+        // Without a fixed locale the device's 12/24-hour setting overrides the
+        // "h:mm a" pattern, so the same app shows "3:15 PM" on one phone and
+        // "15:15" on another.
+        formatter.locale = Locale(identifier: "en_US_POSIX")
         formatter.dateFormat = "MMM d, h:mm a"
         return formatter
     }()
@@ -158,6 +178,7 @@ final class AppSession: ObservableObject {
         if let data = try? JSONEncoder().encode(profile) { defaults.set(data, forKey: profileKey) }
         if let data = try? JSONEncoder().encode(addresses) { defaults.set(data, forKey: addressesKey) }
         if let data = try? JSONEncoder().encode(paymentMethods) { defaults.set(data, forKey: paymentsKey) }
+        if let data = try? JSONEncoder().encode(orders) { defaults.set(data, forKey: ordersKey) }
     }
 
     private func load() {
@@ -181,10 +202,26 @@ final class AppSession: ObservableObject {
            let decoded = try? JSONDecoder().decode([PaymentMethod].self, from: data) {
             paymentMethods = decoded
         }
+        if let data = defaults.data(forKey: ordersKey),
+           let decoded = try? JSONDecoder().decode([PastOrder].self, from: data) {
+            orders = decoded
+        }
     }
 
     /// Persist preference changes made directly through the bindings.
     func savePreferences() {
         persist()
+    }
+}
+
+/// Owns the Home tab's navigation stack so a screen deep in the ordering flow
+/// — the receipt, in particular — can return all the way to the menu root
+/// rather than popping one level back into the cart it just emptied.
+@MainActor
+final class NavigationCoordinator: ObservableObject {
+    @Published var homePath = NavigationPath()
+
+    func returnHome() {
+        homePath = NavigationPath()
     }
 }

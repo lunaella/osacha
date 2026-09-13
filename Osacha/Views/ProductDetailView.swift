@@ -377,4 +377,5 @@ struct ProductDetailView: View {
         ProductDetailView(item: MatchaItem.sampleItems[4], items: MatchaItem.sampleItems)
     }
     .environmentObject(OrderController())
+    .environmentObject(AppSession())
 }

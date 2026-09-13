@@ -29,12 +29,12 @@ struct OrderHistoryView: View {
 
                         Spacer()
 
-                        Text("Completed")
+                        Text(order.status.rawValue)
                             .font(.caption2.weight(.semibold))
-                            .foregroundStyle(Color.matchaGreen)
+                            .foregroundStyle(order.status.foreground)
                             .padding(.horizontal, 12)
                             .padding(.vertical, 6)
-                            .background(Capsule().fill(Color.matchaSage.opacity(0.45)))
+                            .background(Capsule().fill(order.status.background))
                     }
                     .padding(16)
                     .accountCard()
@@ -45,6 +45,24 @@ struct OrderHistoryView: View {
         .accountBackground()
         .navigationTitle("Order History")
         .navigationBarTitleDisplayMode(.inline)
+    }
+}
+
+private extension OrderStatus {
+    var foreground: Color {
+        switch self {
+        case .preparing: return Color.matchaPinkDeep
+        case .ready: return Color.matchaDarkGreen
+        case .completed: return Color.matchaGreen
+        }
+    }
+
+    var background: Color {
+        switch self {
+        case .preparing: return Color.matchaPinkPale
+        case .ready: return Color.matchaSage
+        case .completed: return Color.matchaSage.opacity(0.45)
+        }
     }
 }
 

@@ -8,7 +8,17 @@
 import SwiftUI
 
 struct HomeView: View {
+    @EnvironmentObject private var session: AppSession
+
     private let columns = [GridItem(.flexible(), spacing: 16), GridItem(.flexible(), spacing: 16)]
+
+    /// Guests have no name to greet, and have not been here before as far as
+    /// the app knows, so they get the neutral welcome instead of "back".
+    private var greeting: String {
+        session.isSignedIn
+            ? "Hello \(session.profile.firstName),\nWelcome back!"
+            : "Hello there,\nWelcome to Osacha!"
+    }
 
     var body: some View {
         ScrollView {
@@ -19,7 +29,7 @@ struct HomeView: View {
                     .frame(height: 120)
                     .padding(.top, 12)
 
-                Text("Hello friend,\nWelcome back!")
+                Text(greeting)
                     .font(.title2.bold())
                     .foregroundStyle(Color.matchaDarkGreen)
                     .multilineTextAlignment(.center)
@@ -51,4 +61,5 @@ struct HomeView: View {
         HomeView()
     }
     .environmentObject(OrderController())
+    .environmentObject(AppSession())
 }

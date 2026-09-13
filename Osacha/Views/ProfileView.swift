@@ -41,6 +41,7 @@ private enum ProfileDestination: String, CaseIterable, Identifiable {
 
 struct ProfileView: View {
     @EnvironmentObject private var controller: OrderController
+    @EnvironmentObject private var session: AppSession
 
     private let rows = ProfileDestination.allCases
 
@@ -53,7 +54,7 @@ struct ProfileView: View {
                     .background(Circle().fill(Color.matchaCardCream))
                     .padding(.top, 12)
 
-                Text("Hello, friend")
+                Text("Hello, \(session.profile.firstName)")
                     .font(.title2.bold())
                     .foregroundStyle(Color.matchaDarkGreen)
 
@@ -99,4 +100,5 @@ struct ProfileView: View {
         ProfileView()
     }
     .environmentObject(OrderController())
+    .environmentObject(AppSession())
 }

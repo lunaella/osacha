@@ -13,6 +13,24 @@ struct MenuView: View {
 
     @EnvironmentObject private var controller: OrderController
 
+    /// Count of everything in the cart, sitting on the corner of the cart
+    /// icon. Hidden when empty so the toolbar stays quiet.
+    ///
+    /// Capped at "9+" so it stays a fixed-size circle: a widening capsule
+    /// grew leftward across the cart glyph and read as clutter on a button
+    /// this small.
+    @ViewBuilder
+    private var cartBadge: some View {
+        if controller.cartCount > 0 {
+            Text(controller.cartCount > 9 ? "9+" : "\(controller.cartCount)")
+                .font(.system(size: 9, weight: .bold))
+                .foregroundStyle(.white)
+                .frame(width: 14, height: 14)
+                .background(Circle().fill(Color.matchaPinkDeep))
+                .offset(x: 7, y: -7)
+        }
+    }
+
     private var results: [MatchaItem] {
         if let category {
             return controller.items(in: category)
@@ -74,7 +92,11 @@ struct MenuView: View {
             }
             ToolbarItem(placement: .navigationBarTrailing) {
                 NavigationLink(value: CartRoute()) {
+                    // Deliberately smaller than the toolbar default so the
+                    // badge has room to read on its own.
                     Image(systemName: "cart.fill")
+                        .font(.system(size: 15, weight: .semibold))
+                        .overlay(alignment: .topTrailing) { cartBadge }
                 }
             }
         }

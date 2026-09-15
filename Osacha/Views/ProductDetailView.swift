@@ -96,6 +96,14 @@ struct ProductDetailView: View {
                     }
                 }
                 .scrollIndicators(.hidden)
+
+                // Layered above the scroll view, which would otherwise swallow
+                // the taps. They sit higher up than the panel ever travels, so
+                // nothing covers them.
+                if items.count > 1 {
+                    heroArrows
+                        .frame(height: heroHeight, alignment: .top)
+                }
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -161,10 +169,6 @@ struct ProductDetailView: View {
                             }
                         }
                 )
-
-            if items.count > 1 {
-                heroArrows
-            }
         }
         .frame(height: heroHeight)
     }

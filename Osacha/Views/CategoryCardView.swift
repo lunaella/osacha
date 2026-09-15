@@ -11,7 +11,7 @@ struct CategoryCardView: View {
     let category: MatchaCategory
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
+        VStack(spacing: 10) {
             Image(category.previewImageName)
                 .resizable()
                 .scaledToFill()
@@ -26,11 +26,16 @@ struct CategoryCardView: View {
             Text(category.subtitle)
                 .font(.caption2)
                 .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
                 .lineLimit(3)
                 .fixedSize(horizontal: false, vertical: true)
+
+            // Pushes the text block to the top so both cards, which the grid
+            // stretches to a shared height, keep their copy aligned.
+            Spacer(minLength: 0)
         }
         .padding(14)
-        .frame(maxWidth: .infinity, alignment: .leading)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .background(
             RoundedRectangle(cornerRadius: 20, style: .continuous)
                 .fill(Color.matchaCardCream)

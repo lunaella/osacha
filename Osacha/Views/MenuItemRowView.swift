@@ -25,7 +25,7 @@ struct MenuItemRowView: View {
                     .font(.subheadline.bold())
                     .foregroundStyle(Color.matchaDarkGreen)
 
-                Text(item.itemDescription)
+                Text(item.listDescription)
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .lineLimit(2)

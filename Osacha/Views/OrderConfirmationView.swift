@@ -51,11 +51,11 @@ struct OrderConfirmationView: View {
                     }
 
                     HStack {
-                        Text("Placed")
+                        Text("Pickup time")
                             .font(.caption)
                             .foregroundStyle(.secondary)
                         Spacer()
-                        Text(order.placedAt)
+                        Text(order.pickupAt)
                             .font(.subheadline.weight(.semibold))
                             .foregroundStyle(Color.matchaDarkGreen)
                     }
@@ -89,6 +89,8 @@ struct OrderConfirmationView: View {
         }
         .accountBackground()
         .navigationBarBackButtonHidden(true)
+        // The receipt is a full-screen moment in the design, with no tab bar.
+        .toolbar(.hidden, for: .tabBar)
     }
 }
 

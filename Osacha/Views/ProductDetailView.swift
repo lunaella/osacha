@@ -28,7 +28,6 @@ struct ProductDetailView: View {
     @State private var selectedSize: DrinkSize = .regular
     @State private var selectedMilk: MilkOption = .regular
     @State private var withIceCream: Bool = false
-    @State private var selectedPageIndex: Int = 0
     @State private var quantity: Int = 1
     @State private var didAddToCart = false
 
@@ -228,7 +227,6 @@ struct ProductDetailView: View {
         selectedSize = .regular
         selectedMilk = .regular
         withIceCream = false
-        selectedPageIndex = 0
         quantity = 1
         didAddToCart = false
     }
@@ -238,51 +236,43 @@ struct ProductDetailView: View {
     /// scrolls together with the rest of the screen.
     private func optionsSheet(minHeight: CGFloat) -> some View {
         VStack(spacing: 18) {
-            if !pages.isEmpty {
-                TabView(selection: $selectedPageIndex) {
-                    ForEach(Array(pages.enumerated()), id: \.offset) { index, page in
-                        optionPageView(for: page).tag(index)
-                    }
-                }
-                .tabViewStyle(.page(indexDisplayMode: .never))
-                .frame(height: 130)
-
-                if pages.count > 1 {
-                    HStack(spacing: 6) {
-                        ForEach(0..<pages.count, id: \.self) { index in
-                            Circle()
-                                .fill(index == selectedPageIndex ? Color.matchaDarkGreen : Color.matchaDarkGreen.opacity(0.25))
-                                .frame(width: index == selectedPageIndex ? 8 : 6,
-                                       height: index == selectedPageIndex ? 8 : 6)
-                        }
-                    }
-                }
+            // Size and Milk are stacked and both visible, as the design has
+            // them. They used to be a paged carousel, which hid the milk
+            // options behind a swipe most people never made.
+            ForEach(pages, id: \.self) { page in
+                optionPageView(for: page)
             }
 
             if item.hasIceCreamOption {
                 iceCreamToggle
             }
 
-            HStack(spacing: 22) {
-                Button {
-                    quantity += 1
-                } label: {
-                    Image(systemName: "plus.circle.fill")
-                        .font(.title2)
-                }
+            VStack(spacing: 12) {
+                Text("Quantity")
+                    .font(.headline.bold())
+                    .foregroundStyle(Color.matchaDarkGreen)
 
-                Text("\(quantity)")
-                    .font(.headline)
-                    .frame(minWidth: 20)
+                HStack(spacing: 22) {
+                    Button {
+                        quantity += 1
+                    } label: {
+                        Image(systemName: "plus.circle.fill")
+                            .font(.title2)
+                    }
 
-                Button {
-                    if quantity > 1 { quantity -= 1 }
-                } label: {
-                    Image(systemName: "minus.circle.fill")
-                        .font(.title2)
+                    Text("\(quantity)")
+                        .font(.headline)
+                        .frame(minWidth: 20)
+
+                    Button {
+                        if quantity > 1 { quantity -= 1 }
+                    } label: {
+                        Image(systemName: "minus.circle.fill")
+                            .font(.title2)
+                    }
                 }
+                .foregroundStyle(Color.matchaGreen)
             }
-            .foregroundStyle(Color.matchaGreen)
 
             // Guests order through the login gate in the shell, so the
             // add-to-cart action only shows once signed in.

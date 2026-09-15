@@ -31,41 +31,14 @@ struct CartView: View {
                         ForEach(controller.cart) { entry in
                             CartRowView(entry: entry)
                         }
+
+                        // Sits directly beneath the last item rather than
+                        // pinned to the bottom of the screen.
+                        summaryPanel
+                            .padding(.top, 4)
                     }
                     .padding()
                 }
-
-                VStack(spacing: 14) {
-                    HStack {
-                        Text("Total")
-                            .font(.headline)
-                            .foregroundStyle(Color.matchaDarkGreen)
-                        Spacer()
-                        Text(controller.cartTotal.asPHP)
-                            .font(.title3.bold())
-                            .foregroundStyle(Color.matchaDarkGreen)
-                    }
-
-                    // Guests see the login gate from the shell instead; only
-                    // signed-in customers can actually place the order.
-                    if session.isSignedIn {
-                        Button {
-                            placedOrder = session.recordOrder(itemCount: controller.cartCount,
-                                                              total: controller.cartTotal)
-                            showConfirmation = true
-                        } label: {
-                            Text("Place Order")
-                                .font(.headline)
-                                .foregroundStyle(.white)
-                                .frame(maxWidth: .infinity)
-                                .padding(.vertical, 16)
-                                .background(RoundedRectangle(cornerRadius: 18, style: .continuous).fill(Color.matchaPinkDeep))
-                        }
-                    }
-                }
-                .padding(20)
-                .background(RoundedRectangle(cornerRadius: 28, style: .continuous).fill(Color.matchaPinkPale))
-                .padding()
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -81,6 +54,39 @@ struct CartView: View {
                     .onAppear { controller.clearCart() }
             }
         }
+    }
+
+    private var summaryPanel: some View {
+        VStack(spacing: 14) {
+            HStack {
+                Text("Total")
+                    .font(.headline)
+                    .foregroundStyle(Color.matchaDarkGreen)
+                Spacer()
+                Text(controller.cartTotal.asPHP)
+                    .font(.title3.bold())
+                    .foregroundStyle(Color.matchaDarkGreen)
+            }
+
+            // Guests see the login gate from the shell instead; only
+            // signed-in customers can actually place the order.
+            if session.isSignedIn {
+                Button {
+                    placedOrder = session.recordOrder(itemCount: controller.cartCount,
+                                                      total: controller.cartTotal)
+                    showConfirmation = true
+                } label: {
+                    Text("Place Order")
+                        .font(.headline)
+                        .foregroundStyle(.white)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 16)
+                        .background(RoundedRectangle(cornerRadius: 18, style: .continuous).fill(Color.matchaPinkDeep))
+                }
+            }
+        }
+        .padding(20)
+        .background(RoundedRectangle(cornerRadius: 28, style: .continuous).fill(Color.matchaPinkPale))
     }
 }
 

@@ -123,9 +123,26 @@ struct PastOrder: Identifiable, Codable {
         }
     }
 
+    /// When the order should be ready to collect: the moment it stops
+    /// preparing. Orders with no real date behind them (the seeded history)
+    /// fall back to their own recorded string, which is already a time.
+    var pickupAt: String {
+        guard let placedDate else { return placedAt }
+        return Self.pickupFormatter.string(from: placedDate.addingTimeInterval(Self.preparingDuration))
+    }
+
     /// How long a new order spends in each stage before moving on.
     static let preparingDuration: TimeInterval = 5 * 60
     static let readyDuration: TimeInterval = 20 * 60
+
+    private static let pickupFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        // Fixed locale for the same reason the placement stamp pins one: a
+        // 24-hour device would otherwise override "h:mm a".
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.dateFormat = "MMM d, h:mm a"
+        return formatter
+    }()
 
     static let samples: [PastOrder] = [
         PastOrder(reference: "A1042", placedAt: "Today, 3:15 PM", itemCount: 3, total: 870),

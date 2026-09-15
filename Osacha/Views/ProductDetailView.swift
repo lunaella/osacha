@@ -47,43 +47,47 @@ struct ProductDetailView: View {
 
     /// Height of the fixed hero block, generous enough to fit the longest
     /// item name/description without truncating.
-    private let heroHeight: CGFloat = 420
+    private let heroHeight: CGFloat = 265
     /// The wavy divider plus its padding, which travel with the sheet.
     private let dividerBlockHeight: CGFloat = 34
 
-    /// The pink sheet as one moving piece: the wavy divider rides on top of
-    /// the rounded panel so the whole thing slides together.
+    /// The pink panel that travels as one piece. The wavy divider is not part
+    /// of it — that stays put with the hero.
     private func sheet(minHeight: CGFloat) -> some View {
-        VStack(spacing: 0) {
-            WavyDivider()
-                .stroke(Color.matchaPinkDeep, lineWidth: 2.5)
-                .frame(height: 18)
-                .padding(.horizontal, 40)
-                .padding(.bottom, 16)
-
-            optionsSheet(minHeight: minHeight)
-                .background(
-                    UnevenRoundedRectangle(topLeadingRadius: 32, topTrailingRadius: 32)
-                        .fill(Color.matchaPinkPale)
-                )
-        }
+        optionsSheet(minHeight: minHeight)
+            .background(
+                UnevenRoundedRectangle(topLeadingRadius: 32, topTrailingRadius: 32)
+                    .fill(Color.matchaPinkPale)
+            )
     }
 
     var body: some View {
         GeometryReader { proxy in
             ZStack(alignment: .top) {
-                // The hero stays where it is. The sheet below rides over it
-                // as one piece — the whole container travels, rather than
-                // text scrolling inside a stationary panel.
-                heroCarousel
+                // Hero and wavy divider both stay where they are; only the
+                // pink panel travels over them.
+                VStack(spacing: 0) {
+                    heroCarousel
+
+                    WavyDivider()
+                        .stroke(Color.matchaPinkDeep, lineWidth: 2.5)
+                        .frame(height: 18)
+                        .padding(.horizontal, 40)
+                        .padding(.bottom, 16)
+
+                    Spacer(minLength: 0)
+                }
 
                 ScrollView {
                     VStack(spacing: 0) {
-                        // A window onto the hero sitting behind the sheet.
+                        // A window onto the hero sitting behind the panel.
                         Color.clear
-                            .frame(height: heroHeight)
+                            .frame(height: heroHeight + dividerBlockHeight)
 
-                        sheet(minHeight: proxy.size.height - dividerBlockHeight)
+                        // Sized to its own content, so the scroll stops as
+                        // soon as everything in the panel is on screen rather
+                        // than letting it ride all the way up the screen.
+                        sheet(minHeight: proxy.size.height - heroHeight - dividerBlockHeight)
                     }
                 }
                 .scrollIndicators(.hidden)
@@ -175,11 +179,11 @@ struct ProductDetailView: View {
             Image(displayImageName)
                 .resizable()
                 .scaledToFit()
-                .frame(maxHeight: 210)
+                .frame(maxHeight: 150)
                 .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
                 .shadow(color: .black.opacity(0.15), radius: 10, y: 6)
                 .padding(.horizontal, 8)
-                .frame(height: 220)
+                .frame(height: 156)
 
             Text(item.name)
                 .font(.title2.bold())
@@ -192,8 +196,8 @@ struct ProductDetailView: View {
                 .font(.footnote)
                 .foregroundStyle(Color.matchaDarkGreen.opacity(0.75))
                 .multilineTextAlignment(.center)
+                .lineLimit(2)
                 .padding(.horizontal, 32)
-                .fixedSize(horizontal: false, vertical: true)
         }
     }
 

@@ -62,6 +62,10 @@ struct ProductDetailView: View {
                 .padding(.bottom, 16)
 
             optionsSheet(minHeight: minHeight)
+                // A little extra depth at the foot of the panel, so the travel
+                // carries the wavy divider clear of the product title rather
+                // than stopping with it struck through the text.
+                .padding(.bottom, 22)
                 .background(
                     UnevenRoundedRectangle(topLeadingRadius: 32, topTrailingRadius: 32)
                         .fill(Color.matchaPinkPale)
@@ -83,7 +87,10 @@ struct ProductDetailView: View {
                         Color.clear
                             .frame(height: heroHeight)
 
-                        sheet(minHeight: proxy.size.height - dividerBlockHeight)
+                        // Only as tall as the space it occupies at rest, so the
+                        // travel stops as soon as the last control clears the
+                        // tab bar instead of carrying on up the screen.
+                        sheet(minHeight: proxy.size.height - heroHeight - dividerBlockHeight)
                     }
                 }
                 .scrollIndicators(.hidden)

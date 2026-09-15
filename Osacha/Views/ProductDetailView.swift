@@ -48,8 +48,10 @@ struct ProductDetailView: View {
     /// Height of the fixed hero block, generous enough to fit the longest
     /// item name/description without truncating.
     private let heroHeight: CGFloat = 420
-    /// The wavy divider plus its padding, which travel with the sheet.
+    /// The wavy divider plus its padding, which stay with the hero.
     private let dividerBlockHeight: CGFloat = 34
+    /// How far the pink panel rides up before the scroll stops.
+    private let panelTravel: CGFloat = 200
 
     /// The pink panel, which travels on its own. The wavy divider is not part
     /// of it — that belongs to the hero and stays put.
@@ -84,10 +86,13 @@ struct ProductDetailView: View {
                         Color.clear
                             .frame(height: heroHeight + dividerBlockHeight)
 
-                        // A full screen tall, so the travel ends with the
-                        // panel's top tucked under the navigation bar and the
-                        // panel still filling everything below it.
-                        sheet(minHeight: proxy.size.height)
+                        // Tall enough to still reach the bottom of the screen
+                        // once it has travelled, so the pink never stops short
+                        // and leaves an edge against the sage. Its height sets
+                        // the travel: the scroll ends after `panelTravel`.
+                        sheet(minHeight: proxy.size.height
+                                       - heroHeight - dividerBlockHeight
+                                       + panelTravel)
                     }
                 }
                 .scrollIndicators(.hidden)

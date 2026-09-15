@@ -41,12 +41,14 @@ Signing in is asked for once, at the moment it actually matters: when you order.
 
 ## Who it's for
 
-- **Matcha drinkers** who know the difference between usucha and a latte, and
-  want to choose their grind, size and milk rather than accept a default.
-- **Regulars** who reorder the same Cheese Cloud Matcha every week and want it
-  in three taps, with their address and payment already waiting.
-- **First-timers** who want to read what is actually in a drink — and see the
-  price — before committing to anything.
+Osacha is for customers who want a more considered way to order matcha: clear choices, honest pricing, and a menu worth exploring.
+
+- **Matcha enthusiasts** who understand their preferences—whether that is a traditional usucha,
+  a larger latte, or a specific milk—and expect the order to reflect them.
+- **Café regulars** who return for familiar favorites and value a fast, reliable reorder
+  experience with saved delivery and payment details.
+- **Curious first-time customers** who want to browse without pressure, learn what each drink
+  contains, and understand the full price before placing an order.
 
 ## Features
 

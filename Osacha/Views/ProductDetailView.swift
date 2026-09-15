@@ -99,7 +99,19 @@ struct ProductDetailView: View {
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.matchaSage.ignoresSafeArea())
+        // The strip behind the translucent tab bar sits outside the scroll
+        // view's viewport, so the panel can never paint it and the screen
+        // background shows through — that is the hard line. Give the bottom of
+        // the background the panel's pink instead. The band starts well below
+        // the panel's resting top, so the panel covers all of it except the
+        // strip under the bar.
+        .background {
+            ZStack(alignment: .bottom) {
+                Color.matchaSage
+                Color.matchaPinkPale.frame(height: 200)
+            }
+            .ignoresSafeArea()
+        }
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             // The brand mark replaces the written category title.

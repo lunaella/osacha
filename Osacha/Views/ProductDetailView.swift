@@ -48,47 +48,49 @@ struct ProductDetailView: View {
     /// Height of the fixed hero block, generous enough to fit the longest
     /// item name/description without truncating.
     private let heroHeight: CGFloat = 420
-    /// Combined height of the hero block and the wavy divider below it,
-    /// used to make the pink sheet stretch to fill the rest of the screen
-    /// even when its own content is short.
-    private var heroAndDividerHeight: CGFloat { heroHeight + 38 }
+    /// The wavy divider plus its padding, which travel with the sheet.
+    private let dividerBlockHeight: CGFloat = 34
+
+    /// The pink sheet as one moving piece: the wavy divider rides on top of
+    /// the rounded panel so the whole thing slides together.
+    private func sheet(minHeight: CGFloat) -> some View {
+        VStack(spacing: 0) {
+            WavyDivider()
+                .stroke(Color.matchaPinkDeep, lineWidth: 2.5)
+                .frame(height: 18)
+                .padding(.horizontal, 40)
+                .padding(.bottom, 16)
+
+            optionsSheet(minHeight: minHeight)
+                .background(
+                    UnevenRoundedRectangle(topLeadingRadius: 32, topTrailingRadius: 32)
+                        .fill(Color.matchaPinkPale)
+                )
+        }
+    }
 
     var body: some View {
         GeometryReader { proxy in
-            VStack(spacing: 0) {
-                // Fixed in place — only its own content changes when
-                // browsing; it never scrolls or moves with the pink sheet.
+            ZStack(alignment: .top) {
+                // The hero stays where it is. The sheet below rides over it
+                // as one piece — the whole container travels, rather than
+                // text scrolling inside a stationary panel.
                 heroCarousel
 
-                WavyDivider()
-                    .stroke(Color.matchaPinkDeep, lineWidth: 2.5)
-                    .frame(height: 18)
-                    .padding(.horizontal, 40)
-                    .padding(.top, 4)
-                    .padding(.bottom, 16)
-
-                // A separate, self-contained container: it scrolls on its
-                // own if its content doesn't fit, independent of the hero.
                 ScrollView {
-                    optionsSheet(minHeight: proxy.size.height - heroAndDividerHeight)
+                    VStack(spacing: 0) {
+                        // A window onto the hero sitting behind the sheet.
+                        Color.clear
+                            .frame(height: heroHeight)
+
+                        sheet(minHeight: proxy.size.height - dividerBlockHeight)
+                    }
                 }
+                .scrollIndicators(.hidden)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(alignment: .top) {
-            // Drawn behind the ScrollView (not clipped by it), so the pink
-            // portion reliably reaches the true bottom of the screen —
-            // including behind the floating tab bar — instead of stopping
-            // wherever the scrollable content happens to end.
-            ZStack(alignment: .top) {
-                Color.matchaSage
-
-                UnevenRoundedRectangle(topLeadingRadius: 32, topTrailingRadius: 32)
-                    .fill(Color.matchaPinkPale)
-                    .padding(.top, heroAndDividerHeight)
-            }
-            .ignoresSafeArea(edges: .bottom)
-        }
+        .background(Color.matchaSage.ignoresSafeArea())
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             // The brand mark replaces the written category title.

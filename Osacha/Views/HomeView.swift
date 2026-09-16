@@ -34,6 +34,8 @@ struct HomeView: View {
                     .foregroundStyle(Color.matchaDarkGreen)
                     .multilineTextAlignment(.center)
 
+                // The category images rise above their cards, so the grid
+                // needs that height back to keep clear of the greeting.
                 LazyVGrid(columns: columns, spacing: 16) {
                     ForEach(MatchaCategory.allCases) { category in
                         NavigationLink(value: category) {
@@ -42,6 +44,7 @@ struct HomeView: View {
                         .buttonStyle(.plain)
                     }
                 }
+                .padding(.top, 30)
                 .padding(.horizontal)
             }
             .padding(.bottom, 24)

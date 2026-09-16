@@ -10,14 +10,15 @@ import SwiftUI
 struct CategoryCardView: View {
     let category: MatchaCategory
 
+    /// How far the product image rises above the card's top edge.
+    private let imageLift: CGFloat = 38
+
     var body: some View {
         VStack(spacing: 10) {
-            Image(category.previewImageName)
-                .resizable()
-                .scaledToFill()
-                .frame(height: 120)
-                .frame(maxWidth: .infinity)
-                .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+            // Reserves the part of the image that sits inside the card; the
+            // image itself is an overlay so it can break the top edge.
+            Color.clear
+                .frame(height: 120 - imageLift)
 
             Text(category.rawValue)
                 .font(.headline)
@@ -41,6 +42,16 @@ struct CategoryCardView: View {
                 .fill(Color.matchaCardCream)
                 .shadow(color: .black.opacity(0.05), radius: 6, y: 3)
         )
+        // Drawn over the card rather than inside it, so the product stands
+        // proud of the container instead of being boxed in by it.
+        .overlay(alignment: .top) {
+            Image(category.previewImageName)
+                .resizable()
+                .scaledToFit()
+                .frame(height: 120)
+                .shadow(color: .black.opacity(0.18), radius: 8, y: 5)
+                .offset(y: -imageLift)
+        }
     }
 }
 

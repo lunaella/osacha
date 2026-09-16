@@ -23,6 +23,7 @@ struct ProductDetailView: View {
 
     @EnvironmentObject private var controller: OrderController
     @EnvironmentObject private var session: AppSession
+    @EnvironmentObject private var navigator: NavigationCoordinator
     @Environment(\.dismiss) private var dismiss
 
     @State private var selectedSize: DrinkSize = .regular
@@ -124,10 +125,17 @@ struct ProductDetailView: View {
         .toolbar {
             // The brand mark replaces the written category title.
             ToolbarItem(placement: .principal) {
-                Image("OsachaLogoMenu")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(height: 38)
+                // Tapping the brand mark returns to Home, from any tab.
+                Button {
+                    navigator.returnHome()
+                } label: {
+                    Image("OsachaLogoMenu")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(height: 38)
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel("Osacha home")
             }
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
@@ -395,4 +403,5 @@ struct ProductDetailView: View {
     }
     .environmentObject(OrderController())
     .environmentObject(AppSession())
+    .environmentObject(NavigationCoordinator())
 }

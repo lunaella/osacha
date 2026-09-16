@@ -220,8 +220,16 @@ final class AppSession: ObservableObject {
 @MainActor
 final class NavigationCoordinator: ObservableObject {
     @Published var homePath = NavigationPath()
+    /// Which tab is showing, so the brand mark can return to Home from any of
+    /// them rather than only unwinding the Home stack.
+    @Published var selectedTab: AppTab = .home
 
     func returnHome() {
+        selectedTab = .home
         homePath = NavigationPath()
     }
+}
+
+enum AppTab: Hashable {
+    case home, search, favorites, profile
 }

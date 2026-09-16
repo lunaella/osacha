@@ -33,7 +33,7 @@ struct ContentView: View {
     }
 
     private var memberTabs: some View {
-        TabView {
+        TabView(selection: $navigator.selectedTab) {
             // Path-driven so the order receipt can pop the whole ordering
             // flow back to the menu root.
             NavigationStack(path: $navigator.homePath) {
@@ -42,6 +42,7 @@ struct ContentView: View {
             .tabItem {
                 Label("Home", systemImage: "house.fill")
             }
+            .tag(AppTab.home)
 
             NavigationStack {
                 MenuView(category: nil)
@@ -49,6 +50,7 @@ struct ContentView: View {
             .tabItem {
                 Label("Search", systemImage: "magnifyingglass")
             }
+            .tag(AppTab.search)
 
             NavigationStack {
                 FavoritesView()
@@ -56,6 +58,7 @@ struct ContentView: View {
             .tabItem {
                 Label("Favorites", systemImage: "heart.fill")
             }
+            .tag(AppTab.favorites)
 
             NavigationStack {
                 ProfileView()
@@ -63,6 +66,7 @@ struct ContentView: View {
             .tabItem {
                 Label("Profile", systemImage: "person.crop.circle")
             }
+            .tag(AppTab.profile)
         }
         .tint(.matchaGreen)
     }

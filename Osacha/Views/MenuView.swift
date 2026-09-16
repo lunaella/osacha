@@ -12,6 +12,7 @@ struct MenuView: View {
     let category: MatchaCategory?
 
     @EnvironmentObject private var controller: OrderController
+    @EnvironmentObject private var navigator: NavigationCoordinator
 
     /// Count of everything in the cart, sitting on the corner of the cart
     /// icon. Hidden when empty so the toolbar stays quiet.
@@ -85,10 +86,17 @@ struct MenuView: View {
         .toolbar {
             // The brand mark replaces the written category title.
             ToolbarItem(placement: .principal) {
-                Image("OsachaLogoMenu")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(height: 38)
+                // Tapping the brand mark returns to Home, from any tab.
+                Button {
+                    navigator.returnHome()
+                } label: {
+                    Image("OsachaLogoMenu")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(height: 38)
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel("Osacha home")
             }
             ToolbarItem(placement: .navigationBarTrailing) {
                 NavigationLink(value: CartRoute()) {
@@ -120,4 +128,5 @@ struct CartRoute: Hashable {}
         MenuView(category: .drinks)
     }
     .environmentObject(OrderController())
+    .environmentObject(NavigationCoordinator())
 }

@@ -53,9 +53,24 @@ struct ProfileView: View {
                 }
                 .padding(.top, 12)
 
-                Text("Hello, \(session.profile.firstName)")
-                    .font(.title2.bold())
-                    .foregroundStyle(Color.matchaDarkGreen)
+                VStack(spacing: 10) {
+                    Text("Hello, \(session.profile.firstName)")
+                        .font(.title2.bold())
+                        .foregroundStyle(Color.matchaDarkGreen)
+
+                    // A direct way in, rather than only through Settings.
+                    NavigationLink {
+                        EditProfileView()
+                    } label: {
+                        Text("Edit Profile")
+                            .font(.caption.weight(.semibold))
+                            .foregroundStyle(Color.matchaGreen)
+                            .padding(.horizontal, 18)
+                            .padding(.vertical, 8)
+                            .background(Capsule().fill(Color.matchaSage.opacity(0.55)))
+                    }
+                    .buttonStyle(.plain)
+                }
 
                 Text("\(controller.favoriteItems.count) favorites · \(controller.cartCount) in cart")
                     .font(.subheadline)

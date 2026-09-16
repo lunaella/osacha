@@ -139,3 +139,27 @@ struct RowDivider: View {
             .padding(.leading, 16)
     }
 }
+
+/// The customer's avatar: their chosen photo, or the given fallback mark when
+/// they haven't set one.
+struct ProfileAvatar<Fallback: View>: View {
+    let size: CGFloat
+    @ViewBuilder var fallback: () -> Fallback
+
+    @EnvironmentObject private var session: AppSession
+
+    var body: some View {
+        Group {
+            if let data = session.profilePhoto, let image = UIImage(data: data) {
+                Image(uiImage: image)
+                    .resizable()
+                    .scaledToFill()
+            } else {
+                fallback()
+            }
+        }
+        .frame(width: size, height: size)
+        .background(Circle().fill(Color.matchaCardCream))
+        .clipShape(Circle())
+    }
+}

@@ -48,11 +48,10 @@ struct ProfileView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 20) {
-                Text("🍃")
-                    .font(.system(size: 56))
-                    .frame(width: 100, height: 100)
-                    .background(Circle().fill(Color.matchaCardCream))
-                    .padding(.top, 12)
+                ProfileAvatar(size: 100) {
+                    Text("🍃").font(.system(size: 56))
+                }
+                .padding(.top, 12)
 
                 Text("Hello, \(session.profile.firstName)")
                     .font(.title2.bold())

@@ -18,6 +18,9 @@ final class AppSession: ObservableObject {
     @Published private(set) var hasLaunched = false
 
     @Published var profile = UserProfile.sample
+    /// The customer's profile photo, already downscaled. Nil means no photo
+    /// has been chosen and the screens fall back to the leaf mark.
+    @Published private(set) var profilePhoto: Data?
     @Published var addresses = SavedAddress.samples
     @Published var paymentMethods = PaymentMethod.samples
     @Published private(set) var orders = PastOrder.samples
@@ -41,6 +44,7 @@ final class AppSession: ObservableObject {
     private let appearanceKey = "osacha.appearance"
     private let languageKey = "osacha.language"
     private let ordersKey = "osacha.orders"
+    private let photoKey = "osacha.profilePhoto"
 
     private var backgroundObserver: NSObjectProtocol?
 
@@ -98,6 +102,46 @@ final class AppSession: ObservableObject {
         let middle = digits.dropFirst(3).prefix(3)
         let last = digits.dropFirst(6)
         return "+63 \(area) \(middle) \(last)"
+    }
+
+    // MARK: - Profile photo
+
+    /// Stores a newly chosen photo, or clears it when passed nil. The image is
+    /// squared off and shrunk first — a full-resolution shot from the library
+    /// is far larger than a 100pt avatar needs, and this is written to
+    /// UserDefaults alongside the rest of the profile.
+    func updateProfilePhoto(_ image: UIImage?) {
+        guard let image else {
+            profilePhoto = nil
+            persist()
+            return
+        }
+        profilePhoto = Self.squareThumbnail(image, side: 512)
+        persist()
+    }
+
+    private static func squareThumbnail(_ image: UIImage, side: CGFloat) -> Data? {
+        let shortest = min(image.size.width, image.size.height)
+        let crop = CGRect(x: (image.size.width - shortest) / 2,
+                          y: (image.size.height - shortest) / 2,
+                          width: shortest, height: shortest)
+        let squared: UIImage
+        if let cg = image.cgImage?.cropping(to: crop) {
+            squared = UIImage(cgImage: cg, scale: image.scale, orientation: image.imageOrientation)
+        } else {
+            squared = image
+        }
+        let target = CGSize(width: side, height: side)
+        // Scale 1, or the renderer uses the screen's (3x on this device) and
+        // writes a 1536px image — several hundred KB of UserDefaults for a
+        // 100pt avatar.
+        let format = UIGraphicsImageRendererFormat.default()
+        format.scale = 1
+        let renderer = UIGraphicsImageRenderer(size: target, format: format)
+        let resized = renderer.image { _ in
+            squared.draw(in: CGRect(origin: .zero, size: target))
+        }
+        return resized.jpegData(compressionQuality: 0.85)
     }
 
     func continueAsGuest() {
@@ -179,6 +223,8 @@ final class AppSession: ObservableObject {
         if let data = try? JSONEncoder().encode(addresses) { defaults.set(data, forKey: addressesKey) }
         if let data = try? JSONEncoder().encode(paymentMethods) { defaults.set(data, forKey: paymentsKey) }
         if let data = try? JSONEncoder().encode(orders) { defaults.set(data, forKey: ordersKey) }
+        if let profilePhoto { defaults.set(profilePhoto, forKey: photoKey) }
+        else { defaults.removeObject(forKey: photoKey) }
     }
 
     private func load() {
@@ -202,6 +248,7 @@ final class AppSession: ObservableObject {
            let decoded = try? JSONDecoder().decode([PaymentMethod].self, from: data) {
             paymentMethods = decoded
         }
+        profilePhoto = defaults.data(forKey: photoKey)
         if let data = defaults.data(forKey: ordersKey),
            let decoded = try? JSONDecoder().decode([PastOrder].self, from: data) {
             orders = decoded

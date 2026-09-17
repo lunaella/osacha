@@ -34,11 +34,13 @@ struct LoginView: View {
                     .ignoresSafeArea()
 
                 VStack(spacing: 0) {
-                    Image("OsachaLogo")
+                    // Same logo and height as Home. The extra top padding keeps
+                    // it centred where the taller old logo sat.
+                    Image("OsachaLogoGreen")
                         .resizable()
                         .scaledToFit()
-                        .frame(height: 158)
-                        .padding(.top, 40)
+                        .frame(height: 120)
+                        .padding(.top, 59)
 
                     Spacer(minLength: 24)
 

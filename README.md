@@ -21,9 +21,11 @@ This app is the counter you order it from.
 ## About
 
 Osacha is an iOS ordering app for a matcha café — a small, focused storefront
-for a menu that is deliberately narrow and deliberately good. Fourteen drinks,
-seven desserts, each one photographed and priced the way it is actually sold:
-by size, by the milk you choose, by whether you want ice cream with it.
+for a menu that is deliberately narrow and deliberately good. Fourteen matcha
+drinks and seven desserts on the core menu, joined by a sakura Seasonal menu
+and a roasted Hojicha Series — thirty-one items, each one photographed and
+priced the way it is actually sold: by size, by the milk you choose, by whether
+you want ice cream with it.
 
 Built with SwiftUI for iPhone.
 
@@ -53,7 +55,9 @@ Osacha is for customers who want a more considered way to order matcha: clear ch
 ## Features
 
 **Browsing**
-- Full catalogue of 14 matcha drinks and 7 matcha desserts, with photography
+- Four menus: Matcha, Desserts, Seasonal (sakura cakes, crepes, bingsu, a latte
+  and an Americano) and the Hojicha Series
+- Full photography for all 31 items, with a longer description on each product page
 - Search across the entire menu
 - Favourites, saved per item
 - Browse everything as a guest — no account needed to look
@@ -61,21 +65,37 @@ Osacha is for customers who want a more considered way to order matcha: clear ch
 **Ordering**
 - Per-size pricing (Regular / Grande / Venti) with the upgrade shown on each option
 - Alternative milks — oat, soy, almond — priced transparently against regular
-- Ice cream add-on where the dessert supports it
+- Ice cream add-on where the dessert supports it, with the photo changing to match
 - Quantity, cart, and a running total that reflects every choice
-- Order confirmation with a reference, total paid and pickup time
+- A checkout page to review everything before the order is placed
+- Pickup or delivery, each with its own estimated time
+- Pay by card, GCash or Maya — asked for at checkout if none is saved yet
+- Order confirmation with a reference, total paid and pickup or delivery time
+
+**Loyalty & offers**
+- A flip-over loyalty card with a member QR code for the counter
+- A stamp with every order; the tenth matcha is on the house
+- Personalized offers on Search: 15% off the item you order most, taken off at
+  checkout, plus a suggestion from the same menu
 
 **Account**
-- Mobile number sign-in with a one-time code — no passwords
-- Editable profile: name, number, delivery address
+- Mobile number sign-in with a one-time code — no passwords; only the last
+  four digits of the number are shown on the code screen
+- First-time customers are asked for their name and address after verifying;
+  returning numbers go straight in
+- Accounts kept separately per mobile number
+- Profile photo, and an editable name, number and delivery address
 - Multiple saved addresses, labelled Home / Work / Other
 - Payment methods you can add and remove
-- Order history and notifications
+- Order history with live status: preparing, ready for pickup, out for delivery
+- Notifications for sign-up, order updates and rewards, with unread badges and
+  iPhone alerts when an order is ready or on its way
 
 **Settings**
-- Appearance: System, Light or Dark
 - Language preference
-- Privacy controls for location, tracking, offers and analytics
+- Privacy controls for location, order tracking, personalized offers and
+  analytics — saved, and each explained in a line
+- With location off, delivery orders and order tracking ask to turn it on
 - Help & Support with an FAQ
 
 ## Built with
@@ -84,6 +104,8 @@ Osacha is for customers who want a more considered way to order matcha: clear ch
 - **iOS 16+**, iPhone
 - **XcodeGen** — the project is generated from `project.yml`
 - `UserDefaults` for cart, favourites and account persistence
+- **UserNotifications** for order updates, **CoreLocation** for the location
+  permission, **Core Image** for the member QR code, **PhotosUI** for profile photos
 
 ## Running it
 
@@ -104,8 +126,8 @@ Osacha/
 ├── Controllers/     Order state, session and persistence
 └── Views/
     ├── Auth/        Splash, login, verification
-    ├── Account/     Profile, addresses, payments, settings
-    └── ...          Home, menu, product detail, cart
+    ├── Account/     Profile, loyalty card, addresses, payments, settings
+    └── ...          Home, menus, product detail, cart, checkout, offers
 ```
 
 ---

@@ -81,6 +81,10 @@ struct PaymentMethodsView: View {
 }
 
 struct AddPaymentMethodView: View {
+    /// Shown above the form when it's opened from checkout, to say why it
+    /// appeared.
+    var prompt: String? = nil
+
     @EnvironmentObject private var session: AppSession
     @Environment(\.dismiss) private var dismiss
 
@@ -90,9 +94,27 @@ struct AddPaymentMethodView: View {
     @State private var cvv = ""
     @State private var holder = ""
 
+    /// A card needs enough of its number to show the last four digits and an
+    /// expiry; a wallet needs the name it's registered to.
+    private var canSave: Bool {
+        switch kind {
+        case .card:
+            return cardNumber.filter(\.isNumber).count >= 4 && !expiry.trimmingCharacters(in: .whitespaces).isEmpty
+        case .gcash, .maya:
+            return !holder.trimmingCharacters(in: .whitespaces).isEmpty
+        }
+    }
+
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
+                if let prompt {
+                    Text(prompt)
+                        .font(.subheadline)
+                        .foregroundStyle(Color.matchaDarkGreen.opacity(0.8))
+                        .padding(.bottom, 4)
+                }
+
                 Text("Method")
                     .font(.caption.weight(.semibold))
                     .foregroundStyle(Color.matchaDarkGreen.opacity(0.7))
@@ -112,18 +134,22 @@ struct AddPaymentMethodView: View {
                     AccountField(label: "CVV", placeholder: "•••", text: $cvv)
                 }
 
-                AccountField(label: "Cardholder Name", placeholder: "Mikaela Denise Balasoto", text: $holder)
+                AccountField(label: "Cardholder Name",
+                             placeholder: session.profile.fullName.isEmpty ? "Name on card" : session.profile.fullName,
+                             text: $holder)
 
                 Button {
                     let title = kind == .card
-                        ? "Visa •••• \(String(cardNumber.suffix(4)))"
+                        ? "Visa •••• \(String(cardNumber.filter(\.isNumber).suffix(4)))"
                         : kind.rawValue
                     let subtitle = kind == .card ? "Expires \(expiry)" : holder
                     session.addPaymentMethod(PaymentMethod(kind: kind, title: title, subtitle: subtitle))
                     dismiss()
                 } label: {
                     PrimaryButtonLabel(title: "Save Payment Method")
+                        .opacity(canSave ? 1 : 0.5)
                 }
+                .disabled(!canSave)
                 .padding(.top, 4)
             }
             .padding()

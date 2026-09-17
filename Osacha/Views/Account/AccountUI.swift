@@ -140,11 +140,11 @@ struct RowDivider: View {
     }
 }
 
-/// The customer's avatar: their chosen photo, or the given fallback mark when
-/// they haven't set one.
-struct ProfileAvatar<Fallback: View>: View {
+/// The customer's avatar: their chosen photo, or the leaf mark when they
+/// haven't set one. The placeholder lives here rather than at each call site
+/// so every screen shows the same thing once a photo is removed.
+struct ProfileAvatar: View {
     let size: CGFloat
-    @ViewBuilder var fallback: () -> Fallback
 
     @EnvironmentObject private var session: AppSession
 
@@ -155,7 +155,10 @@ struct ProfileAvatar<Fallback: View>: View {
                     .resizable()
                     .scaledToFill()
             } else {
-                fallback()
+                // Sized from the avatar so it keeps its proportions at any size.
+                Image(systemName: "leaf.fill")
+                    .font(.system(size: size * 0.39))
+                    .foregroundStyle(Color.matchaGreen)
             }
         }
         .frame(width: size, height: size)
@@ -163,3 +166,4 @@ struct ProfileAvatar<Fallback: View>: View {
         .clipShape(Circle())
     }
 }
+

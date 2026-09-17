@@ -20,6 +20,7 @@ struct OsachaApp: App {
                 .environmentObject(session)
                 .environmentObject(navigator)
                 .preferredColorScheme(session.appearance.colorScheme)
+                .task { NotificationScheduler.shared.start(navigator: navigator) }
         }
     }
 }

@@ -13,6 +13,8 @@ struct OTPView: View {
     @Environment(\.dismiss) private var dismiss
 
     @State private var code = ""
+    /// Set when the verified number is new, so its name and address are asked for.
+    @State private var showProfileSetup = false
     @FocusState private var codeFocused: Bool
 
     private let digitCount = 6
@@ -54,7 +56,7 @@ struct OTPView: View {
                 }
 
                 Button {
-                    session.verifyCode()
+                    showProfileSetup = session.verifyCode()
                 } label: {
                     Text("Verify")
                         .font(.headline)
@@ -83,6 +85,9 @@ struct OTPView: View {
             .padding(.horizontal, 20)
         }
         .navigationBarBackButtonHidden(false)
+        .navigationDestination(isPresented: $showProfileSetup) {
+            CompleteProfileView()
+        }
         .onAppear { codeFocused = true }
     }
 

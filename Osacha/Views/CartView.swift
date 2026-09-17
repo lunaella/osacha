@@ -2,8 +2,9 @@
 //  CartView.swift
 //  Osacha
 //
-//  Order summary screen: review cart items, adjust quantities, and place
-//  the order.
+//  Order summary screen: review cart items, adjust quantities, and start
+//  placing the order. A customer with no payment method is asked for one
+//  first; everyone then reviews their details on the checkout page.
 //
 
 import SwiftUI
@@ -11,8 +12,8 @@ import SwiftUI
 struct CartView: View {
     @EnvironmentObject private var controller: OrderController
     @EnvironmentObject private var session: AppSession
-    @State private var placedOrder: PastOrder?
-    @State private var showConfirmation = false
+    @State private var showAddPayment = false
+    @State private var showCheckout = false
 
     var body: some View {
         VStack(spacing: 0) {
@@ -48,10 +49,22 @@ struct CartView: View {
         .toolbarBackground(Color.matchaSageDeep, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
         .toolbarColorScheme(.light, for: .navigationBar)
-        .navigationDestination(isPresented: $showConfirmation) {
-            if let placedOrder {
-                OrderConfirmationView(order: placedOrder)
-                    .onAppear { controller.clearCart() }
+        .navigationDestination(isPresented: $showCheckout) {
+            CheckoutView()
+        }
+        // Continue to checkout only if a method was actually saved; closing
+        // the form without one leaves the customer on the cart.
+        .sheet(isPresented: $showAddPayment, onDismiss: {
+            if !session.paymentMethods.isEmpty { showCheckout = true }
+        }) {
+            NavigationStack {
+                AddPaymentMethodView(prompt: "Add a payment method to place your order.")
+                    .toolbar {
+                        ToolbarItem(placement: .cancellationAction) {
+                            Button("Cancel") { showAddPayment = false }
+                                .foregroundStyle(Color.matchaGreen)
+                        }
+                    }
             }
         }
     }
@@ -72,9 +85,11 @@ struct CartView: View {
             // signed-in customers can actually place the order.
             if session.isSignedIn {
                 Button {
-                    placedOrder = session.recordOrder(itemCount: controller.cartCount,
-                                                      total: controller.cartTotal)
-                    showConfirmation = true
+                    if session.paymentMethods.isEmpty {
+                        showAddPayment = true
+                    } else {
+                        showCheckout = true
+                    }
                 } label: {
                     Text("Place Order")
                         .font(.headline)

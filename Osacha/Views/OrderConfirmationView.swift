@@ -51,11 +51,11 @@ struct OrderConfirmationView: View {
                     }
 
                     HStack {
-                        Text("Pickup time")
+                        Text(order.method.timeLabel)
                             .font(.caption)
                             .foregroundStyle(.secondary)
                         Spacer()
-                        Text(order.pickupAt)
+                        Text(order.readyAt)
                             .font(.subheadline.weight(.semibold))
                             .foregroundStyle(Color.matchaDarkGreen)
                     }

@@ -26,6 +26,44 @@ struct UserProfile: Codable, Equatable {
     )
 }
 
+/// Everything saved for one mobile number. Accounts are kept per number so a
+/// number the app hasn't seen before starts as a first-time customer, while
+/// signing back in with a known number brings its details back.
+struct AccountRecord: Codable {
+    var profile: UserProfile
+    var profilePhoto: Data?
+    var addresses: [SavedAddress]
+    var paymentMethods: [PaymentMethod]
+    var orders: [PastOrder]
+    var loyalty: LoyaltyCard
+    var notifications: [AppNotification] = []
+
+    /// A first-time customer: only the number is known, so the name and
+    /// address are asked for straight after verification.
+    static func newCustomer(mobileNumber: String) -> AccountRecord {
+        AccountRecord(profile: UserProfile(fullName: "", mobileNumber: mobileNumber, address: ""),
+                      profilePhoto: nil,
+                      addresses: [],
+                      paymentMethods: [],
+                      orders: [],
+                      loyalty: LoyaltyCard())
+    }
+}
+
+extension AccountRecord {
+    /// Accounts saved before notifications existed have none to decode.
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        profile = try container.decode(UserProfile.self, forKey: .profile)
+        profilePhoto = try container.decodeIfPresent(Data.self, forKey: .profilePhoto)
+        addresses = try container.decode([SavedAddress].self, forKey: .addresses)
+        paymentMethods = try container.decode([PaymentMethod].self, forKey: .paymentMethods)
+        orders = try container.decode([PastOrder].self, forKey: .orders)
+        loyalty = try container.decode(LoyaltyCard.self, forKey: .loyalty)
+        notifications = try container.decodeIfPresent([AppNotification].self, forKey: .notifications) ?? []
+    }
+}
+
 struct SavedAddress: Identifiable, Codable, Equatable {
     enum Kind: String, Codable, CaseIterable, Identifiable {
         case home = "Home"
@@ -89,10 +127,28 @@ struct PaymentMethod: Identifiable, Codable, Equatable {
     ]
 }
 
+/// How the customer gets their order.
+enum Fulfillment: String, Codable, CaseIterable, Identifiable {
+    case pickup = "Pickup"
+    case delivery = "Delivery"
+
+    var id: String { rawValue }
+
+    /// Labels the time shown on checkout and the receipt.
+    var timeLabel: String {
+        switch self {
+        case .pickup: return "Pickup time"
+        case .delivery: return "Delivery time"
+        }
+    }
+}
+
 enum OrderStatus: String {
     case preparing = "Preparing"
     case ready = "Ready for pickup"
     case completed = "Completed"
+    case outForDelivery = "Out for delivery"
+    case delivered = "Delivered"
 }
 
 struct PastOrder: Identifiable, Codable {
@@ -107,6 +163,12 @@ struct PastOrder: Identifiable, Codable {
     /// orders persisted before this field existed must still decode.
     var placedDate: Date?
 
+    /// Pickup or delivery. Optional so orders saved before customers could
+    /// choose still decode — every one of those was a pickup.
+    var fulfillment: Fulfillment?
+
+    var method: Fulfillment { fulfillment ?? .pickup }
+
     var summary: String {
         "\(itemCount) item\(itemCount == 1 ? "" : "s") · \(total.asPHP)"
     }
@@ -115,27 +177,49 @@ struct PastOrder: Identifiable, Codable {
     /// seconds ago isn't reported as already finished. Orders with no real
     /// date behind them are historical, so they read as completed.
     var status: OrderStatus {
-        guard let placedDate else { return .completed }
-        switch Date().timeIntervalSince(placedDate) {
-        case ..<Self.preparingDuration: return .preparing
-        case ..<Self.readyDuration: return .ready
-        default: return .completed
+        guard let placedDate else { return method == .delivery ? .delivered : .completed }
+        let elapsed = Date().timeIntervalSince(placedDate)
+        switch method {
+        case .pickup:
+            switch elapsed {
+            case ..<Self.preparingDuration: return .preparing
+            case ..<Self.readyDuration: return .ready
+            default: return .completed
+            }
+        case .delivery:
+            switch elapsed {
+            case ..<Self.preparingDuration: return .preparing
+            case ..<Self.deliveryDuration: return .outForDelivery
+            default: return .delivered
+            }
         }
     }
 
-    /// When the order should be ready to collect: the moment it stops
-    /// preparing. Orders with no real date behind them (the seeded history)
-    /// fall back to their own recorded string, which is already a time.
-    var pickupAt: String {
+    /// When a pickup order can be collected, or a delivery should arrive.
+    /// Orders with no real date behind them (the seeded history) fall back to
+    /// their own recorded string, which is already a time.
+    var readyAt: String {
         guard let placedDate else { return placedAt }
-        return Self.pickupFormatter.string(from: placedDate.addingTimeInterval(Self.preparingDuration))
+        return Self.timeFormatter.string(from: placedDate.addingTimeInterval(Self.leadTime(for: method)))
     }
 
     /// How long a new order spends in each stage before moving on.
     static let preparingDuration: TimeInterval = 5 * 60
     static let readyDuration: TimeInterval = 20 * 60
+    /// Preparation plus the ride over.
+    static let deliveryDuration: TimeInterval = 35 * 60
 
-    private static let pickupFormatter: DateFormatter = {
+    private static func leadTime(for method: Fulfillment) -> TimeInterval {
+        method == .pickup ? preparingDuration : deliveryDuration
+    }
+
+    /// The pickup or delivery time an order placed right now would get,
+    /// formatted the same way the receipt shows it.
+    static func estimatedReady(for method: Fulfillment, from date: Date = Date()) -> String {
+        timeFormatter.string(from: date.addingTimeInterval(leadTime(for: method)))
+    }
+
+    private static let timeFormatter: DateFormatter = {
         let formatter = DateFormatter()
         // Fixed locale for the same reason the placement stamp pins one: a
         // 24-hour device would otherwise override "h:mm a".
@@ -171,17 +255,71 @@ struct LoyaltyCard: Codable, Equatable {
     var qrPayload: String { "osacha://member/\(memberCode)" }
 }
 
-struct AppNotification: Identifiable, Codable {
-    var id = UUID()
-    var icon: String
-    var message: String
-    var age: String
+/// Something that happened on the customer's account: their order moving
+/// along, a reward earned, or a welcome when they sign up.
+struct AppNotification: Identifiable, Codable, Equatable {
+    enum Kind: String, Codable {
+        case welcome, orderPlaced, orderReady, outForDelivery, delivered, reward
 
-    static let samples: [AppNotification] = [
-        AppNotification(icon: "bag.fill.badge.plus", message: "Your order #A1042 is ready for pickup!", age: "2m ago"),
-        AppNotification(icon: "sparkles", message: "New: try our Ube Matcha Latte", age: "1h ago"),
-        AppNotification(icon: "gift.fill", message: "You earned a free matcha reward", age: "Yesterday")
-    ]
+        var icon: String {
+            switch self {
+            case .welcome: return "hand.wave.fill"
+            case .orderPlaced: return "bag.fill"
+            case .orderReady: return "bag.fill.badge.plus"
+            case .outForDelivery: return "bicycle"
+            case .delivered: return "checkmark.seal.fill"
+            case .reward: return "gift.fill"
+            }
+        }
+
+        /// Heading for the system banner; the message carries the detail.
+        var title: String {
+            switch self {
+            case .welcome: return "Welcome to Osacha"
+            case .orderPlaced: return "Order placed"
+            case .orderReady: return "Ready for pickup"
+            case .outForDelivery: return "Out for delivery"
+            case .delivered: return "Delivered"
+            case .reward: return "Free matcha earned"
+            }
+        }
+
+        /// Order updates open the order history; the reward opens the card.
+        var isAboutAnOrder: Bool {
+            switch self {
+            case .orderPlaced, .orderReady, .outForDelivery, .delivered: return true
+            case .welcome, .reward: return false
+            }
+        }
+    }
+
+    var id = UUID()
+    var kind: Kind
+    var message: String
+    /// When it happens. Order updates are filed at placement with the time
+    /// each stage will be reached, and stay hidden until then.
+    var date: Date
+    var isRead = false
+
+    /// "Just now", "12m ago", "3h ago", "Yesterday", then the date.
+    func age(relativeTo now: Date) -> String {
+        let seconds = now.timeIntervalSince(date)
+        switch seconds {
+        case ..<60: return "Just now"
+        case ..<3600: return "\(Int(seconds / 60))m ago"
+        case ..<86_400: return "\(Int(seconds / 3600))h ago"
+        default:
+            if Calendar.current.isDateInYesterday(date) { return "Yesterday" }
+            return Self.dayFormatter.string(from: date)
+        }
+    }
+
+    private static let dayFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.dateFormat = "MMM d"
+        return formatter
+    }()
 }
 
 enum AppearanceMode: String, Codable, CaseIterable, Identifiable {

@@ -52,16 +52,16 @@ private extension OrderStatus {
     var foreground: Color {
         switch self {
         case .preparing: return Color.matchaPinkDeep
-        case .ready: return Color.matchaDarkGreen
-        case .completed: return Color.matchaGreen
+        case .ready, .outForDelivery: return Color.matchaDarkGreen
+        case .completed, .delivered: return Color.matchaGreen
         }
     }
 
     var background: Color {
         switch self {
         case .preparing: return Color.matchaPinkPale
-        case .ready: return Color.matchaSage
-        case .completed: return Color.matchaSage.opacity(0.45)
+        case .ready, .outForDelivery: return Color.matchaSage
+        case .completed, .delivered: return Color.matchaSage.opacity(0.45)
         }
     }
 }
@@ -72,26 +72,30 @@ struct NotificationsView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 14) {
-                ForEach(session.notifications) { note in
-                    HStack(alignment: .top, spacing: 12) {
-                        Image(systemName: note.icon)
+                if session.visibleNotifications.isEmpty {
+                    VStack(spacing: 8) {
+                        Image(systemName: "bell.slash")
+                            .font(.title2)
                             .foregroundStyle(Color.matchaGreen)
-                            .frame(width: 28)
-
-                        VStack(alignment: .leading, spacing: 5) {
-                            Text(note.message)
-                                .font(.caption.weight(.semibold))
-                                .foregroundStyle(Color.matchaDarkGreen)
-                                .fixedSize(horizontal: false, vertical: true)
-                            Text(note.age)
-                                .font(.caption2)
-                                .foregroundStyle(.secondary)
-                        }
-
-                        Spacer(minLength: 0)
+                        Text("You're all caught up")
+                            .font(.subheadline.weight(.semibold))
+                            .foregroundStyle(Color.matchaDarkGreen)
+                        Text("Order updates and rewards will show up here.")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
                     }
-                    .padding(16)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 32)
                     .accountCard()
+                } else {
+                    ForEach(session.visibleNotifications) { note in
+                        NavigationLink {
+                            destination(for: note)
+                        } label: {
+                            row(note)
+                        }
+                        .buttonStyle(.plain)
+                    }
                 }
             }
             .padding()
@@ -99,6 +103,50 @@ struct NotificationsView: View {
         .accountBackground()
         .navigationTitle("Notifications")
         .navigationBarTitleDisplayMode(.inline)
+        // Leave the unread dots up while the list is on screen, so the
+        // customer can see what's new, then clear them on the way out.
+        .onDisappear { session.markNotificationsRead() }
+    }
+
+    private func row(_ note: AppNotification) -> some View {
+        HStack(alignment: .top, spacing: 12) {
+            Image(systemName: note.kind.icon)
+                .foregroundStyle(Color.matchaGreen)
+                .frame(width: 28)
+
+            VStack(alignment: .leading, spacing: 5) {
+                Text(note.message)
+                    .font(.caption.weight(note.isRead ? .regular : .semibold))
+                    .foregroundStyle(Color.matchaDarkGreen)
+                    .multilineTextAlignment(.leading)
+                    .fixedSize(horizontal: false, vertical: true)
+                Text(note.age(relativeTo: session.now))
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+            }
+
+            Spacer(minLength: 0)
+
+            if !note.isRead {
+                Circle()
+                    .fill(Color.matchaPinkDeep)
+                    .frame(width: 8, height: 8)
+                    .padding(.top, 4)
+                    .accessibilityLabel("Unread")
+            }
+        }
+        .padding(16)
+        .contentShape(Rectangle())
+        .accountCard()
+    }
+
+    @ViewBuilder
+    private func destination(for note: AppNotification) -> some View {
+        if note.kind.isAboutAnOrder {
+            OrderHistoryView()
+        } else {
+            LoyaltyCardView()
+        }
     }
 }
 

@@ -24,7 +24,12 @@ final class AppSession: ObservableObject {
     @Published var addresses = SavedAddress.samples
     @Published var paymentMethods = PaymentMethod.samples
     @Published private(set) var orders = PastOrder.samples
-    @Published var notifications = AppNotification.samples
+    /// Everything filed for this account, including order updates timed for
+    /// later that aren't showing yet — see `visibleNotifications`.
+    @Published private(set) var notifications: [AppNotification] = []
+    /// Ticks forward while the app is open so order updates filed for later
+    /// appear, and the unread badge updates, when their time comes.
+    @Published private(set) var now = Date()
     /// The customer's stamp card. Stamps are earned by placing orders.
     @Published private(set) var loyalty = LoyaltyCard()
 
@@ -48,11 +53,32 @@ final class AppSession: ObservableObject {
     private let ordersKey = "osacha.orders"
     private let photoKey = "osacha.profilePhoto"
     private let loyaltyKey = "osacha.loyalty"
+    private let accountsKey = "osacha.accounts"
+    private let currentAccountKey = "osacha.currentAccount"
+
+    /// Every account saved on this device, keyed by its ten-digit number.
+    private var accounts: [String: AccountRecord] = [:]
+    /// The number whose details are loaded into the properties above.
+    private var currentAccount: String?
+
+    /// A first-time customer who has verified their number but not yet told
+    /// us their name and address.
+    var needsProfileSetup: Bool {
+        profile.fullName.trimmingCharacters(in: .whitespaces).isEmpty
+            || profile.address.trimmingCharacters(in: .whitespaces).isEmpty
+    }
 
     private var backgroundObserver: NSObjectProtocol?
+    private var clock: Timer?
 
     init() {
         load()
+
+        clock = Timer.scheduledTimer(withTimeInterval: 15, repeats: true) { [weak self] _ in
+            MainActor.assumeIsolated {
+                self?.now = Date()
+            }
+        }
 
         // Rearm the splash whenever the app leaves the foreground, so reopening
         // it always starts from the brand screen.
@@ -68,6 +94,7 @@ final class AppSession: ObservableObject {
     }
 
     deinit {
+        clock?.invalidate()
         if let backgroundObserver {
             NotificationCenter.default.removeObserver(backgroundObserver)
         }
@@ -87,13 +114,68 @@ final class AppSession: ObservableObject {
 
     // MARK: - Authentication
 
-    /// The prototype accepts any six digits; this just flips the session state.
-    func verifyCode() {
-        isSignedIn = true
-        if !pendingNumber.isEmpty {
-            profile.mobileNumber = Self.formattedMobileNumber(pendingNumber)
+    /// The prototype accepts any six digits. Verifying loads the account for
+    /// the number typed on the login screen — or starts a new one if this
+    /// number hasn't been seen — and returns true when it's a first-time
+    /// customer who still needs to give their name and address. They stay
+    /// signed out until they have.
+    @discardableResult
+    func verifyCode() -> Bool {
+        let number = Self.accountKey(for: pendingNumber)
+        if !number.isEmpty {
+            switchToAccount(number)
         }
+        guard !needsProfileSetup else {
+            persist()
+            return true
+        }
+        isSignedIn = true
         persist()
+        return false
+    }
+
+    /// Finishes a first-time customer's sign-up with the details asked for
+    /// after verification, then signs them in.
+    func completeProfile(fullName: String, address: SavedAddress) {
+        profile.fullName = fullName.trimmingCharacters(in: .whitespaces)
+        profile.address = address.oneLine
+        addresses.insert(address, at: 0)
+        notify(.welcome, "Welcome to Osacha, \(profile.firstName)! Your loyalty card is ready — every order earns a stamp.")
+        isSignedIn = true
+        persist()
+    }
+
+    /// Loads the saved details for a number into the session, creating a
+    /// blank account the first time a number signs in.
+    private func switchToAccount(_ number: String) {
+        guard number != currentAccount else { return }
+        let record = accounts[number]
+            ?? .newCustomer(mobileNumber: Self.formattedMobileNumber(number))
+        apply(record)
+        currentAccount = number
+    }
+
+    private func apply(_ record: AccountRecord) {
+        profile = record.profile
+        profilePhoto = record.profilePhoto
+        addresses = record.addresses
+        paymentMethods = record.paymentMethods
+        orders = record.orders
+        loyalty = record.loyalty
+        notifications = record.notifications
+        now = Date()
+    }
+
+    private var currentRecord: AccountRecord {
+        AccountRecord(profile: profile, profilePhoto: profilePhoto, addresses: addresses,
+                      paymentMethods: paymentMethods, orders: orders, loyalty: loyalty,
+                      notifications: notifications)
+    }
+
+    /// The last ten digits of a number, so "+63 917 123 4567" and "9171234567"
+    /// refer to the same account.
+    private static func accountKey(for raw: String) -> String {
+        String(raw.filter(\.isNumber).suffix(10))
     }
 
     /// Groups a typed number as "+63 917 123 4567" so it matches the spacing
@@ -192,18 +274,79 @@ final class AppSession: ObservableObject {
 
     /// Files a placed order into the history and returns it for the receipt screen.
     @discardableResult
-    func recordOrder(itemCount: Int, total: Double) -> PastOrder {
+    func recordOrder(itemCount: Int, total: Double, fulfillment: Fulfillment) -> PastOrder {
         let reference = String(format: "A%04d", Int.random(in: 1000...9999))
         let now = Date()
         let order = PastOrder(reference: reference,
                               placedAt: Self.timestampFormatter.string(from: now),
                               itemCount: itemCount,
                               total: total,
-                              placedDate: now)
+                              placedDate: now,
+                              fulfillment: fulfillment)
         orders.insert(order, at: 0)
-        awardLoyaltyStamp()
+
+        // File every update this order will get, each at the time it happens.
+        // Catch the clock up first so the "placed" update shows immediately.
+        self.now = now
+        let ref = "#\(order.reference)"
+        var updates = [AppNotification(kind: .orderPlaced,
+                                       message: "Order \(ref) placed — we're preparing it now.",
+                                       date: now)]
+        let ready = now.addingTimeInterval(PastOrder.preparingDuration)
+        switch fulfillment {
+        case .pickup:
+            updates.append(AppNotification(kind: .orderReady,
+                                           message: "Order \(ref) is ready for pickup! Show your order number at the counter.",
+                                           date: ready))
+        case .delivery:
+            updates.append(AppNotification(kind: .outForDelivery,
+                                           message: "Order \(ref) is out for delivery.",
+                                           date: ready))
+            updates.append(AppNotification(kind: .delivered,
+                                           message: "Order \(ref) has been delivered. Enjoy your matcha!",
+                                           date: now.addingTimeInterval(PastOrder.deliveryDuration)))
+        }
+        if awardLoyaltyStamp() {
+            updates.append(AppNotification(kind: .reward,
+                                           message: "You earned a free matcha! Your 10th drink is on us.",
+                                           date: now))
+        }
+        notifications.append(contentsOf: updates)
+
+        // The phone itself only announces what happens later, and only if the
+        // customer hasn't turned order tracking off.
+        if orderTracking {
+            NotificationScheduler.shared.schedule(updates.filter { $0.date > now })
+        }
         persist()
         return order
+    }
+
+    // MARK: - Notifications
+
+    /// Notifications whose time has come, newest first.
+    var visibleNotifications: [AppNotification] {
+        notifications.filter { $0.date <= now }.sorted { $0.date > $1.date }
+    }
+
+    var unreadNotificationCount: Int {
+        visibleNotifications.filter { !$0.isRead }.count
+    }
+
+    /// Marks everything currently showing as read. Updates still waiting for
+    /// their time stay unread so they count once they appear.
+    func markNotificationsRead() {
+        var changed = false
+        for index in notifications.indices where notifications[index].date <= now && !notifications[index].isRead {
+            notifications[index].isRead = true
+            changed = true
+        }
+        if changed { persist() }
+    }
+
+    private func notify(_ kind: AppNotification.Kind, _ message: String) {
+        now = Date()
+        notifications.append(AppNotification(kind: kind, message: message, date: now))
     }
 
     // MARK: - Loyalty
@@ -239,13 +382,13 @@ final class AppSession: ObservableObject {
         defaults.set(isSignedIn, forKey: signedInKey)
         defaults.set(appearance.rawValue, forKey: appearanceKey)
         defaults.set(language.rawValue, forKey: languageKey)
-        if let data = try? JSONEncoder().encode(profile) { defaults.set(data, forKey: profileKey) }
-        if let data = try? JSONEncoder().encode(addresses) { defaults.set(data, forKey: addressesKey) }
-        if let data = try? JSONEncoder().encode(paymentMethods) { defaults.set(data, forKey: paymentsKey) }
-        if let data = try? JSONEncoder().encode(orders) { defaults.set(data, forKey: ordersKey) }
-        if let data = try? JSONEncoder().encode(loyalty) { defaults.set(data, forKey: loyaltyKey) }
-        if let profilePhoto { defaults.set(profilePhoto, forKey: photoKey) }
-        else { defaults.removeObject(forKey: photoKey) }
+        // Only a verified number has an account to write to; a guest's
+        // placeholder details are never saved.
+        if let currentAccount {
+            accounts[currentAccount] = currentRecord
+            defaults.set(currentAccount, forKey: currentAccountKey)
+        }
+        if let data = try? JSONEncoder().encode(accounts) { defaults.set(data, forKey: accountsKey) }
     }
 
     private func load() {
@@ -257,33 +400,43 @@ final class AppSession: ObservableObject {
         if let raw = defaults.string(forKey: languageKey), let value = AppLanguage(rawValue: raw) {
             language = value
         }
-        if let data = defaults.data(forKey: profileKey),
-           let decoded = try? JSONDecoder().decode(UserProfile.self, from: data) {
-            profile = decoded
+        if let data = defaults.data(forKey: accountsKey),
+           let decoded = try? JSONDecoder().decode([String: AccountRecord].self, from: data) {
+            accounts = decoded
+            currentAccount = defaults.string(forKey: currentAccountKey)
+        } else if let legacy = legacyAccount(from: defaults) {
+            // Installs from before accounts were kept per number saved a
+            // single set of details; file them under that profile's number.
+            let number = Self.accountKey(for: legacy.profile.mobileNumber)
+            accounts[number] = legacy
+            currentAccount = number
+            // Load the old details before saving: persist() writes whatever
+            // the session currently holds, which until now is placeholder data.
+            apply(legacy)
+            persist()
+            [profileKey, addressesKey, paymentsKey, ordersKey, loyaltyKey, photoKey]
+                .forEach(defaults.removeObject(forKey:))
+            return
         }
-        if let data = defaults.data(forKey: loyaltyKey),
-           let decoded = try? JSONDecoder().decode(LoyaltyCard.self, from: data) {
-            loyalty = decoded
-        } else {
-            // First launch: keep the freshly generated member code so the QR
-            // stays the same every time the card is opened.
-            if let data = try? JSONEncoder().encode(loyalty) {
-                defaults.set(data, forKey: loyaltyKey)
-            }
+        if let currentAccount, let record = accounts[currentAccount] {
+            apply(record)
         }
-        if let data = defaults.data(forKey: addressesKey),
-           let decoded = try? JSONDecoder().decode([SavedAddress].self, from: data) {
-            addresses = decoded
+    }
+
+    /// The single account saved by earlier versions, if there is one.
+    private func legacyAccount(from defaults: UserDefaults) -> AccountRecord? {
+        let decoder = JSONDecoder()
+        guard let data = defaults.data(forKey: profileKey),
+              let profile = try? decoder.decode(UserProfile.self, from: data) else { return nil }
+        func decode<T: Decodable>(_ key: String, _ fallback: T) -> T {
+            defaults.data(forKey: key).flatMap { try? decoder.decode(T.self, from: $0) } ?? fallback
         }
-        if let data = defaults.data(forKey: paymentsKey),
-           let decoded = try? JSONDecoder().decode([PaymentMethod].self, from: data) {
-            paymentMethods = decoded
-        }
-        profilePhoto = defaults.data(forKey: photoKey)
-        if let data = defaults.data(forKey: ordersKey),
-           let decoded = try? JSONDecoder().decode([PastOrder].self, from: data) {
-            orders = decoded
-        }
+        return AccountRecord(profile: profile,
+                             profilePhoto: defaults.data(forKey: photoKey),
+                             addresses: decode(addressesKey, SavedAddress.samples),
+                             paymentMethods: decode(paymentsKey, PaymentMethod.samples),
+                             orders: decode(ordersKey, PastOrder.samples),
+                             loyalty: decode(loyaltyKey, LoyaltyCard()))
     }
 
     /// Persist preference changes made directly through the bindings.
@@ -302,9 +455,17 @@ final class NavigationCoordinator: ObservableObject {
     /// them rather than only unwinding the Home stack.
     @Published var selectedTab: AppTab = .home
 
+    /// Pushes the Notifications screen on the Profile tab when a banner is tapped.
+    @Published var showNotifications = false
+
     func returnHome() {
         selectedTab = .home
         homePath = NavigationPath()
+    }
+
+    func openNotifications() {
+        selectedTab = .profile
+        showNotifications = true
     }
 }
 

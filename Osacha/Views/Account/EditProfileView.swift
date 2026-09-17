@@ -23,11 +23,7 @@ struct EditProfileView: View {
         ScrollView {
             VStack(spacing: 18) {
                 VStack(spacing: 8) {
-                    ProfileAvatar(size: 88) {
-                        Image(systemName: "leaf.fill")
-                            .font(.system(size: 34))
-                            .foregroundStyle(Color.matchaGreen)
-                    }
+                    ProfileAvatar(size: 88)
                     .shadow(color: .black.opacity(0.06), radius: 10, y: 4)
                     .overlay(alignment: .bottomTrailing) {
                         if isLoadingPhoto {

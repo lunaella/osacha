@@ -66,6 +66,7 @@ struct ContentView: View {
             .tabItem {
                 Label("Profile", systemImage: "person.crop.circle")
             }
+            .badge(session.unreadNotificationCount)
             .tag(AppTab.profile)
         }
         .tint(.matchaGreen)

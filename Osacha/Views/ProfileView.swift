@@ -45,15 +45,14 @@ private enum ProfileDestination: String, CaseIterable, Identifiable {
 struct ProfileView: View {
     @EnvironmentObject private var controller: OrderController
     @EnvironmentObject private var session: AppSession
+    @EnvironmentObject private var navigator: NavigationCoordinator
 
     private let rows = ProfileDestination.allCases
 
     var body: some View {
         ScrollView {
             VStack(spacing: 20) {
-                ProfileAvatar(size: 100) {
-                    Text("🍃").font(.system(size: 56))
-                }
+                ProfileAvatar(size: 100)
                 .padding(.top, 12)
 
                 VStack(spacing: 10) {
@@ -91,6 +90,14 @@ struct ProfileView: View {
                                 Text(row.rawValue)
                                     .foregroundStyle(Color.matchaDarkGreen)
                                 Spacer()
+                                if row == .notifications, session.unreadNotificationCount > 0 {
+                                    Text("\(session.unreadNotificationCount)")
+                                        .font(.caption2.bold())
+                                        .foregroundStyle(.white)
+                                        .padding(.horizontal, 7)
+                                        .padding(.vertical, 3)
+                                        .background(Capsule().fill(Color.matchaPinkDeep))
+                                }
                                 Image(systemName: "chevron.right")
                                     .font(.caption)
                                     .foregroundStyle(.secondary)
@@ -109,6 +116,9 @@ struct ProfileView: View {
         .background(Color.matchaCream.ignoresSafeArea())
         .navigationTitle("Profile")
         .navigationBarTitleDisplayMode(.inline)
+        .navigationDestination(isPresented: $navigator.showNotifications) {
+            NotificationsView()
+        }
     }
 }
 
@@ -118,4 +128,5 @@ struct ProfileView: View {
     }
     .environmentObject(OrderController())
     .environmentObject(AppSession())
+    .environmentObject(NavigationCoordinator())
 }

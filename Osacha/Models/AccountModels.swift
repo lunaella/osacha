@@ -151,6 +151,26 @@ struct PastOrder: Identifiable, Codable {
     ]
 }
 
+/// The cafe's stamp card. The printed card has ten slots: nine take a stamp,
+/// and the tenth is the free matcha. Filling the ninth earns the reward, after
+/// which the card starts over so the next round can be collected.
+struct LoyaltyCard: Codable, Equatable {
+    /// Stamps needed to earn the free tenth matcha.
+    static let stampsPerReward = 9
+
+    /// Identifies the member in the QR code the counter scans. Generated once
+    /// and kept for the life of the account.
+    var memberCode: String = UUID().uuidString
+    var stamps: Int = 0
+    var rewardsEarned: Int = 0
+
+    /// How many more stamps this card still has room for.
+    var stampsRemaining: Int { max(0, Self.stampsPerReward - stamps) }
+
+    /// The payload encoded in the member's QR code.
+    var qrPayload: String { "osacha://member/\(memberCode)" }
+}
+
 struct AppNotification: Identifiable, Codable {
     var id = UUID()
     var icon: String

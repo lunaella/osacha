@@ -25,6 +25,8 @@ final class AppSession: ObservableObject {
     @Published var paymentMethods = PaymentMethod.samples
     @Published private(set) var orders = PastOrder.samples
     @Published var notifications = AppNotification.samples
+    /// The customer's stamp card. Stamps are earned by placing orders.
+    @Published private(set) var loyalty = LoyaltyCard()
 
     @Published var appearance: AppearanceMode = .system
     @Published var language: AppLanguage = .english
@@ -45,6 +47,7 @@ final class AppSession: ObservableObject {
     private let languageKey = "osacha.language"
     private let ordersKey = "osacha.orders"
     private let photoKey = "osacha.profilePhoto"
+    private let loyaltyKey = "osacha.loyalty"
 
     private var backgroundObserver: NSObjectProtocol?
 
@@ -198,8 +201,25 @@ final class AppSession: ObservableObject {
                               total: total,
                               placedDate: now)
         orders.insert(order, at: 0)
+        awardLoyaltyStamp()
         persist()
         return order
+    }
+
+    // MARK: - Loyalty
+
+    /// Adds a stamp to the card, completing it and starting a fresh one on the
+    /// tenth. Returns true when this stamp completed a card.
+    @discardableResult
+    func awardLoyaltyStamp() -> Bool {
+        loyalty.stamps += 1
+        let completed = loyalty.stamps >= LoyaltyCard.stampsPerReward
+        if completed {
+            loyalty.rewardsEarned += 1
+            loyalty.stamps = 0
+        }
+        persist()
+        return completed
     }
 
     private static let timestampFormatter: DateFormatter = {
@@ -223,6 +243,7 @@ final class AppSession: ObservableObject {
         if let data = try? JSONEncoder().encode(addresses) { defaults.set(data, forKey: addressesKey) }
         if let data = try? JSONEncoder().encode(paymentMethods) { defaults.set(data, forKey: paymentsKey) }
         if let data = try? JSONEncoder().encode(orders) { defaults.set(data, forKey: ordersKey) }
+        if let data = try? JSONEncoder().encode(loyalty) { defaults.set(data, forKey: loyaltyKey) }
         if let profilePhoto { defaults.set(profilePhoto, forKey: photoKey) }
         else { defaults.removeObject(forKey: photoKey) }
     }
@@ -239,6 +260,16 @@ final class AppSession: ObservableObject {
         if let data = defaults.data(forKey: profileKey),
            let decoded = try? JSONDecoder().decode(UserProfile.self, from: data) {
             profile = decoded
+        }
+        if let data = defaults.data(forKey: loyaltyKey),
+           let decoded = try? JSONDecoder().decode(LoyaltyCard.self, from: data) {
+            loyalty = decoded
+        } else {
+            // First launch: keep the freshly generated member code so the QR
+            // stays the same every time the card is opened.
+            if let data = try? JSONEncoder().encode(loyalty) {
+                defaults.set(data, forKey: loyaltyKey)
+            }
         }
         if let data = defaults.data(forKey: addressesKey),
            let decoded = try? JSONDecoder().decode([SavedAddress].self, from: data) {

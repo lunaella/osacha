@@ -9,6 +9,7 @@ import SwiftUI
 
 /// The account sections reachable from the profile screen.
 private enum ProfileDestination: String, CaseIterable, Identifiable {
+    case loyalty = "Loyalty Card"
     case orderHistory = "Order History"
     case addresses = "Delivery Addresses"
     case payments = "Payment Methods"
@@ -19,6 +20,7 @@ private enum ProfileDestination: String, CaseIterable, Identifiable {
 
     var icon: String {
         switch self {
+        case .loyalty: return "seal.fill"
         case .orderHistory: return "bag.fill"
         case .addresses: return "location.fill"
         case .payments: return "creditcard.fill"
@@ -30,6 +32,7 @@ private enum ProfileDestination: String, CaseIterable, Identifiable {
     @ViewBuilder
     var destination: some View {
         switch self {
+        case .loyalty: LoyaltyCardView()
         case .orderHistory: OrderHistoryView()
         case .addresses: DeliveryAddressesView()
         case .payments: PaymentMethodsView()

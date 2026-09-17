@@ -64,6 +64,29 @@ struct OrderConfirmationView: View {
                 .accountCard()
                 .padding(.top, 8)
 
+                // The order just earned a stamp, so say so here rather than
+                // leaving the customer to find it on the card.
+                NavigationLink {
+                    LoyaltyCardView()
+                } label: {
+                    HStack(spacing: 8) {
+                        Image(systemName: "checkmark")
+                            .font(.caption.weight(.bold))
+                        Text("+1 stamp added to your loyalty card")
+                            .font(.subheadline.weight(.semibold))
+                        Spacer()
+                        Image(systemName: "chevron.right")
+                            .font(.caption.weight(.semibold))
+                    }
+                    .foregroundStyle(Color.matchaGreen)
+                    .padding(.horizontal, 18)
+                    .padding(.vertical, 14)
+                    .background(RoundedRectangle(cornerRadius: 16, style: .continuous)
+                        .fill(Color.matchaSage.opacity(0.55)))
+                    .padding(.horizontal)
+                }
+                .buttonStyle(.plain)
+
                 NavigationLink {
                     OrderHistoryView()
                 } label: {

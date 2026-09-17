@@ -42,6 +42,12 @@ struct CategoryCardView: View {
                 .fill(Color.matchaCardCream)
                 .shadow(color: .black.opacity(0.05), radius: 6, y: 3)
         )
+        // strokeBorder keeps the 1pt line inside the shape, matching the
+        // inside-aligned stroke on the card in the design.
+        .overlay(
+            RoundedRectangle(cornerRadius: 20, style: .continuous)
+                .strokeBorder(Color.matchaCardBorder, lineWidth: 1)
+        )
         // Drawn over the card rather than inside it, so the product stands
         // proud of the container instead of being boxed in by it.
         .overlay(alignment: .top) {

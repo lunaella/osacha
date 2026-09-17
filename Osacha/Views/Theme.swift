@@ -13,6 +13,7 @@ extension Color {
     static let matchaCardCream = Color(red: 1.0, green: 0.99, blue: 0.96)
     static let matchaDarkGreen = Color(red: 0.20, green: 0.32, blue: 0.20)
     static let matchaGreen = Color(red: 0.36, green: 0.50, blue: 0.32)
+    static let matchaCardBorder = Color(red: 0.1216, green: 0.1804, blue: 0.1216)
     static let matchaSage = Color(red: 0.8784, green: 0.8863, blue: 0.6706)
     static let matchaSageDeep = Color(red: 0.72, green: 0.73, blue: 0.55)
     static let matchaPink = Color(red: 0.95, green: 0.69, blue: 0.75)

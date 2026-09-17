@@ -19,7 +19,10 @@ struct OsachaApp: App {
                 .environmentObject(controller)
                 .environmentObject(session)
                 .environmentObject(navigator)
-                .preferredColorScheme(session.appearance.colorScheme)
+                // Every screen is drawn on fixed light backgrounds, so system
+                // text colours must stay dark too. Following a phone set to
+                // Dark Mode turned body text white on cream and unreadable.
+                .preferredColorScheme(.light)
                 .task { NotificationScheduler.shared.start(navigator: navigator) }
         }
     }

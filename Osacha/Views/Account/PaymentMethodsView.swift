@@ -93,16 +93,21 @@ struct AddPaymentMethodView: View {
     @State private var expiry = ""
     @State private var cvv = ""
     @State private var holder = ""
+    @State private var mobileNumber = ""
 
     /// A card needs enough of its number to show the last four digits and an
-    /// expiry; a wallet needs the name it's registered to.
+    /// expiry; a wallet needs its 10-digit mobile number and account name.
     private var canSave: Bool {
         switch kind {
         case .card:
             return cardNumber.filter(\.isNumber).count >= 4 && !expiry.trimmingCharacters(in: .whitespaces).isEmpty
         case .gcash, .maya:
-            return !holder.trimmingCharacters(in: .whitespaces).isEmpty
+            return mobileNumber.filter(\.isNumber).count == 10 && !holder.trimmingCharacters(in: .whitespaces).isEmpty
         }
+    }
+
+    private var namePlaceholder: String {
+        session.profile.fullName.isEmpty ? (kind == .card ? "Name on card" : "Name on the account") : session.profile.fullName
     }
 
     var body: some View {
@@ -127,22 +132,35 @@ struct AddPaymentMethodView: View {
                     }
                 }
 
-                AccountField(label: "Card Number", placeholder: "4821 •••• •••• ••••", text: $cardNumber)
+                // Wallets are linked to a mobile number, so they have no
+                // expiry or CVV.
+                switch kind {
+                case .card:
+                    AccountField(label: "Card Number", placeholder: "4821 •••• •••• ••••", text: $cardNumber)
+                        .keyboardType(.numberPad)
 
-                HStack(spacing: 12) {
-                    AccountField(label: "Expiry", placeholder: "08/27", text: $expiry)
-                    AccountField(label: "CVV", placeholder: "•••", text: $cvv)
+                    HStack(spacing: 12) {
+                        AccountField(label: "Expiry", placeholder: "08/27", text: $expiry)
+                        AccountField(label: "CVV", placeholder: "•••", text: $cvv)
+                            .keyboardType(.numberPad)
+                    }
+
+                    AccountField(label: "Cardholder Name", placeholder: namePlaceholder, text: $holder)
+                case .gcash, .maya:
+                    AccountField(label: "Mobile Number", placeholder: "917 123 4567", text: $mobileNumber)
+                        .keyboardType(.numberPad)
+
+                    AccountField(label: "Account Name", placeholder: namePlaceholder, text: $holder)
                 }
-
-                AccountField(label: "Cardholder Name",
-                             placeholder: session.profile.fullName.isEmpty ? "Name on card" : session.profile.fullName,
-                             text: $holder)
 
                 Button {
                     let title = kind == .card
                         ? "Visa •••• \(String(cardNumber.filter(\.isNumber).suffix(4)))"
                         : kind.rawValue
-                    let subtitle = kind == .card ? "Expires \(expiry)" : holder
+                    // Only the last four digits of a wallet's number are shown.
+                    let subtitle = kind == .card
+                        ? "Expires \(expiry)"
+                        : "\(holder) · •••• \(String(mobileNumber.filter(\.isNumber).suffix(4)))"
                     session.addPaymentMethod(PaymentMethod(kind: kind, title: title, subtitle: subtitle))
                     dismiss()
                 } label: {

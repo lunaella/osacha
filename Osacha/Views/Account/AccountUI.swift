@@ -69,7 +69,7 @@ struct AccountRow: View {
     }
 }
 
-/// Row with a single-choice check mark, used by Appearance and Language.
+/// Row with a single-choice check mark, used by Language.
 struct AccountChoiceRow: View {
     let title: String
     let isSelected: Bool

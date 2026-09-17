@@ -33,7 +33,6 @@ final class AppSession: ObservableObject {
     /// The customer's stamp card. Stamps are earned by placing orders.
     @Published private(set) var loyalty = LoyaltyCard()
 
-    @Published var appearance: AppearanceMode = .system
     @Published var language: AppLanguage = .english
 
     @Published var locationServices = true
@@ -48,7 +47,6 @@ final class AppSession: ObservableObject {
     private let profileKey = "osacha.profile"
     private let addressesKey = "osacha.addresses"
     private let paymentsKey = "osacha.payments"
-    private let appearanceKey = "osacha.appearance"
     private let languageKey = "osacha.language"
     private let ordersKey = "osacha.orders"
     private let photoKey = "osacha.profilePhoto"
@@ -401,7 +399,6 @@ final class AppSession: ObservableObject {
     private func persist() {
         let defaults = UserDefaults.standard
         defaults.set(isSignedIn, forKey: signedInKey)
-        defaults.set(appearance.rawValue, forKey: appearanceKey)
         defaults.set(language.rawValue, forKey: languageKey)
         defaults.set(locationServices, forKey: locationKey)
         defaults.set(orderTracking, forKey: trackingKey)
@@ -419,9 +416,6 @@ final class AppSession: ObservableObject {
     private func load() {
         let defaults = UserDefaults.standard
         isSignedIn = defaults.bool(forKey: signedInKey)
-        if let raw = defaults.string(forKey: appearanceKey), let mode = AppearanceMode(rawValue: raw) {
-            appearance = mode
-        }
         if let raw = defaults.string(forKey: languageKey), let value = AppLanguage(rawValue: raw) {
             language = value
         }

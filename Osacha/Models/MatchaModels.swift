@@ -267,6 +267,11 @@ extension MatchaItem {
                        listDescription: "Ceremonial matcha over sakura milk, crowned with sakura foam.",
                        price: 275, sizePrices: [.regular: 275, .grande: 305, .venti: 335],
                        imageName: "matcha sakura latte", hasSizeOptions: true, hasMilkOptions: false),
+            MatchaItem(id: UUID(), name: "Sakura Americano", category: .seasonal,
+                       itemDescription: "A bold shot of espresso poured over a sparkling pink sakura base and ice, topped with cherry blossoms — bright, floral and refreshingly light.",
+                       listDescription: "Espresso over sparkling sakura and ice, topped with blossoms.",
+                       price: 215, sizePrices: [.regular: 215, .grande: 245, .venti: 275],
+                       imageName: "sakura americano", hasSizeOptions: true, hasMilkOptions: false),
 
             // MARK: Hojicha Series
             MatchaItem(id: UUID(), name: "Cookie Butter Latte", category: .hojicha,
@@ -288,7 +293,12 @@ extension MatchaItem {
                        itemDescription: "Roasted hojicha over cold milk under a vanilla sea salt cream foam, dusted with hojicha powder — the salt brings out the tea's toasty sweetness.",
                        listDescription: "Iced hojicha latte with a vanilla sea salt cream top.",
                        price: 275, sizePrices: [.regular: 275, .grande: 305, .venti: 335],
-                       imageName: "vanilla sea salt latte", hasSizeOptions: true, hasMilkOptions: false)
+                       imageName: "vanilla sea salt latte", hasSizeOptions: true, hasMilkOptions: false),
+            MatchaItem(id: UUID(), name: "Strawberry Hojicha Latte", category: .hojicha,
+                       itemDescription: "Roasted hojicha layered over creamy milk and sweet strawberry purée — toasty, fruity and smooth, like strawberries and cream with a roasted finish.",
+                       listDescription: "Roasted hojicha over milk and sweet strawberry purée.",
+                       price: 285, sizePrices: [.regular: 285, .grande: 315, .venti: 345],
+                       imageName: "strawberry hojicha latte", hasSizeOptions: true, hasMilkOptions: false)
         ]
     }
 }

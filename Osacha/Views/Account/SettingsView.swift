@@ -19,12 +19,6 @@ struct SettingsView: View {
                 }
                 RowDivider()
 
-                NavigationLink { AppearanceView() } label: {
-                    AccountRow(icon: "circle.lefthalf.filled", title: "Appearance",
-                               value: session.appearance.rawValue)
-                }
-                RowDivider()
-
                 NavigationLink { LanguageView() } label: {
                     AccountRow(icon: "globe", title: "Language", value: session.language.rawValue)
                 }
@@ -60,39 +54,6 @@ struct SettingsView: View {
         } message: {
             Text("You'll need to sign in again to place orders.")
         }
-    }
-}
-
-struct AppearanceView: View {
-    @EnvironmentObject private var session: AppSession
-
-    var body: some View {
-        ScrollView {
-            Text("Choose how Osacha looks on this device.")
-                .font(.caption)
-                .foregroundStyle(Color.matchaDarkGreen.opacity(0.6))
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.horizontal)
-                .padding(.top, 12)
-
-            VStack(spacing: 0) {
-                ForEach(Array(AppearanceMode.allCases.enumerated()), id: \.element.id) { index, mode in
-                    Button {
-                        session.appearance = mode
-                        session.savePreferences()
-                    } label: {
-                        AccountChoiceRow(title: mode.rawValue, isSelected: session.appearance == mode)
-                    }
-                    if index < AppearanceMode.allCases.count - 1 { RowDivider() }
-                }
-            }
-            .buttonStyle(.plain)
-            .accountCard()
-            .padding()
-        }
-        .accountBackground()
-        .navigationTitle("Appearance")
-        .navigationBarTitleDisplayMode(.inline)
     }
 }
 

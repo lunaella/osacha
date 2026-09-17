@@ -19,8 +19,11 @@ struct OTPView: View {
 
     private let digitCount = 6
 
+    /// Only the last four digits are shown, e.g. "+63 ••• ••• 4567".
     private var maskedNumber: String {
-        session.pendingNumber.isEmpty ? session.profile.mobileNumber : "+63 " + session.pendingNumber
+        let source = session.pendingNumber.isEmpty ? session.profile.mobileNumber : session.pendingNumber
+        let lastFour = String(source.filter(\.isNumber).suffix(4))
+        return "+63 ••• ••• \(lastFour)"
     }
 
     var body: some View {

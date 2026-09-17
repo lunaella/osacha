@@ -132,16 +132,35 @@ struct LanguageView: View {
 struct PrivacyView: View {
     @EnvironmentObject private var session: AppSession
 
+    /// Tracking a rider needs location, so switching tracking on while
+    /// location is off asks first.
+    @State private var askForLocation = false
+
     var body: some View {
         ScrollView {
             VStack(spacing: 0) {
-                toggleRow("Location Services", isOn: $session.locationServices)
+                toggleRow("Location Services", caption: "Find your address and track your rider",
+                          isOn: Binding(get: { session.locationServices },
+                                        set: { session.setLocationServices($0) }))
                 RowDivider()
-                toggleRow("Order Tracking", isOn: $session.orderTracking)
+                toggleRow("Order Tracking", caption: "Live updates as your order moves along",
+                          isOn: Binding(get: { session.orderTracking },
+                                        set: { on in
+                                            if on && !session.locationServices {
+                                                askForLocation = true
+                                            } else {
+                                                session.orderTracking = on
+                                                session.savePreferences()
+                                            }
+                                        }))
                 RowDivider()
-                toggleRow("Personalized Offers", isOn: $session.personalizedOffers)
+                toggleRow("Personalized Offers", caption: "Deals based on what you order",
+                          isOn: Binding(get: { session.personalizedOffers },
+                                        set: { session.personalizedOffers = $0; session.savePreferences() }))
                 RowDivider()
-                toggleRow("Share Analytics", isOn: $session.shareAnalytics)
+                toggleRow("Share Analytics", caption: "Anonymous usage data to help improve Osacha",
+                          isOn: Binding(get: { session.shareAnalytics },
+                                        set: { session.shareAnalytics = $0; session.savePreferences() }))
             }
             .accountCard()
             .padding(.horizontal)
@@ -158,13 +177,28 @@ struct PrivacyView: View {
         .accountBackground()
         .navigationTitle("Privacy")
         .navigationBarTitleDisplayMode(.inline)
+        .alert("Turn on Location Services?", isPresented: $askForLocation) {
+            Button("Not Now", role: .cancel) {}
+            Button("Turn On") {
+                session.setLocationServices(true)
+                session.orderTracking = true
+                session.savePreferences()
+            }
+        } message: {
+            Text("Order Tracking uses your location to show where your rider is on the way.")
+        }
     }
 
-    private func toggleRow(_ title: String, isOn: Binding<Bool>) -> some View {
+    private func toggleRow(_ title: String, caption: String, isOn: Binding<Bool>) -> some View {
         Toggle(isOn: isOn) {
-            Text(title)
-                .font(.subheadline.weight(.semibold))
-                .foregroundStyle(Color.matchaDarkGreen)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(title)
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundStyle(Color.matchaDarkGreen)
+                Text(caption)
+                    .font(.caption)
+                    .foregroundStyle(Color.matchaDarkGreen.opacity(0.6))
+            }
         }
         .tint(Color.matchaGreen)
         .padding(.horizontal, 16)

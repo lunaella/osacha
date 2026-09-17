@@ -151,6 +151,13 @@ enum OrderStatus: String {
     case delivered = "Delivered"
 }
 
+/// One item line on a placed order, kept so offers can follow what the
+/// customer actually orders.
+struct OrderLine: Codable, Equatable {
+    var name: String
+    var quantity: Int
+}
+
 struct PastOrder: Identifiable, Codable {
     var id = UUID()
     var reference: String
@@ -166,6 +173,10 @@ struct PastOrder: Identifiable, Codable {
     /// Pickup or delivery. Optional so orders saved before customers could
     /// choose still decode — every one of those was a pickup.
     var fulfillment: Fulfillment?
+
+    /// What was ordered. Optional because orders saved before this was
+    /// recorded, and the seeded history, have no lines.
+    var lines: [OrderLine]?
 
     var method: Fulfillment { fulfillment ?? .pickup }
 
@@ -343,4 +354,40 @@ enum AppLanguage: String, Codable, CaseIterable, Identifiable {
     case japanese = "日本語"
 
     var id: String { rawValue }
+}
+
+/// A deal shaped by the customer's own orders: money off the item they order
+/// most, plus something from the same menu they haven't tried yet.
+struct PersonalizedOffer: Equatable {
+    static let discountRate = 0.15
+
+    let item: MatchaItem
+    let suggestion: MatchaItem?
+
+    var headline: String { "15% off your usual" }
+
+    /// The saving on the offer item's lines in a cart.
+    func discount(on cart: [CartEntry]) -> Double {
+        let eligible = cart.filter { $0.item.name == item.name }.reduce(0) { $0 + $1.subtotal }
+        return (eligible * Self.discountRate).rounded()
+    }
+
+    /// Nil until the customer has ordered something the catalogue still has.
+    static func make(orders: [PastOrder], catalog: [MatchaItem]) -> PersonalizedOffer? {
+        var counts: [String: Int] = [:]
+        var firstSeen: [String: Int] = [:]
+        // Orders are newest first, so ties go to the more recent favourite.
+        for (index, order) in orders.enumerated() {
+            for line in order.lines ?? [] {
+                counts[line.name, default: 0] += line.quantity
+                if firstSeen[line.name] == nil { firstSeen[line.name] = index }
+            }
+        }
+        let ranked = counts.keys
+            .filter { name in catalog.contains { $0.name == name } }
+            .sorted { (counts[$0]!, -firstSeen[$0]!) > (counts[$1]!, -firstSeen[$1]!) }
+        guard let top = ranked.first, let item = catalog.first(where: { $0.name == top }) else { return nil }
+        let suggestion = catalog.first { $0.category == item.category && counts[$0.name] == nil }
+        return PersonalizedOffer(item: item, suggestion: suggestion)
+    }
 }

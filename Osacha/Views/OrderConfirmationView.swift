@@ -13,6 +13,9 @@ struct OrderConfirmationView: View {
     @EnvironmentObject private var session: AppSession
     @EnvironmentObject private var navigator: NavigationCoordinator
 
+    @State private var showTracking = false
+    @State private var askForLocation = false
+
     var body: some View {
         ScrollView {
             VStack(spacing: 16) {
@@ -87,8 +90,13 @@ struct OrderConfirmationView: View {
                 }
                 .buttonStyle(.plain)
 
-                NavigationLink {
-                    OrderHistoryView()
+                Button {
+                    // Following a rider needs location; pickups don't.
+                    if order.method == .delivery && !session.locationServices {
+                        askForLocation = true
+                    } else {
+                        showTracking = true
+                    }
                 } label: {
                     PrimaryButtonLabel(title: "Track Order")
                 }
@@ -114,6 +122,18 @@ struct OrderConfirmationView: View {
         .navigationBarBackButtonHidden(true)
         // The receipt is a full-screen moment in the design, with no tab bar.
         .toolbar(.hidden, for: .tabBar)
+        .navigationDestination(isPresented: $showTracking) {
+            OrderHistoryView()
+        }
+        .alert("Turn on Location Services?", isPresented: $askForLocation) {
+            Button("Not Now", role: .cancel) { showTracking = true }
+            Button("Turn On") {
+                session.setLocationServices(true)
+                showTracking = true
+            }
+        } message: {
+            Text("Osacha uses your location to show where your rider is on the way.")
+        }
     }
 }
 

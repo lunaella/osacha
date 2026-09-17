@@ -13,6 +13,7 @@ struct MenuView: View {
 
     @EnvironmentObject private var controller: OrderController
     @EnvironmentObject private var navigator: NavigationCoordinator
+    @EnvironmentObject private var session: AppSession
 
     /// Count of everything in the cart, sitting on the corner of the cart
     /// icon. Hidden when empty so the toolbar stays quiet.
@@ -77,6 +78,20 @@ struct MenuView: View {
             } else {
                 ScrollView {
                     VStack(spacing: 14) {
+                        // Offers sit above the full menu on Search, and step
+                        // aside while the customer is typing a search.
+                        if category == nil && controller.searchText.isEmpty
+                            && session.isSignedIn && session.personalizedOffers {
+                            ForYouSection()
+                                .padding(.bottom, 6)
+
+                            // Separates the offers from the full list below.
+                            Text("Menu")
+                                .font(.headline)
+                                .foregroundStyle(Color.matchaDarkGreen)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                        }
+
                         ForEach(results) { item in
                             NavigationLink(value: item) {
                                 MenuItemRowView(item: item)
@@ -138,4 +153,5 @@ struct CartRoute: Hashable {}
     }
     .environmentObject(OrderController())
     .environmentObject(NavigationCoordinator())
+    .environmentObject(AppSession())
 }

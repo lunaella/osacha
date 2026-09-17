@@ -60,6 +60,7 @@ struct HomeView: View {
             MenuView(category: category)
         }
     }
+
 }
 
 #Preview {

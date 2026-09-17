@@ -53,6 +53,10 @@ final class AppSession: ObservableObject {
     private let ordersKey = "osacha.orders"
     private let photoKey = "osacha.profilePhoto"
     private let loyaltyKey = "osacha.loyalty"
+    private let locationKey = "osacha.locationServices"
+    private let trackingKey = "osacha.orderTracking"
+    private let offersKey = "osacha.personalizedOffers"
+    private let analyticsKey = "osacha.shareAnalytics"
     private let accountsKey = "osacha.accounts"
     private let currentAccountKey = "osacha.currentAccount"
 
@@ -274,7 +278,7 @@ final class AppSession: ObservableObject {
 
     /// Files a placed order into the history and returns it for the receipt screen.
     @discardableResult
-    func recordOrder(itemCount: Int, total: Double, fulfillment: Fulfillment) -> PastOrder {
+    func recordOrder(itemCount: Int, total: Double, fulfillment: Fulfillment, lines: [OrderLine]) -> PastOrder {
         let reference = String(format: "A%04d", Int.random(in: 1000...9999))
         let now = Date()
         let order = PastOrder(reference: reference,
@@ -282,7 +286,8 @@ final class AppSession: ObservableObject {
                               itemCount: itemCount,
                               total: total,
                               placedDate: now,
-                              fulfillment: fulfillment)
+                              fulfillment: fulfillment,
+                              lines: lines)
         orders.insert(order, at: 0)
 
         // File every update this order will get, each at the time it happens.
@@ -320,6 +325,22 @@ final class AppSession: ObservableObject {
         }
         persist()
         return order
+    }
+
+    // MARK: - Privacy
+
+    /// Turning location on also asks iOS for permission the first time.
+    func setLocationServices(_ on: Bool) {
+        locationServices = on
+        if on { LocationAuthorizer.shared.requestPermission() }
+        persist()
+    }
+
+    /// The customer's current offer, when they've opted in and have ordered
+    /// something to base it on.
+    func personalizedOffer(catalog: [MatchaItem]) -> PersonalizedOffer? {
+        guard isSignedIn, personalizedOffers else { return nil }
+        return PersonalizedOffer.make(orders: orders, catalog: catalog)
     }
 
     // MARK: - Notifications
@@ -382,6 +403,10 @@ final class AppSession: ObservableObject {
         defaults.set(isSignedIn, forKey: signedInKey)
         defaults.set(appearance.rawValue, forKey: appearanceKey)
         defaults.set(language.rawValue, forKey: languageKey)
+        defaults.set(locationServices, forKey: locationKey)
+        defaults.set(orderTracking, forKey: trackingKey)
+        defaults.set(personalizedOffers, forKey: offersKey)
+        defaults.set(shareAnalytics, forKey: analyticsKey)
         // Only a verified number has an account to write to; a guest's
         // placeholder details are never saved.
         if let currentAccount {
@@ -400,6 +425,11 @@ final class AppSession: ObservableObject {
         if let raw = defaults.string(forKey: languageKey), let value = AppLanguage(rawValue: raw) {
             language = value
         }
+        // Privacy choices; anything never set keeps its default.
+        if defaults.object(forKey: locationKey) != nil { locationServices = defaults.bool(forKey: locationKey) }
+        if defaults.object(forKey: trackingKey) != nil { orderTracking = defaults.bool(forKey: trackingKey) }
+        if defaults.object(forKey: offersKey) != nil { personalizedOffers = defaults.bool(forKey: offersKey) }
+        if defaults.object(forKey: analyticsKey) != nil { shareAnalytics = defaults.bool(forKey: analyticsKey) }
         if let data = defaults.data(forKey: accountsKey),
            let decoded = try? JSONDecoder().decode([String: AccountRecord].self, from: data) {
             accounts = decoded

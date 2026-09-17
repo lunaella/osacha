@@ -15,6 +15,11 @@ struct CheckoutView: View {
     @State private var fulfillment: Fulfillment = .delivery
     @State private var placedOrder: PastOrder?
     @State private var showConfirmation = false
+    @State private var askForLocation = false
+
+    private var offer: PersonalizedOffer? { session.personalizedOffer(catalog: controller.items) }
+    private var offerDiscount: Double { offer?.discount(on: controller.cart) ?? 0 }
+    private var total: Double { controller.cartTotal - offerDiscount }
 
     private var address: SavedAddress? { session.addresses.first }
     private var payment: PaymentMethod? { session.paymentMethods.first }
@@ -54,10 +59,12 @@ struct CheckoutView: View {
                 summaryCard
 
                 Button {
-                    placedOrder = session.recordOrder(itemCount: controller.cartCount,
-                                                      total: controller.cartTotal,
-                                                      fulfillment: fulfillment)
-                    showConfirmation = true
+                    // Delivery leans on location; ask if it's switched off.
+                    if fulfillment == .delivery && !session.locationServices {
+                        askForLocation = true
+                    } else {
+                        placeOrder()
+                    }
                 } label: {
                     Text("Confirm Order")
                         .font(.headline)
@@ -80,12 +87,29 @@ struct CheckoutView: View {
         .toolbarBackground(Color.matchaSageDeep, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
         .toolbarColorScheme(.light, for: .navigationBar)
+        .alert("Turn on Location Services?", isPresented: $askForLocation) {
+            Button("Not Now", role: .cancel) { placeOrder() }
+            Button("Turn On") {
+                session.setLocationServices(true)
+                placeOrder()
+            }
+        } message: {
+            Text("Osacha uses your location to confirm your delivery address and show where your rider is.")
+        }
         .navigationDestination(isPresented: $showConfirmation) {
             if let placedOrder {
                 OrderConfirmationView(order: placedOrder)
                     .onAppear { controller.clearCart() }
             }
         }
+    }
+
+    private func placeOrder() {
+        placedOrder = session.recordOrder(itemCount: controller.cartCount,
+                                          total: total,
+                                          fulfillment: fulfillment,
+                                          lines: controller.cart.map { OrderLine(name: $0.item.name, quantity: $0.quantity) })
+        showConfirmation = true
     }
 
     // MARK: - Sections
@@ -130,6 +154,9 @@ struct CheckoutView: View {
         VStack(spacing: 14) {
             summaryRow("\(controller.cartCount) item\(controller.cartCount == 1 ? "" : "s")",
                        controller.cartTotal.asPHP)
+            if let offer, offerDiscount > 0 {
+                summaryRow("Your offer · 15% off \(offer.item.name)", "−\(offerDiscount.asPHP)", emphasised: true)
+            }
             summaryRow(fulfillment.timeLabel, PastOrder.estimatedReady(for: fulfillment), emphasised: true)
 
             HStack {
@@ -137,7 +164,7 @@ struct CheckoutView: View {
                     .font(.headline)
                     .foregroundStyle(Color.matchaDarkGreen)
                 Spacer()
-                Text(controller.cartTotal.asPHP)
+                Text(total.asPHP)
                     .font(.title3.bold())
                     .foregroundStyle(Color.matchaGreen)
             }

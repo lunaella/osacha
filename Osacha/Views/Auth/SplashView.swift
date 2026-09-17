@@ -26,11 +26,11 @@ struct SplashView: View {
                 .opacity(settled ? 0 : 1)
         }
         .task {
-            try? await Task.sleep(nanoseconds: 1_600_000_000)
-            withAnimation(.easeInOut(duration: 0.9)) {
+            try? await Task.sleep(nanoseconds: 2_300_000_000)
+            withAnimation(.easeInOut(duration: 1.3)) {
                 settled = true
             }
-            try? await Task.sleep(nanoseconds: 750_000_000)
+            try? await Task.sleep(nanoseconds: 1_100_000_000)
             session.finishLaunching()
         }
     }

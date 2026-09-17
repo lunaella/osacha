@@ -23,7 +23,7 @@ struct HomeView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 24) {
-                Image("OsachaLogo")
+                Image("OsachaLogoGreen")
                     .resizable()
                     .scaledToFit()
                     .frame(height: 120)

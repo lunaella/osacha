@@ -11,13 +11,37 @@ import Foundation
 enum MatchaCategory: String, Codable, CaseIterable, Identifiable, Hashable {
     case drinks = "Matcha Drinks"
     case desserts = "Matcha Desserts"
+    case seasonal = "Seasonal"
+    case hojicha = "Hojicha Series"
 
     var id: String { rawValue }
+
+    /// The name shown on the home screen. Kept separate from the raw value,
+    /// which is what saved carts store, so renaming a category can't break them.
+    var title: String {
+        switch self {
+        case .drinks: return "Matcha"
+        case .desserts: return "Desserts"
+        case .seasonal: return "Seasonal"
+        case .hojicha: return "Hojicha Series"
+        }
+    }
+
+    /// Heading shown above the list. The two core menus go without one; the
+    /// limited and themed menus name themselves so they read as their own set.
+    var menuHeading: String? {
+        switch self {
+        case .drinks, .desserts: return nil
+        case .seasonal, .hojicha: return title
+        }
+    }
 
     var subtitle: String {
         switch self {
         case .drinks: return "Iced lattes, cloud foams,\nand specialty matcha creations"
         case .desserts: return "Cakes, tiramisu, puddings,\nand matcha sweets"
+        case .seasonal: return "Sakura cakes, crepes,\nbingsu and lattes"
+        case .hojicha: return "Roasted hojicha lattes\nwith creamy toppings"
         }
     }
 
@@ -26,6 +50,8 @@ enum MatchaCategory: String, Codable, CaseIterable, Identifiable, Hashable {
         switch self {
         case .drinks: return "matcha cloud tiramisu latte"
         case .desserts: return "matcha fresh cream swiss roll"
+        case .seasonal: return "matcha sakura latte"
+        case .hojicha: return "ube hojicha latte"
         }
     }
 }
@@ -222,7 +248,47 @@ extension MatchaItem {
             MatchaItem(id: UUID(), name: "Matcha Fresh Cream Swiss Roll", category: .desserts,
                        itemDescription: "Soft matcha sponge rolled with fresh cream and topped with strawberry.",
                        listDescription: "Soft matcha sponge rolled with fresh cream and topped with strawberry.",
-                       price: 195, imageName: "matcha fresh cream swiss roll", hasSizeOptions: false, hasMilkOptions: false)
+                       price: 195, imageName: "matcha fresh cream swiss roll", hasSizeOptions: false, hasMilkOptions: false),
+            // MARK: Seasonal
+            MatchaItem(id: UUID(), name: "Matcha Sakura Cake", category: .seasonal,
+                       itemDescription: "Delicate sakura mousse over soft matcha sponge and a tart berry layer, finished with fresh cream and a strawberry.",
+                       listDescription: "Sakura mousse over matcha sponge with a tart berry layer.",
+                       price: 225, imageName: "matcha sakura cake", hasSizeOptions: false, hasMilkOptions: false),
+            MatchaItem(id: UUID(), name: "Matcha Sakura Crepe", category: .seasonal,
+                       itemDescription: "Paper-thin sakura crepes stacked with fresh cream, sweet red bean and matcha sponge, topped with a cherry blossom.",
+                       listDescription: "Pink sakura crepes layered with matcha sponge and red bean.",
+                       price: 235, imageName: "matcha sakura crepe", hasSizeOptions: false, hasMilkOptions: false),
+            MatchaItem(id: UUID(), name: "Sakura Bingsu", category: .seasonal,
+                       itemDescription: "Fluffy shaved milk ice with sakura syrup and sakura ice cream, piled with chewy mochi and cherry-blossom cookies.",
+                       listDescription: "Shaved sakura milk ice with mochi and cherry-blossom cookies.",
+                       price: 265, imageName: "sakura bingsu", hasSizeOptions: false, hasMilkOptions: false),
+            MatchaItem(id: UUID(), name: "Matcha Sakura Latte", category: .seasonal,
+                       itemDescription: "Ceremonial-grade matcha poured over creamy sakura milk and crowned with a soft pink sakura cream foam — a floral, gently sweet sip of spring in every glass.",
+                       listDescription: "Ceremonial matcha over sakura milk, crowned with sakura foam.",
+                       price: 275, sizePrices: [.regular: 275, .grande: 305, .venti: 335],
+                       imageName: "matcha sakura latte", hasSizeOptions: true, hasMilkOptions: false),
+
+            // MARK: Hojicha Series
+            MatchaItem(id: UUID(), name: "Cookie Butter Latte", category: .hojicha,
+                       itemDescription: "Roasted hojicha poured over cold milk and topped with a spiced cookie butter cream foam and crushed biscuit — toasty, caramelly and smooth to the last sip.",
+                       listDescription: "Iced hojicha latte under a spiced cookie butter cream.",
+                       price: 285, sizePrices: [.regular: 285, .grande: 315, .venti: 345],
+                       imageName: "cookie butter latte", hasSizeOptions: true, hasMilkOptions: false),
+            MatchaItem(id: UUID(), name: "Pistachio Cream Latte", category: .hojicha,
+                       itemDescription: "Roasted hojicha poured over cold milk, crowned with a silky pistachio cream foam and chopped pistachios for a nutty, gently sweet finish.",
+                       listDescription: "Iced hojicha latte crowned with pistachio cream.",
+                       price: 295, sizePrices: [.regular: 295, .grande: 325, .venti: 355],
+                       imageName: "pistachio cream latte", hasSizeOptions: true, hasMilkOptions: false),
+            MatchaItem(id: UUID(), name: "Ube Hojicha Latte", category: .hojicha,
+                       itemDescription: "Earthy roasted hojicha over cold milk, topped with a velvety ube cream foam and a dusting of hojicha powder — nutty, sweet and beautifully layered.",
+                       listDescription: "Roasted hojicha under a sweet ube cream foam.",
+                       price: 285, sizePrices: [.regular: 285, .grande: 315, .venti: 345],
+                       imageName: "ube hojicha latte", hasSizeOptions: true, hasMilkOptions: false),
+            MatchaItem(id: UUID(), name: "Vanilla Sea Salt Latte", category: .hojicha,
+                       itemDescription: "Roasted hojicha over cold milk under a vanilla sea salt cream foam, dusted with hojicha powder — the salt brings out the tea's toasty sweetness.",
+                       listDescription: "Iced hojicha latte with a vanilla sea salt cream top.",
+                       price: 275, sizePrices: [.regular: 275, .grande: 305, .venti: 335],
+                       imageName: "vanilla sea salt latte", hasSizeOptions: true, hasMilkOptions: false)
         ]
     }
 }

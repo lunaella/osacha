@@ -36,7 +36,10 @@ struct HomeView: View {
 
                 // The category images rise above their cards, so the grid
                 // needs that height back to keep clear of the greeting.
-                LazyVGrid(columns: columns, spacing: 16) {
+                // Each card's photo rises above its top edge, so rows need
+                // that much extra room or the second row's photos sit on the
+                // first row's cards. Matches the 46pt row gap in the design.
+                LazyVGrid(columns: columns, spacing: 46) {
                     ForEach(MatchaCategory.allCases) { category in
                         NavigationLink(value: category) {
                             CategoryCardView(category: category)

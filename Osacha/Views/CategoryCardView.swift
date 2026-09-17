@@ -20,7 +20,7 @@ struct CategoryCardView: View {
             Color.clear
                 .frame(height: 120 - imageLift)
 
-            Text(category.rawValue)
+            Text(category.title)
                 .font(.headline)
                 .foregroundStyle(Color.matchaDarkGreen)
 

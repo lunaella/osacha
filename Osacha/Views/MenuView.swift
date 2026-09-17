@@ -60,6 +60,15 @@ struct MenuView: View {
             .padding([.horizontal, .top])
             .padding(.bottom, 12)
 
+            if let heading = category?.menuHeading {
+                Text(heading)
+                    .font(.title3.bold())
+                    .foregroundStyle(Color.matchaDarkGreen)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal)
+                    .padding(.bottom, 10)
+            }
+
             if results.isEmpty {
                 Spacer()
                 Text("No items found")

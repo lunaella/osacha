@@ -55,8 +55,7 @@ Osacha is for customers who want a more considered way to order matcha: clear ch
 ## Features
 
 **Browsing**
-- Four menus: Matcha, Desserts, Seasonal (sakura cakes, crepes, bingsu, a latte
-  and an Americano) and the Hojicha Series
+- Four menus: Matcha, Desserts, Seasonal Menu and the Hojicha Series
 - Full photography for all 31 items, with a longer description on each product page
 - Search across the entire menu
 - Favourites, saved per item

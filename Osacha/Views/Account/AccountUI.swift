@@ -147,6 +147,8 @@ struct RowDivider: View {
 /// so every screen shows the same thing once a photo is removed.
 struct ProfileAvatar: View {
     let size: CGFloat
+    /// Rounds a square avatar to this radius; a circle when left out.
+    var cornerRadius: CGFloat? = nil
 
     @EnvironmentObject private var session: AppSession
 
@@ -164,8 +166,8 @@ struct ProfileAvatar: View {
             }
         }
         .frame(width: size, height: size)
-        .background(Circle().fill(Color.matchaCardCream))
-        .clipShape(Circle())
+        .background(Color.matchaCardCream)
+        .clipShape(RoundedRectangle(cornerRadius: cornerRadius ?? size / 2, style: .continuous))
     }
 }
 

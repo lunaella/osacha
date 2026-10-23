@@ -155,18 +155,48 @@ enum Fulfillment: String, Codable, CaseIterable, Identifiable {
 }
 
 enum OrderStatus: String {
+    /// A pickup booked for later that the café hasn't started on yet.
+    case scheduled = "Scheduled"
     case preparing = "Preparing"
     case ready = "Ready for pickup"
     case completed = "Completed"
     case outForDelivery = "Out for delivery"
     case delivered = "Delivered"
+
+    var isFinished: Bool { self == .completed || self == .delivered }
 }
 
 /// One item line on a placed order, kept so offers can follow what the
-/// customer actually orders.
+/// customer actually orders, and so it can be ordered again as it was.
 struct OrderLine: Codable, Equatable {
     var name: String
     var quantity: Int
+    /// The choices made for it. Optional because lines saved before these
+    /// were kept have none; reordering those uses the defaults.
+    var size: DrinkSize?
+    var milk: MilkOption?
+    var withIceCream: Bool?
+
+    init(name: String, quantity: Int, size: DrinkSize? = nil, milk: MilkOption? = nil, withIceCream: Bool? = nil) {
+        self.name = name
+        self.quantity = quantity
+        self.size = size
+        self.milk = milk
+        self.withIceCream = withIceCream
+    }
+
+    init(_ entry: CartEntry) {
+        self.init(name: entry.item.name, quantity: entry.quantity, size: entry.size,
+                  milk: entry.milk, withIceCream: entry.withIceCream ? true : nil)
+    }
+
+    /// "Grande · Oat", for the receipt.
+    var options: String {
+        [size?.rawValue, milk?.rawValue, withIceCream == true ? "With Ice Cream" : nil]
+            .compactMap { $0 }
+            .map(localized)
+            .joined(separator: " · ")
+    }
 }
 
 struct PastOrder: Identifiable, Codable {
@@ -189,7 +219,32 @@ struct PastOrder: Identifiable, Codable {
     /// recorded, and the seeded history, have no lines.
     var lines: [OrderLine]?
 
+    /// The pickup time the customer chose. Nil means as soon as possible.
+    var scheduledFor: Date?
+    /// Anything the customer asked the café to know, like "less ice".
+    var note: String?
+    /// Taken off the total by a free-drink reward.
+    var discount: Double?
+    /// Where a delivery is going, for the rider map.
+    var deliveryAddress: String?
+
+    /// The customer's rating, from 1 to 5 stars, once they've given one.
+    var rating: Int?
+    /// What they picked about it ("Tasty", "Fast"…) and anything they wrote.
+    var ratingTags: [String]?
+    var ratingComment: String?
+    /// The customer said "Not now" to rating it, so it isn't asked again.
+    var ratingSkipped: Bool?
+
     var method: Fulfillment { fulfillment ?? .pickup }
+
+    /// A finished order with real lines can go back in the cart as it was.
+    var canReorder: Bool { !(lines ?? []).isEmpty }
+
+    /// A finished order placed in the app that hasn't been rated or skipped.
+    var awaitsRating: Bool {
+        placedDate != nil && status.isFinished && rating == nil && ratingSkipped != true
+    }
 
     var summary: String {
         String(format: localized(itemCount == 1 ? "%lld item · %@" : "%lld items · %@"), itemCount, total.asPHP)
@@ -206,12 +261,15 @@ struct PastOrder: Identifiable, Codable {
     /// date behind them are historical, so they read as completed.
     var status: OrderStatus {
         guard let placedDate else { return method == .delivery ? .delivered : .completed }
-        let elapsed = Date().timeIntervalSince(placedDate)
+        let now = Date()
+        let elapsed = now.timeIntervalSince(placedDate)
         switch method {
         case .pickup:
-            switch elapsed {
-            case ..<Self.preparingDuration: return .preparing
-            case ..<Self.readyDuration: return .ready
+            guard let start = preparationStart, let ready = readyDate else { return .completed }
+            switch now {
+            case ..<start: return .scheduled
+            case ..<ready: return .preparing
+            case ..<ready.addingTimeInterval(Self.readyDuration - Self.preparingDuration): return .ready
             default: return .completed
             }
         case .delivery:
@@ -227,9 +285,37 @@ struct PastOrder: Identifiable, Codable {
     /// Orders with no real date behind them (the seeded history) fall back to
     /// their own recorded string, which is already a time.
     var readyAt: String {
-        guard let placedDate else { return placedAt }
-        return AppDate.dayAndTime(placedDate.addingTimeInterval(Self.leadTime(for: method)))
+        readyDate.map(AppDate.dayAndTime) ?? placedAt
     }
+
+    /// When it's ready to collect, or due at the door: the chosen pickup
+    /// time, or the usual wait after it was placed.
+    var readyDate: Date? {
+        if let scheduledFor { return scheduledFor }
+        return placedDate?.addingTimeInterval(Self.leadTime(for: method))
+    }
+
+    /// When the café starts making it: straight away, or just ahead of the
+    /// chosen pickup time.
+    var preparationStart: Date? {
+        guard let placedDate else { return nil }
+        guard let scheduledFor else { return placedDate }
+        return max(placedDate, scheduledFor.addingTimeInterval(-Self.preparingDuration))
+    }
+
+    /// The stages this order moves through, in order.
+    var stages: [OrderStatus] {
+        switch method {
+        case .pickup:
+            let stages: [OrderStatus] = [.preparing, .ready, .completed]
+            return scheduledFor == nil ? stages : [.scheduled] + stages
+        case .delivery:
+            return [.preparing, .outForDelivery, .delivered]
+        }
+    }
+
+    /// The total before any reward came off.
+    var subtotal: Double { total + (discount ?? 0) }
 
     /// How long a new order spends in each stage before moving on.
     static let preparingDuration: TimeInterval = 5 * 60
@@ -266,6 +352,11 @@ struct LoyaltyCard: Codable, Equatable {
     var memberCode: String = UUID().uuidString
     var stamps: Int = 0
     var rewardsEarned: Int = 0
+    /// Free drinks already used at checkout.
+    var rewardsRedeemed: Int = 0
+
+    /// Free drinks earned and not yet used.
+    var rewardsAvailable: Int { max(0, rewardsEarned - rewardsRedeemed) }
 
     /// How many more stamps this card still has room for.
     var stampsRemaining: Int { max(0, Self.stampsPerReward - stamps) }
@@ -274,16 +365,28 @@ struct LoyaltyCard: Codable, Equatable {
     var qrPayload: String { "osacha://member/\(memberCode)" }
 }
 
+extension LoyaltyCard {
+    /// Cards saved before rewards could be used have none redeemed.
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        memberCode = try container.decode(String.self, forKey: .memberCode)
+        stamps = try container.decode(Int.self, forKey: .stamps)
+        rewardsEarned = try container.decode(Int.self, forKey: .rewardsEarned)
+        rewardsRedeemed = try container.decodeIfPresent(Int.self, forKey: .rewardsRedeemed) ?? 0
+    }
+}
+
 /// Something that happened on the customer's account: their order moving
 /// along, a reward earned, or a welcome when they sign up.
 struct AppNotification: Identifiable, Codable, Equatable {
     enum Kind: String, Codable {
-        case welcome, orderPlaced, orderReady, outForDelivery, delivered, reward
+        case welcome, orderPlaced, orderScheduled, orderReady, outForDelivery, delivered, reward
 
         var icon: String {
             switch self {
             case .welcome: return "hand.wave.fill"
             case .orderPlaced: return "bag.fill"
+            case .orderScheduled: return "clock.fill"
             case .orderReady: return "bag.fill.badge.plus"
             case .outForDelivery: return "bicycle"
             case .delivered: return "checkmark.seal.fill"
@@ -296,6 +399,7 @@ struct AppNotification: Identifiable, Codable, Equatable {
             switch self {
             case .welcome: return "Welcome to Osacha"
             case .orderPlaced: return "Order placed"
+            case .orderScheduled: return "Pickup booked"
             case .orderReady: return "Ready for pickup"
             case .outForDelivery: return "Out for delivery"
             case .delivered: return "Delivered"
@@ -308,6 +412,7 @@ struct AppNotification: Identifiable, Codable, Equatable {
             switch self {
             case .welcome: return "Welcome to Osacha, %@! Your loyalty card is ready — every order earns a stamp."
             case .orderPlaced: return "Order %@ placed — we're preparing it now."
+            case .orderScheduled: return "Order %@ is booked — we'll have it ready at your pickup time."
             case .orderReady: return "Order %@ is ready for pickup! Show your order number at the counter."
             case .outForDelivery: return "Order %@ is out for delivery."
             case .delivered: return "Order %@ has been delivered. Enjoy your matcha!"
@@ -318,7 +423,7 @@ struct AppNotification: Identifiable, Codable, Equatable {
         /// Order updates open the order history; the reward opens the card.
         var isAboutAnOrder: Bool {
             switch self {
-            case .orderPlaced, .orderReady, .outForDelivery, .delivered: return true
+            case .orderPlaced, .orderScheduled, .orderReady, .outForDelivery, .delivered: return true
             case .welcome, .reward: return false
             }
         }

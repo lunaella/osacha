@@ -12,6 +12,7 @@
 		0CF3DF97A04072EB4AF5E5B1 /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B43DCF22231D12AEA2684F /* EditProfileView.swift */; };
 		122C1F3BF18B633610E7ADAC /* MenuItemRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80741C5B933379DB5CCFECFC /* MenuItemRowView.swift */; };
 		15C510A792F5CBBCE417A640 /* AccountModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC0B5184B7B0886057A6622F /* AccountModels.swift */; };
+		173486D6A9472C850B0C313D /* RateOrderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC42437B4A75598621DBAB92 /* RateOrderView.swift */; };
 		1EED81AF5AA37B8DF1CA2511 /* OTPView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BDF4279387B4FD98422299 /* OTPView.swift */; };
 		1FFEC043E49357844043B955 /* FavoritesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E07FC3B15EFD8D04964DF4 /* FavoritesView.swift */; };
 		201FFFDB2A5008323B67B9F5 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F339D6EE370CE4274511FE /* SplashView.swift */; };
@@ -21,6 +22,7 @@
 		4E8002C8CCB5AD41A332EB07 /* OrderController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEF6E60A399F4977933ACB26 /* OrderController.swift */; };
 		56C8C36E45902934A0E5155D /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DF2A01357B9319B1FE55ED /* HomeView.swift */; };
 		6B8934304AD1821A44410BBE /* LoyaltyCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A408E81EE43DE8929A215102 /* LoyaltyCardView.swift */; };
+		6BD0B49D41250330BD3FE4DC /* CafeModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0947300C1FC0EB524D1984 /* CafeModels.swift */; };
 		6E78D7D5246D1A39B589F69B /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2579B5738BB99CD7CE617C34 /* ProfileView.swift */; };
 		705242C004ECC79924B4E985 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C68E99C4C65CF6B38E485A3 /* ContentView.swift */; };
 		723135245FB670E0C1F248BA /* AppSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A986B46C3AD8B5C36A0269 /* AppSession.swift */; };
@@ -41,6 +43,7 @@
 		D6C5E2DDC3912F3CEAB8701B /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = C889005A87422F9CC0C7BD4A /* Localization.swift */; };
 		D6F0652B89E5281F892E5B66 /* OsachaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8126B75EB53AAF0CD7C37CED /* OsachaApp.swift */; };
 		DDF3577339320755263ECF20 /* WavyDivider.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE3045657183271B37A38D4D /* WavyDivider.swift */; };
+		E19CCB7E067B39446162B439 /* RiderTrackingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3928C05A2BDE5B22BC3A225C /* RiderTrackingView.swift */; };
 		E965E55E25021C1962289EE4 /* CartRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D708689FB3FBE0DCA3DDA445 /* CartRowView.swift */; };
 		F108E5825802C46193107165 /* LocationAuthorizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD3D307800E7519286D2DC6E /* LocationAuthorizer.swift */; };
 		F188EA381B0374702245B93D /* NotificationScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5933FBBB13555EBB310E86BC /* NotificationScheduler.swift */; };
@@ -59,6 +62,7 @@
 		2F76D70F7073A64C55131350 /* CompleteProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteProfileView.swift; sourceTree = "<group>"; };
 		3369BFFAFF5DE2515C0D24E5 /* AccountUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountUI.swift; sourceTree = "<group>"; };
 		36EAB3241CBBC16190988453 /* OptionPillView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionPillView.swift; sourceTree = "<group>"; };
+		3928C05A2BDE5B22BC3A225C /* RiderTrackingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RiderTrackingView.swift; sourceTree = "<group>"; };
 		3DF43ADEE7DF8E9A82E0512D /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		454A8005167304783757E8A2 /* SupportChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportChatView.swift; sourceTree = "<group>"; };
 		47DF2A01357B9319B1FE55ED /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -87,6 +91,8 @@
 		D7C8C52C8E26AAD492343C00 /* DeliveryAddressesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryAddressesView.swift; sourceTree = "<group>"; };
 		DC0B5184B7B0886057A6622F /* AccountModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountModels.swift; sourceTree = "<group>"; };
 		E49D31A62F4383B60147F25D /* ForYouSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForYouSection.swift; sourceTree = "<group>"; };
+		EC0947300C1FC0EB524D1984 /* CafeModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CafeModels.swift; sourceTree = "<group>"; };
+		EC42437B4A75598621DBAB92 /* RateOrderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RateOrderView.swift; sourceTree = "<group>"; };
 		FC8173DA04568225E6C3C6F9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FEF6E60A399F4977933ACB26 /* OrderController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -132,6 +138,8 @@
 				A408E81EE43DE8929A215102 /* LoyaltyCardView.swift */,
 				A79EEB44C1200A45FEE8DAB6 /* OrderHistoryView.swift */,
 				CB09CE17621A9F2897AB106A /* PaymentMethodsView.swift */,
+				EC42437B4A75598621DBAB92 /* RateOrderView.swift */,
+				3928C05A2BDE5B22BC3A225C /* RiderTrackingView.swift */,
 				3DF43ADEE7DF8E9A82E0512D /* SettingsView.swift */,
 				454A8005167304783757E8A2 /* SupportChatView.swift */,
 			);
@@ -188,6 +196,7 @@
 			isa = PBXGroup;
 			children = (
 				DC0B5184B7B0886057A6622F /* AccountModels.swift */,
+				EC0947300C1FC0EB524D1984 /* CafeModels.swift */,
 				C889005A87422F9CC0C7BD4A /* Localization.swift */,
 				766F9CCDD532D514F003587A /* MatchaModels.swift */,
 			);
@@ -269,6 +278,7 @@
 				15C510A792F5CBBCE417A640 /* AccountModels.swift in Sources */,
 				A42141F0A0DAA76801932BBA /* AccountUI.swift in Sources */,
 				723135245FB670E0C1F248BA /* AppSession.swift in Sources */,
+				6BD0B49D41250330BD3FE4DC /* CafeModels.swift in Sources */,
 				E965E55E25021C1962289EE4 /* CartRowView.swift in Sources */,
 				FFE65FE60FC5B8147BC93DE4 /* CartView.swift in Sources */,
 				06BAFC936CA8E2D5A8327E79 /* CategoryCardView.swift in Sources */,
@@ -297,6 +307,8 @@
 				CA7ACCF852E993EA31574274 /* PaymentMethodsView.swift in Sources */,
 				C91C3338781AB30FFDD7E554 /* ProductDetailView.swift in Sources */,
 				6E78D7D5246D1A39B589F69B /* ProfileView.swift in Sources */,
+				173486D6A9472C850B0C313D /* RateOrderView.swift in Sources */,
+				E19CCB7E067B39446162B439 /* RiderTrackingView.swift in Sources */,
 				B73AD1210A53F6F05FE077FF /* SettingsView.swift in Sources */,
 				201FFFDB2A5008323B67B9F5 /* SplashView.swift in Sources */,
 				04C1978C632872D2A6667C1B /* SupportChat.swift in Sources */,

@@ -2,9 +2,10 @@
 //  LoyaltyCardView.swift
 //  Osacha
 //
-//  The cafe's stamp card. The printed card artwork flips between its front
-//  and its back, where a star sticker lands on the next slot with each order;
-//  below it sits the member QR code the counter scans.
+//  The cafe's stamp card, shown right on the Profile tab. The printed card
+//  artwork flips between its front and its back, where a star sticker lands
+//  on the next slot with each order; the member QR code the counter scans
+//  opens beneath it.
 //
 
 import SwiftUI
@@ -15,6 +16,9 @@ struct LoyaltyCardView: View {
 
     /// Which face of the card is showing.
     @State private var showingBack = false
+    /// The QR code only matters at the counter, so it stays folded away
+    /// until asked for.
+    @State private var showingQR = false
 
     /// Pixel size of the card artwork, used for its proportions and to turn
     /// the measured slot positions below into fractions of the card.
@@ -36,12 +40,10 @@ struct LoyaltyCardView: View {
     private static let stampSide: CGFloat = 457
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: 22) {
-                card
-                    .padding(.horizontal)
-                    .padding(.top, 12)
+        VStack(spacing: 16) {
+            card
 
+            HStack(spacing: 18) {
                 Button {
                     flip()
                 } label: {
@@ -50,24 +52,33 @@ struct LoyaltyCardView: View {
                     } icon: {
                         Image(systemName: "arrow.triangle.2.circlepath")
                     }
-                        .font(.caption.weight(.semibold))
-                        .foregroundStyle(Color.matchaGreen)
                 }
-                .buttonStyle(.plain)
 
-                progress
-
-                qrPanel
-
-                if session.loyalty.rewardsEarned > 0 {
-                    rewardsNote
+                Button {
+                    withAnimation(.easeInOut(duration: 0.25)) { showingQR.toggle() }
+                } label: {
+                    Label {
+                        showingQR ? Text("Hide member QR") : Text("Show member QR")
+                    } icon: {
+                        Image(systemName: "qrcode")
+                    }
                 }
             }
-            .padding(.bottom, 28)
+            .font(.caption.weight(.semibold))
+            .foregroundStyle(Color.matchaGreen)
+            .buttonStyle(.plain)
+
+            progress
+
+            if showingQR {
+                qrPanel
+                    .transition(.opacity.combined(with: .move(edge: .top)))
+            }
+
+            if session.loyalty.rewardsAvailable > 0 || session.loyalty.rewardsEarned > 0 {
+                rewardsNote
+            }
         }
-        .background(Color.matchaCream.ignoresSafeArea())
-        .navigationTitle("Loyalty Card")
-        .navigationBarTitleDisplayMode(.inline)
     }
 
     // MARK: - The card
@@ -165,14 +176,22 @@ struct LoyaltyCardView: View {
             RoundedRectangle(cornerRadius: 24, style: .continuous)
                 .fill(Color.matchaCardCream)
         )
-        .padding(.horizontal)
     }
 
     private var rewardsNote: some View {
-        Label {
-            session.loyalty.rewardsEarned == 1
-                ? Text("1 free drink earned")
-                : Text("\(session.loyalty.rewardsEarned) free drinks earned")
+        let ready = session.loyalty.rewardsAvailable
+        let earned = session.loyalty.rewardsEarned
+        return Label {
+            // A free drink waiting to be used matters more than the tally.
+            if ready == 1 {
+                Text("1 free drink ready — use it at checkout")
+            } else if ready > 1 {
+                Text("\(ready) free drinks ready — use them at checkout")
+            } else if earned == 1 {
+                Text("1 free drink earned")
+            } else {
+                Text("\(earned) free drinks earned")
+            }
         } icon: {
             Image(systemName: "gift.fill")
         }
@@ -208,8 +227,9 @@ struct LoyaltyCardView: View {
 }
 
 #Preview {
-    NavigationStack {
+    ScrollView {
         LoyaltyCardView()
+            .padding()
     }
     .environmentObject(AppSession())
 }

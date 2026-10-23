@@ -282,6 +282,8 @@ struct ProductDetailView: View {
                 iceCreamToggle
             }
 
+            allergenInfo
+
             VStack(spacing: 12) {
                 Text("Quantity")
                     .font(.headline.bold())
@@ -339,6 +341,45 @@ struct ProductDetailView: View {
         .padding(.top, 24)
         .padding(.bottom, 24)
         .frame(maxWidth: .infinity, minHeight: minHeight, alignment: .top)
+    }
+
+    /// What's in the item as it's currently set up, so switching to oat milk
+    /// or adding ice cream changes the list straight away.
+    private var allergenInfo: some View {
+        let allergens = item.allergens(milk: item.hasMilkOptions ? selectedMilk : nil,
+                                       withIceCream: item.hasIceCreamOption && withIceCream)
+        return VStack(spacing: 10) {
+            Text("Allergens & diet")
+                .font(.headline.bold())
+                .foregroundStyle(Color.matchaDarkGreen)
+
+            HStack(spacing: 6) {
+                ForEach(allergens) { allergen in
+                    tag(allergen.rawValue, filled: true)
+                }
+                if !allergens.contains(.dairy) {
+                    tag("Dairy-free", filled: false)
+                }
+                tag(item.hasCaffeine ? "Caffeine" : "Caffeine-free", filled: false)
+            }
+
+            Text("Made in a kitchen that handles all of these. Ask our staff if you have a severe allergy.")
+                .font(.caption2)
+                .foregroundStyle(Color.matchaDarkGreen.opacity(0.65))
+                .multilineTextAlignment(.center)
+        }
+    }
+
+    /// Allergens fill in pink; diet notes are outlined in green.
+    private func tag(_ title: String, filled: Bool) -> some View {
+        Text(LocalizedStringKey(title))
+            .font(.caption2.weight(.semibold))
+            .lineLimit(1)
+            .foregroundStyle(filled ? Color.matchaDarkGreen : Color.matchaGreen)
+            .padding(.horizontal, 10)
+            .padding(.vertical, 6)
+            .background(Capsule().fill(filled ? Color.white : Color.clear))
+            .overlay(Capsule().stroke(filled ? Color.clear : Color.matchaGreen, lineWidth: 1))
     }
 
     private var iceCreamToggle: some View {

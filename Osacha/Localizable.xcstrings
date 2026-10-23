@@ -11,6 +11,16 @@
         }
       }
     },
+    "%@ km away": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "あと%@ km"
+          }
+        }
+      }
+    },
     "%lld favorites · %lld in cart": {
       "localizations": {
         "ja": {
@@ -27,6 +37,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "無料ドリンクを%lld杯獲得"
+          }
+        }
+      }
+    },
+    "%lld free drinks ready — use them at checkout": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "無料ドリンク%lld杯 · 会計時に使えます"
           }
         }
       }
@@ -61,6 +81,16 @@
         }
       }
     },
+    "%lld items added to your cart": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld点をカートに追加しました"
+          }
+        }
+      }
+    },
     "%lld items · %@": {
       "localizations": {
         "ja": {
@@ -87,6 +117,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "スタンプ %lld/%lld"
+          }
+        }
+      }
+    },
+    "%lld stars": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "星%lld"
           }
         }
       }
@@ -127,6 +167,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "無料ドリンクを1杯獲得"
+          }
+        }
+      }
+    },
+    "1 free drink ready — use it at checkout": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "無料ドリンク1杯 · 会計時に使えます"
+          }
+        }
+      }
+    },
+    "1 item added to your cart": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1点をカートに追加しました"
           }
         }
       }
@@ -217,6 +277,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "ご注文ごとにカードにスタンプが追加されます。"
+          }
+        }
+      }
+    },
+    "Account": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アカウント"
           }
         }
       }
@@ -321,6 +391,16 @@
         }
       }
     },
+    "Allergens & diet": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アレルゲン・食事情報"
+          }
+        }
+      }
+    },
     "Almond": {
       "localizations": {
         "ja": {
@@ -351,12 +431,42 @@
         }
       }
     },
+    "Arrived": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "到着しました"
+          }
+        }
+      }
+    },
+    "Arrives about %@": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ごろ到着"
+          }
+        }
+      }
+    },
     "Arrives:": {
       "localizations": {
         "ja": {
           "stringUnit": {
             "state": "translated",
             "value": "到着:"
+          }
+        }
+      }
+    },
+    "As soon as possible": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "できるだけ早く"
           }
         }
       }
@@ -451,12 +561,42 @@
         }
       }
     },
+    "Caffeine": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "カフェイン"
+          }
+        }
+      }
+    },
+    "Caffeine-free": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ノンカフェイン"
+          }
+        }
+      }
+    },
     "Cakes, tiramisu, puddings,\nand matcha sweets": {
       "localizations": {
         "ja": {
           "stringUnit": {
             "state": "translated",
             "value": "ケーキ、ティラミス、プリン、\n抹茶スイーツ"
+          }
+        }
+      }
+    },
+    "Call rider": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "配達員に電話"
           }
         }
       }
@@ -671,6 +811,26 @@
         }
       }
     },
+    "Closed · opens %@": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "営業時間外 · %@から営業"
+          }
+        }
+      }
+    },
+    "Closed · opens tomorrow %@": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "営業時間外 · 明日%@から営業"
+          }
+        }
+      }
+    },
     "Completed": {
       "localizations": {
         "ja": {
@@ -737,6 +897,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "この写真は使用できません"
+          }
+        }
+      }
+    },
+    "Dairy": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "乳"
+          }
+        }
+      }
+    },
+    "Dairy-free": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "乳不使用"
           }
         }
       }
@@ -847,6 +1027,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "配達エリア"
+          }
+        }
+      }
+    },
+    "Delivery is back when we open. Choose Pickup to order ahead.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "配達は営業開始後に再開します。事前注文はピックアップをお選びください。"
           }
         }
       }
@@ -991,6 +1181,16 @@
         }
       }
     },
+    "Egg": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "卵"
+          }
+        }
+      }
+    },
     "Email support": {
       "localizations": {
         "ja": {
@@ -1081,6 +1281,36 @@
         }
       }
     },
+    "FAVORITES": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "お気に入り"
+          }
+        }
+      }
+    },
+    "FREE DRINK": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "無料ドリンク"
+          }
+        }
+      }
+    },
+    "Fast": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "早い"
+          }
+        }
+      }
+    },
     "Favorites": {
       "localizations": {
         "ja": {
@@ -1141,12 +1371,32 @@
         }
       }
     },
+    "Free drink reward": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "無料ドリンク特典"
+          }
+        }
+      }
+    },
     "Free matcha earned": {
       "localizations": {
         "ja": {
           "stringUnit": {
             "state": "translated",
             "value": "無料の抹茶を獲得"
+          }
+        }
+      }
+    },
+    "Friendly staff": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "スタッフが親切"
           }
         }
       }
@@ -1177,6 +1427,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "門の暗証番号、目印など…"
+          }
+        }
+      }
+    },
+    "Gluten": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "小麦"
+          }
+        }
+      }
+    },
+    "Good value": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "お得"
           }
         }
       }
@@ -1271,6 +1541,16 @@
         }
       }
     },
+    "Hide member QR": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "会員QRを隠す"
+          }
+        }
+      }
+    },
     "Hojicha Series": {
       "localizations": {
         "ja": {
@@ -1313,6 +1593,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "注文の状況はどこで確認できますか？"
+          }
+        }
+      }
+    },
+    "How was order #%@?": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "注文番号 #%@ はいかがでしたか？"
+          }
+        }
+      }
+    },
+    "How was your order?": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ご注文はいかがでしたか？"
           }
         }
       }
@@ -1427,6 +1727,16 @@
         }
       }
     },
+    "Less ice, no straw, call when outside…": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "氷少なめ、ストローなし、到着したら電話…"
+          }
+        }
+      }
+    },
     "Live updates as your order moves along": {
       "localizations": {
         "ja": {
@@ -1513,6 +1823,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "スタンプについて"
+          }
+        }
+      }
+    },
+    "Made in a kitchen that handles all of these. Ask our staff if you have a severe allergy.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "すべてのアレルゲンを扱うキッチンで調理しています。重いアレルギーをお持ちの方はスタッフにお尋ねください。"
           }
         }
       }
@@ -1697,6 +2017,36 @@
         }
       }
     },
+    "Not sweet enough": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "甘さが足りない"
+          }
+        }
+      }
+    },
+    "Note for the café": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "お店へのメモ"
+          }
+        }
+      }
+    },
+    "Note:": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "メモ:"
+          }
+        }
+      }
+    },
     "Notifications": {
       "localizations": {
         "ja": {
@@ -1737,6 +2087,16 @@
         }
       }
     },
+    "ORDERS": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "注文"
+          }
+        }
+      }
+    },
     "Oat": {
       "localizations": {
         "ja": {
@@ -1753,6 +2113,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "プロフィール › 注文履歴を開き、進行中の注文をタップすると、現在の状況と受け取り時間を確認できます。"
+          }
+        }
+      }
+    },
+    "Open daily %@": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "毎日営業 %@"
+          }
+        }
+      }
+    },
+    "Open now · until %@": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "営業中 · %@まで"
           }
         }
       }
@@ -1777,12 +2157,32 @@
         }
       }
     },
+    "Order #%@ · %@": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "注文番号 #%@ · %@"
+          }
+        }
+      }
+    },
     "Order %@ has been delivered. Enjoy your matcha!": {
       "localizations": {
         "ja": {
           "stringUnit": {
             "state": "translated",
             "value": "注文%@をお届けしました。抹茶をお楽しみください！"
+          }
+        }
+      }
+    },
+    "Order %@ is booked — we'll have it ready at your pickup time.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "注文%@を予約しました。ピックアップ時間にご用意します。"
           }
         }
       }
@@ -2087,12 +2487,32 @@
         }
       }
     },
+    "Pickup booked": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ピックアップ予約完了"
+          }
+        }
+      }
+    },
     "Pickup time": {
       "localizations": {
         "ja": {
           "stringUnit": {
             "state": "translated",
             "value": "受け取り時間"
+          }
+        }
+      }
+    },
+    "Pickup:": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "受取:"
           }
         }
       }
@@ -2157,6 +2577,26 @@
         }
       }
     },
+    "Rate": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "評価する"
+          }
+        }
+      }
+    },
+    "Rated %lld of 5 stars": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "5つ星中%lldの評価"
+          }
+        }
+      }
+    },
     "Ready for pickup": {
       "localizations": {
         "ja": {
@@ -2197,12 +2637,42 @@
         }
       }
     },
+    "Reorder": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "もう一度注文"
+          }
+        }
+      }
+    },
     "Resend Code": {
       "localizations": {
         "ja": {
           "stringUnit": {
             "state": "translated",
             "value": "コードを再送信"
+          }
+        }
+      }
+    },
+    "Rewards": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "特典"
+          }
+        }
+      }
+    },
+    "Rider is waiting for your order": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "配達員が注文の完成を待っています"
           }
         }
       }
@@ -2277,6 +2747,26 @@
         }
       }
     },
+    "STAMPS": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "スタンプ"
+          }
+        }
+      }
+    },
+    "SUBTOTAL": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "小計"
+          }
+        }
+      }
+    },
     "Sakura cakes, crepes,\nbingsu and lattes": {
       "localizations": {
         "ja": {
@@ -2333,6 +2823,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "カウンターでスキャン"
+          }
+        }
+      }
+    },
+    "Schedule": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "時間を指定"
+          }
+        }
+      }
+    },
+    "Scheduled": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "予約済み"
           }
         }
       }
@@ -2413,6 +2923,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "表面を見る"
+          }
+        }
+      }
+    },
+    "Show member QR": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "会員QRを表示"
           }
         }
       }
@@ -2502,7 +3022,17 @@
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "ソイ"
+            "value": "大豆"
+          }
+        }
+      }
+    },
+    "Spilled": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "こぼれていた"
           }
         }
       }
@@ -2533,6 +3063,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "番地・通り"
+          }
+        }
+      }
+    },
+    "Submit rating": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "評価を送信"
           }
         }
       }
@@ -2573,6 +3113,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "商品のハートをタップすると、ここに保存されます。"
+          }
+        }
+      }
+    },
+    "Tasty": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "おいしい"
+          }
+        }
+      }
+    },
+    "Tell us more (optional)": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "詳しく教えてください（任意）"
           }
         }
       }
@@ -2657,6 +3217,36 @@
         }
       }
     },
+    "Tomorrow": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "明日"
+          }
+        }
+      }
+    },
+    "Too sweet": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "甘すぎる"
+          }
+        }
+      }
+    },
+    "Took too long": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "時間がかかった"
+          }
+        }
+      }
+    },
     "Total": {
       "localizations": {
         "ja": {
@@ -2683,6 +3273,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "注文を追跡したい"
+          }
+        }
+      }
+    },
+    "Tree nuts": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ナッツ"
           }
         }
       }
@@ -2737,6 +3337,16 @@
         }
       }
     },
+    "Use my free drink": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "無料ドリンクを使う"
+          }
+        }
+      }
+    },
     "Use your mobile number to log in or register.": {
       "localizations": {
         "ja": {
@@ -2773,6 +3383,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "認証する"
+          }
+        }
+      }
+    },
+    "View cart": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "カートを見る"
           }
         }
       }
@@ -2817,6 +3437,16 @@
         }
       }
     },
+    "We're closed right now — book a time and we'll have it ready.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ただいま営業時間外です。時間を指定していただければご用意します。"
+          }
+        }
+      }
+    },
     "We're open every day from 9AM to 8PM.": {
       "localizations": {
         "ja": {
@@ -2853,6 +3483,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "%@さん、Osachaへようこそ！ポイントカードの準備ができました。ご注文ごとにスタンプが貯まります。"
+          }
+        }
+      }
+    },
+    "Well packed": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "梱包が丁寧"
           }
         }
       }
@@ -2917,6 +3557,26 @@
         }
       }
     },
+    "Wrong item": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "商品が違った"
+          }
+        }
+      }
+    },
+    "YOUR RATING": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "あなたの評価"
+          }
+        }
+      }
+    },
     "Yesterday": {
       "localizations": {
         "ja": {
@@ -2953,6 +3613,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "無料の抹茶を獲得しました！10杯目は無料です。"
+          }
+        }
+      }
+    },
+    "You have a free drink — add one to your cart to use it.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "無料ドリンクがあります。ドリンクをカートに入れると使えます。"
           }
         }
       }
@@ -3013,6 +3683,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "おすすめがオンになっています。ご注文いただくと、お好みに合わせたおすすめをお届けします。"
+          }
+        }
+      }
+    },
+    "Your priciest drink, %@, is on us.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "一番高いドリンク（%@）が無料になります。"
           }
         }
       }

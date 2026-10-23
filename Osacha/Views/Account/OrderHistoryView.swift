@@ -10,30 +10,56 @@ import CoreImage.CIFilterBuiltins
 
 struct OrderHistoryView: View {
     @EnvironmentObject private var session: AppSession
+    @EnvironmentObject private var controller: OrderController
+
+    @State private var rating: PastOrder?
+    /// How many items the last reorder put in the cart, for the banner.
+    @State private var reordered: Int?
+    @State private var showCart = false
 
     var body: some View {
         ScrollView {
             VStack(spacing: 14) {
                 ForEach(session.orders) { order in
                     // Orders still on their way open to their tracking
-                    // details; finished ones have nothing left to follow.
+                    // details; finished ones can be ordered again or rated.
                     if order.status.isFinished {
-                        row(order)
+                        VStack(spacing: 0) {
+                            row(order)
+                            if order.canReorder || order.placedDate != nil {
+                                actions(order)
+                            }
+                        }
+                        .accountCard()
                     } else {
                         NavigationLink {
                             TrackOrderView(order: order)
                         } label: {
                             row(order)
+                                .accountCard()
                         }
                         .buttonStyle(.plain)
                     }
                 }
             }
             .padding()
+            .padding(.bottom, reordered == nil ? 0 : 70)
         }
         .accountBackground()
         .navigationTitle("Order History")
         .navigationBarTitleDisplayMode(.inline)
+        .overlay(alignment: .bottom) {
+            if let reordered {
+                reorderBanner(reordered)
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
+            }
+        }
+        .sheet(item: $rating) { order in
+            RateOrderView(order: order)
+        }
+        .navigationDestination(isPresented: $showCart) {
+            CartView()
+        }
     }
 
     private func row(_ order: PastOrder) -> some View {
@@ -69,16 +95,87 @@ struct OrderHistoryView: View {
         }
         .padding(16)
         .contentShape(Rectangle())
-        .accountCard()
+    }
+
+    /// Order again, and the rating — given, or a button to give one.
+    private func actions(_ order: PastOrder) -> some View {
+        HStack(spacing: 10) {
+            if let stars = order.rating {
+                HStack(spacing: 2) {
+                    ForEach(1...5, id: \.self) { value in
+                        Image(systemName: value <= stars ? "star.fill" : "star")
+                    }
+                }
+                .font(.caption)
+                .foregroundStyle(Color.matchaPinkDeep)
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel(Text("Rated \(stars) of 5 stars"))
+            } else if order.placedDate != nil {
+                Button {
+                    rating = order
+                } label: {
+                    Label("Rate", systemImage: "star")
+                        .font(.caption.weight(.semibold))
+                        .foregroundStyle(Color.matchaPinkDeep)
+                        .padding(.horizontal, 14)
+                        .padding(.vertical, 7)
+                        .overlay(Capsule().stroke(Color.matchaPinkDeep, lineWidth: 1.2))
+                }
+                .buttonStyle(.plain)
+            }
+
+            Spacer()
+
+            if order.canReorder {
+                Button {
+                    let added = controller.reorder(order)
+                    withAnimation(.spring(response: 0.35)) { reordered = added }
+                } label: {
+                    Label("Reorder", systemImage: "arrow.clockwise")
+                        .font(.caption.weight(.semibold))
+                        .foregroundStyle(.white)
+                        .padding(.horizontal, 14)
+                        .padding(.vertical, 7)
+                        .background(Capsule().fill(Color.matchaGreen))
+                }
+                .buttonStyle(.plain)
+            }
+        }
+        .padding(.horizontal, 16)
+        .padding(.bottom, 14)
+    }
+
+    private func reorderBanner(_ count: Int) -> some View {
+        HStack(spacing: 12) {
+            Image(systemName: "cart.fill.badge.plus")
+            (count == 1 ? Text("1 item added to your cart") : Text("\(count) items added to your cart"))
+                .font(.subheadline.weight(.semibold))
+            Spacer()
+            Button {
+                showCart = true
+                reordered = nil
+            } label: {
+                Text("View cart")
+                    .font(.caption.weight(.bold))
+                    .foregroundStyle(Color.matchaGreen)
+                    .padding(.horizontal, 14)
+                    .padding(.vertical, 7)
+                    .background(Capsule().fill(.white))
+            }
+            .buttonStyle(.plain)
+        }
+        .foregroundStyle(.white)
+        .padding(.horizontal, 16)
+        .padding(.vertical, 12)
+        .background(RoundedRectangle(cornerRadius: 18, style: .continuous).fill(Color.matchaGreen))
+        .padding()
     }
 }
 
 private extension OrderStatus {
-    var isFinished: Bool { self == .completed || self == .delivered }
-
     var foreground: Color {
         switch self {
-        case .preparing: return Color.matchaPinkDeep
+        case .scheduled, .preparing: return Color.matchaPinkDeep
         case .ready, .outForDelivery: return Color.matchaDarkGreen
         case .completed, .delivered: return Color.matchaGreen
         }
@@ -86,7 +183,7 @@ private extension OrderStatus {
 
     var background: Color {
         switch self {
-        case .preparing: return Color.matchaPinkPale
+        case .scheduled, .preparing: return Color.matchaPinkPale
         case .ready, .outForDelivery: return Color.matchaSage
         case .completed, .delivered: return Color.matchaSage.opacity(0.45)
         }
@@ -98,10 +195,27 @@ private extension OrderStatus {
 struct TrackOrderView: View {
     let order: PastOrder
 
+    @EnvironmentObject private var session: AppSession
+
+    /// This order as the session has it now, so a rating shows once given.
+    private var current: PastOrder {
+        session.orders.first { $0.id == order.id } ?? order
+    }
+
     var body: some View {
+        // Reading the clock moves the screen on as the order does.
+        let _ = session.now
         ScrollView {
-            OrderReceipt(order: order)
-                .padding()
+            VStack(spacing: 16) {
+                if current.method == .delivery, current.placedDate != nil {
+                    RiderTrackingView(order: current)
+                }
+                if current.awaitsRating {
+                    RateOrderPrompt(order: current)
+                }
+                OrderReceipt(order: current)
+            }
+            .padding()
         }
         .background(Color.matchaSage.ignoresSafeArea())
         .toolbarBackground(Color.matchaSageDeep, for: .navigationBar)
@@ -140,10 +254,7 @@ struct OrderReceipt: View {
     @State private var printed: CGFloat = 0
     @State private var paperHeight: CGFloat = 1000
 
-    /// The stages this order moves through, in order.
-    private var stages: [OrderStatus] {
-        order.method == .pickup ? [.preparing, .ready, .completed] : [.preparing, .outForDelivery, .delivered]
-    }
+    private var stages: [OrderStatus] { order.stages }
 
     var body: some View {
         // Reading the session clock redraws the stages as the order moves on.
@@ -163,7 +274,8 @@ struct OrderReceipt: View {
                 infoRow("Date:", order.placedAtText)
                 infoRow("Order:", "#\(order.reference)")
                 infoRow("Method:", localized(order.method.rawValue))
-                infoRow(order.method == .pickup ? "Ready:" : "Arrives:", order.readyAt)
+                infoRow(order.method == .delivery ? "Arrives:" : order.scheduledFor == nil ? "Ready:" : "Pickup:",
+                        order.readyAt)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -183,7 +295,14 @@ struct OrderReceipt: View {
             VStack(spacing: 12) {
                 if let lines = order.lines, !lines.isEmpty {
                     ForEach(Array(lines.enumerated()), id: \.offset) { _, line in
-                        leaderRow(line.name, String(format: "x%02d", line.quantity))
+                        VStack(alignment: .leading, spacing: 2) {
+                            leaderRow(line.name, String(format: "x%02d", line.quantity))
+                            if !line.options.isEmpty {
+                                Text(line.options)
+                                    .font(.system(.caption, design: .monospaced))
+                                    .opacity(0.7)
+                            }
+                        }
                     }
                 } else {
                     leaderRow(localized("Items"), String(format: "x%02d", order.itemCount))
@@ -191,7 +310,34 @@ struct OrderReceipt: View {
             }
             .padding(.top, 4)
 
+            if let note = order.note {
+                HStack(alignment: .firstTextBaseline, spacing: 0) {
+                    Text("Note:")
+                        .frame(width: 90, alignment: .leading)
+                    Text(note)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                .font(.system(.subheadline, design: .monospaced))
+                .frame(maxWidth: .infinity, alignment: .leading)
+            }
+
             ReceiptRule()
+
+            if let discount = order.discount {
+                VStack(spacing: 6) {
+                    HStack {
+                        Text("SUBTOTAL")
+                        Spacer()
+                        Text(order.subtotal.asPHP)
+                    }
+                    HStack {
+                        Text("FREE DRINK")
+                        Spacer()
+                        Text("−" + discount.asPHP)
+                    }
+                }
+                .font(.system(.subheadline, design: .monospaced))
+            }
 
             HStack {
                 Text("TOTAL")
@@ -218,6 +364,15 @@ struct OrderReceipt: View {
 
             ReceiptRule(title: "ORDER #\(order.reference)")
                 .padding(.top, 8)
+
+            if let rating = order.rating {
+                HStack(spacing: 10) {
+                    Text("YOUR RATING")
+                    Text(String(repeating: "★", count: rating) + String(repeating: "☆", count: 5 - rating))
+                        .foregroundStyle(Color.matchaPinkDeep)
+                }
+                .font(.system(.subheadline, design: .monospaced).weight(.semibold))
+            }
 
             VStack(spacing: 4) {
                 Text("THANK YOU")
@@ -367,6 +522,7 @@ private struct ReceiptBarcode: View {
 
 struct NotificationsView: View {
     @EnvironmentObject private var session: AppSession
+    @EnvironmentObject private var navigator: NavigationCoordinator
 
     var body: some View {
         ScrollView {
@@ -388,12 +544,23 @@ struct NotificationsView: View {
                     .accountCard()
                 } else {
                     ForEach(session.visibleNotifications) { note in
-                        NavigationLink {
-                            destination(for: note)
-                        } label: {
-                            row(note)
+                        // Order updates open the history; the rest are about
+                        // the loyalty card, which lives on the Profile tab.
+                        if note.kind.isAboutAnOrder {
+                            NavigationLink {
+                                OrderHistoryView()
+                            } label: {
+                                row(note)
+                            }
+                            .buttonStyle(.plain)
+                        } else {
+                            Button {
+                                navigator.openLoyaltyCard()
+                            } label: {
+                                row(note)
+                            }
+                            .buttonStyle(.plain)
                         }
-                        .buttonStyle(.plain)
                     }
                 }
             }
@@ -439,19 +606,12 @@ struct NotificationsView: View {
         .accountCard()
     }
 
-    @ViewBuilder
-    private func destination(for note: AppNotification) -> some View {
-        if note.kind.isAboutAnOrder {
-            OrderHistoryView()
-        } else {
-            LoyaltyCardView()
-        }
-    }
 }
 
 #Preview {
     NavigationStack { OrderHistoryView() }
         .environmentObject(AppSession())
+        .environmentObject(OrderController())
 }
 
 #Preview("Track Order") {

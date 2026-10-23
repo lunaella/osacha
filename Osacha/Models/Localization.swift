@@ -64,6 +64,11 @@ enum AppDate {
         format(date, english: "MMM d, h:mm a", japanese: "M月d日 H:mm")
     }
 
+    /// "8:45 PM" or "20:45".
+    static func time(_ date: Date) -> String {
+        format(date, english: "h:mm a", japanese: "H:mm")
+    }
+
     /// "Oct 23" or "10月23日".
     static func day(_ date: Date) -> String {
         format(date, english: "MMM d", japanese: "M月d日")

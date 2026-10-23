@@ -34,6 +34,16 @@ struct HomeView: View {
                     .foregroundStyle(Color.matchaDarkGreen)
                     .multilineTextAlignment(.center)
 
+                cafeStatus
+
+                // A finished order the customer hasn't said anything about yet.
+                if session.isSignedIn, let order = session.orderAwaitingRating {
+                    RateOrderPrompt(order: order)
+                        .padding(.horizontal)
+                        // The category photos rise above their cards.
+                        .padding(.bottom, 16)
+                }
+
                 // The category images rise above their cards, so the grid
                 // needs that height back to keep clear of the greeting.
                 // Each card's photo rises above its top edge, so rows need
@@ -59,6 +69,23 @@ struct HomeView: View {
         .navigationDestination(for: MatchaCategory.self) { category in
             MenuView(category: category)
         }
+    }
+
+    /// Whether the café is open, and until when or from when.
+    private var cafeStatus: some View {
+        let open = Cafe.isOpen(at: session.now)
+        return HStack(spacing: 8) {
+            Circle()
+                .fill(open ? Color.matchaGreen : Color.matchaPinkDeep)
+                .frame(width: 8, height: 8)
+            Text(Cafe.statusText(at: session.now))
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(Color.matchaDarkGreen)
+        }
+        .padding(.horizontal, 14)
+        .padding(.vertical, 7)
+        .background(Capsule().fill(Color.matchaCardCream.opacity(0.9)))
+        .accessibilityElement(children: .combine)
     }
 
 }

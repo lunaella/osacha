@@ -88,6 +88,37 @@ final class OrderController: ObservableObject {
         saveCart()
     }
 
+    /// Puts a past order's items back in the cart with the choices they were
+    /// ordered with, and returns how many were added. Items no longer on the
+    /// menu are left out, and a choice the item no longer offers falls back
+    /// to its default.
+    @discardableResult
+    func reorder(_ order: PastOrder) -> Int {
+        var added = 0
+        for line in order.lines ?? [] {
+            guard let item = items.first(where: { $0.name == line.name }) else { continue }
+            let size = item.hasSizeOptions
+                ? (line.size.flatMap { item.availableSizes.contains($0) ? $0 : nil } ?? .regular)
+                : nil
+            let milk = item.hasMilkOptions ? (line.milk ?? .regular) : nil
+            let iceCream = item.hasIceCreamOption && line.withIceCream == true
+            cart.append(CartEntry(id: UUID(), item: item, size: size, milk: milk,
+                                  withIceCream: iceCream, quantity: line.quantity))
+            added += line.quantity
+        }
+        saveCart()
+        return added
+    }
+
+    /// One drink in the cart, at its full price with options, for a free-drink
+    /// reward to cover: the dearest, so the reward is worth the most. Desserts
+    /// don't count — the card promises a free matcha.
+    var rewardDrinkPrice: Double? {
+        cart.filter { $0.item.hasSizeOptions && $0.quantity > 0 }
+            .map { $0.subtotal / Double($0.quantity) }
+            .max()
+    }
+
     func clearCart() {
         cart.removeAll()
         saveCart()

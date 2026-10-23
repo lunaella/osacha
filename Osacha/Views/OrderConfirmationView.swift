@@ -42,8 +42,8 @@ struct OrderConfirmationView: View {
 
                 // The order just earned a stamp, so say so here rather than
                 // leaving the customer to find it on the card.
-                NavigationLink {
-                    LoyaltyCardView()
+                Button {
+                    navigator.openLoyaltyCard()
                 } label: {
                     HStack(spacing: 8) {
                         Image(systemName: "checkmark")

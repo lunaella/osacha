@@ -277,31 +277,43 @@ final class AppSession: ObservableObject {
     // MARK: - Orders
 
     /// Files a placed order into the history and returns it for the receipt screen.
+    /// A `rewardDiscount` above zero uses up one of the customer's free drinks.
     @discardableResult
-    func recordOrder(itemCount: Int, total: Double, fulfillment: Fulfillment, lines: [OrderLine]) -> PastOrder {
+    func recordOrder(itemCount: Int, total: Double, fulfillment: Fulfillment, lines: [OrderLine],
+                     scheduledFor: Date? = nil, note: String = "", rewardDiscount: Double = 0,
+                     deliveryAddress: String? = nil) -> PastOrder {
         let reference = String(format: "A%04d", Int.random(in: 1000...9999))
         let now = Date()
+        let note = note.trimmingCharacters(in: .whitespacesAndNewlines)
         let order = PastOrder(reference: reference,
                               placedAt: Self.timestampFormatter.string(from: now),
                               itemCount: itemCount,
                               total: total,
                               placedDate: now,
                               fulfillment: fulfillment,
-                              lines: lines)
+                              lines: lines,
+                              scheduledFor: fulfillment == .pickup ? scheduledFor : nil,
+                              note: note.isEmpty ? nil : note,
+                              discount: rewardDiscount > 0 ? rewardDiscount : nil,
+                              deliveryAddress: fulfillment == .delivery ? deliveryAddress : nil)
         orders.insert(order, at: 0)
+        if rewardDiscount > 0 {
+            loyalty.rewardsRedeemed += 1
+        }
 
         // File every update this order will get, each at the time it happens.
         // Catch the clock up first so the "placed" update shows immediately.
         self.now = now
         let ref = "#\(order.reference)"
-        var updates = [update(.orderPlaced, detail: ref, at: now)]
-        let ready = now.addingTimeInterval(PastOrder.preparingDuration)
+        var updates = [update(order.scheduledFor == nil ? .orderPlaced : .orderScheduled, detail: ref, at: now)]
+        let ready = order.readyDate ?? now.addingTimeInterval(PastOrder.preparingDuration)
         switch fulfillment {
         case .pickup:
             updates.append(update(.orderReady, detail: ref, at: ready))
         case .delivery:
-            updates.append(update(.outForDelivery, detail: ref, at: ready))
-            updates.append(update(.delivered, detail: ref, at: now.addingTimeInterval(PastOrder.deliveryDuration)))
+            let outForDelivery = now.addingTimeInterval(PastOrder.preparingDuration)
+            updates.append(update(.outForDelivery, detail: ref, at: outForDelivery))
+            updates.append(update(.delivered, detail: ref, at: ready))
         }
         if awardLoyaltyStamp() {
             updates.append(update(.reward, detail: nil, at: now))
@@ -315,6 +327,29 @@ final class AppSession: ObservableObject {
         }
         persist()
         return order
+    }
+
+    /// The latest finished order still waiting to be rated, if any.
+    var orderAwaitingRating: PastOrder? {
+        // Reading the clock lets the prompt appear once an order finishes.
+        _ = now
+        return orders.first { $0.awaitsRating }
+    }
+
+    func rate(_ order: PastOrder, stars: Int, tags: [String], comment: String) {
+        guard let index = orders.firstIndex(where: { $0.id == order.id }) else { return }
+        let comment = comment.trimmingCharacters(in: .whitespacesAndNewlines)
+        orders[index].rating = min(5, max(1, stars))
+        orders[index].ratingTags = tags.isEmpty ? nil : tags
+        orders[index].ratingComment = comment.isEmpty ? nil : comment
+        persist()
+    }
+
+    /// Stops asking about an order the customer would rather not rate.
+    func skipRating(_ order: PastOrder) {
+        guard let index = orders.firstIndex(where: { $0.id == order.id }) else { return }
+        orders[index].ratingSkipped = true
+        persist()
     }
 
     // MARK: - Privacy
@@ -493,6 +528,13 @@ final class NavigationCoordinator: ObservableObject {
         selectedTab = .home
         homePath = NavigationPath()
         stackID = UUID()
+    }
+
+    /// The loyalty card sits on the Profile tab, so showing it means going
+    /// there, back at the top, from wherever the customer is.
+    func openLoyaltyCard() {
+        returnHome()
+        selectedTab = .profile
     }
 
     func openNotifications() {

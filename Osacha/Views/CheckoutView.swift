@@ -17,9 +17,7 @@ struct CheckoutView: View {
     @State private var showConfirmation = false
     @State private var askForLocation = false
 
-    private var offer: PersonalizedOffer? { session.personalizedOffer(catalog: controller.items) }
-    private var offerDiscount: Double { offer?.discount(on: controller.cart) ?? 0 }
-    private var total: Double { controller.cartTotal - offerDiscount }
+    private var total: Double { controller.cartTotal }
 
     private var address: SavedAddress? { session.addresses.first }
     private var payment: PaymentMethod? { session.paymentMethods.first }
@@ -154,9 +152,6 @@ struct CheckoutView: View {
         VStack(spacing: 14) {
             summaryRow("\(controller.cartCount) item\(controller.cartCount == 1 ? "" : "s")",
                        controller.cartTotal.asPHP)
-            if let offer, offerDiscount > 0 {
-                summaryRow("Your offer · 15% off \(offer.item.name)", "−\(offerDiscount.asPHP)", emphasised: true)
-            }
             summaryRow(fulfillment.timeLabel, PastOrder.estimatedReady(for: fulfillment), emphasised: true)
 
             HStack {

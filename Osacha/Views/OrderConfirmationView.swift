@@ -37,35 +37,8 @@ struct OrderConfirmationView: View {
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 32)
 
-                VStack(spacing: 14) {
-                    Text("Order #\(order.reference)")
-                        .font(.subheadline.weight(.semibold))
-                        .foregroundStyle(Color.matchaDarkGreen)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-
-                    HStack {
-                        Text("Total Paid")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                        Spacer()
-                        Text(order.total.asPHP)
-                            .font(.title3.bold())
-                            .foregroundStyle(Color.matchaGreen)
-                    }
-
-                    HStack {
-                        Text(order.method.timeLabel)
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                        Spacer()
-                        Text(order.readyAt)
-                            .font(.subheadline.weight(.semibold))
-                            .foregroundStyle(Color.matchaDarkGreen)
-                    }
-                }
-                .padding(20)
-                .accountCard()
-                .padding(.top, 8)
+                OrderReceipt(order: order, showsProgress: false)
+                    .padding(.top, 8)
 
                 // The order just earned a stamp, so say so here rather than
                 // leaving the customer to find it on the card.
@@ -123,7 +96,7 @@ struct OrderConfirmationView: View {
         // The receipt is a full-screen moment in the design, with no tab bar.
         .toolbar(.hidden, for: .tabBar)
         .navigationDestination(isPresented: $showTracking) {
-            OrderHistoryView()
+            TrackOrderView(order: order)
         }
         .alert("Turn on Location Services?", isPresented: $askForLocation) {
             Button("Not Now", role: .cancel) { showTracking = true }

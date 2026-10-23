@@ -340,21 +340,13 @@ enum AppLanguage: String, Codable, CaseIterable, Identifiable {
     var id: String { rawValue }
 }
 
-/// A deal shaped by the customer's own orders: money off the item they order
-/// most, plus something from the same menu they haven't tried yet.
+/// Picks shaped by the customer's own orders: the item they order most, plus
+/// something from the same menu they haven't tried yet.
 struct PersonalizedOffer: Equatable {
-    static let discountRate = 0.15
-
     let item: MatchaItem
     let suggestion: MatchaItem?
 
-    var headline: String { "15% off your usual" }
-
-    /// The saving on the offer item's lines in a cart.
-    func discount(on cart: [CartEntry]) -> Double {
-        let eligible = cart.filter { $0.item.name == item.name }.reduce(0) { $0 + $1.subtotal }
-        return (eligible * Self.discountRate).rounded()
-    }
+    var headline: String { "Your usual" }
 
     /// Nil until the customer has ordered something the catalogue still has.
     static func make(orders: [PastOrder], catalog: [MatchaItem]) -> PersonalizedOffer? {

@@ -2,7 +2,7 @@
 //  ForYouSection.swift
 //  Osacha
 //
-//  Personalized offers, shown at the top of Search when the customer has
+//  Personalized picks, shown at the top of Search when the customer has
 //  opted in. Built from their own orders, so it changes as their habits do.
 //
 
@@ -25,7 +25,7 @@ struct ForYouSection: View {
                     offerRow(image: offer.item.imageName,
                              eyebrow: offer.headline,
                              title: offer.item.name,
-                             detail: "Taken off at checkout")
+                             detail: offer.item.price.asPHP)
                 }
                 .buttonStyle(.plain)
 

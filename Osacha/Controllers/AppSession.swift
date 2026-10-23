@@ -482,9 +482,15 @@ final class NavigationCoordinator: ObservableObject {
     /// Pushes the Notifications screen on the Profile tab when a banner is tapped.
     @Published var showNotifications = false
 
+    /// Changing this rebuilds every tab's stack, so returning Home also
+    /// unwinds an order placed from Search, Favorites or Profile — those
+    /// stacks push with flags rather than a path, so there's nothing to clear.
+    @Published private(set) var stackID = UUID()
+
     func returnHome() {
         selectedTab = .home
         homePath = NavigationPath()
+        stackID = UUID()
     }
 
     func openNotifications() {

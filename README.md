@@ -74,8 +74,8 @@ Osacha is for customers who want a more considered way to order matcha: clear ch
 **Loyalty & offers**
 - A flip-over loyalty card with a member QR code for the counter
 - A stamp with every order; the tenth matcha is on the house
-- Personalized offers on Search: 15% off the item you order most, taken off at
-  checkout, plus a suggestion from the same menu
+- Personalized picks on Search: the item you order most, plus a suggestion
+  from the same menu
 
 **Account**
 - Mobile number sign-in with a one-time code — no passwords; only the last

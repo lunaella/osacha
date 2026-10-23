@@ -39,6 +39,7 @@ struct ContentView: View {
             NavigationStack(path: $navigator.homePath) {
                 HomeView()
             }
+            .id(navigator.stackID)
             .tabItem {
                 Label("Home", systemImage: "house.fill")
             }
@@ -47,6 +48,7 @@ struct ContentView: View {
             NavigationStack {
                 MenuView(category: nil)
             }
+            .id(navigator.stackID)
             .tabItem {
                 Label("Search", systemImage: "magnifyingglass")
             }
@@ -55,6 +57,7 @@ struct ContentView: View {
             NavigationStack {
                 FavoritesView()
             }
+            .id(navigator.stackID)
             .tabItem {
                 Label("Favorites", systemImage: "heart.fill")
             }
@@ -63,6 +66,7 @@ struct ContentView: View {
             NavigationStack {
                 ProfileView()
             }
+            .id(navigator.stackID)
             .tabItem {
                 Label("Profile", systemImage: "person.crop.circle")
             }

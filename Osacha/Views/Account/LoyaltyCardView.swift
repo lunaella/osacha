@@ -45,8 +45,11 @@ struct LoyaltyCardView: View {
                 Button {
                     flip()
                 } label: {
-                    Label(showingBack ? "Show front" : "Show stamps",
-                          systemImage: "arrow.triangle.2.circlepath")
+                    Label {
+                        showingBack ? Text("Show front") : Text("Show stamps")
+                    } icon: {
+                        Image(systemName: "arrow.triangle.2.circlepath")
+                    }
                         .font(.caption.weight(.semibold))
                         .foregroundStyle(Color.matchaGreen)
                 }
@@ -84,8 +87,8 @@ struct LoyaltyCardView: View {
         .onTapGesture { flip() }
         .accessibilityElement(children: .combine)
         .accessibilityLabel(showingBack
-            ? "Stamp card back, \(session.loyalty.stamps) of \(LoyaltyCard.stampsPerReward) stamps collected"
-            : "Osacha loyalty card, front")
+            ? Text("Stamp card back, \(session.loyalty.stamps) of \(LoyaltyCard.stampsPerReward) stamps collected")
+            : Text("Osacha loyalty card, front"))
         .accessibilityHint("Double tap to turn the card over")
     }
 
@@ -127,9 +130,9 @@ struct LoyaltyCardView: View {
                 .font(.headline)
                 .foregroundStyle(Color.matchaDarkGreen)
 
-            Text(session.loyalty.stamps == 0
-                 ? "Order something to earn your first stamp."
-                 : "\(session.loyalty.stampsRemaining) more and your 10th matcha is on us.")
+            (session.loyalty.stamps == 0
+                 ? Text("Order something to earn your first stamp.")
+                 : Text("\(session.loyalty.stampsRemaining) more and your 10th matcha is on us."))
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
         }
@@ -166,8 +169,13 @@ struct LoyaltyCardView: View {
     }
 
     private var rewardsNote: some View {
-        Label("\(session.loyalty.rewardsEarned) free drink\(session.loyalty.rewardsEarned == 1 ? "" : "s") earned",
-              systemImage: "gift.fill")
+        Label {
+            session.loyalty.rewardsEarned == 1
+                ? Text("1 free drink earned")
+                : Text("\(session.loyalty.rewardsEarned) free drinks earned")
+        } icon: {
+            Image(systemName: "gift.fill")
+        }
             .font(.subheadline.weight(.semibold))
             .foregroundStyle(Color.matchaDarkGreen)
             .padding(.horizontal, 18)

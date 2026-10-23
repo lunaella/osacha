@@ -1,0 +1,3042 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "%@ from the Osacha team joined the chat": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Osachaスタッフの%@がチャットに参加しました"
+          }
+        }
+      }
+    },
+    "%lld favorites · %lld in cart": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "お気に入り %lld件 · カート %lld点"
+          }
+        }
+      }
+    },
+    "%lld free drinks earned": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "無料ドリンクを%lld杯獲得"
+          }
+        }
+      }
+    },
+    "%lld item": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld点"
+          }
+        }
+      }
+    },
+    "%lld item · %@": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld点 · %@"
+          }
+        }
+      }
+    },
+    "%lld items": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld点"
+          }
+        }
+      }
+    },
+    "%lld items · %@": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld点 · %@"
+          }
+        }
+      }
+    },
+    "%lld more and your 10th matcha is on us.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "あと%lld個で10杯目の抹茶が無料になります。"
+          }
+        }
+      }
+    },
+    "%lld of %lld stamps": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "スタンプ %lld/%lld"
+          }
+        }
+      }
+    },
+    "%lldh ago": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld時間前"
+          }
+        }
+      }
+    },
+    "%lldm ago": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld分前"
+          }
+        }
+      }
+    },
+    "+1 stamp added to your loyalty card": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ポイントカードにスタンプが1つ追加されました"
+          }
+        }
+      }
+    },
+    "1 free drink earned": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "無料ドリンクを1杯獲得"
+          }
+        }
+      }
+    },
+    "1–2 days": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1〜2日"
+          }
+        }
+      }
+    },
+    "24/7": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "24時間対応"
+          }
+        }
+      }
+    },
+    "9AM–8PM": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "9時〜20時"
+          }
+        }
+      }
+    },
+    "A bold shot of espresso poured over a sparkling pink sakura base and ice, topped with cherry blossoms — bright, floral and refreshingly light.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "シュワっと弾けるピンクの桜ベースと氷にエスプレッソを注ぎ、桜の花をのせた、華やかで軽やかな一杯。"
+          }
+        }
+      }
+    },
+    "A comforting blend of ceremonial-grade matcha and ripe banana, finished with creamy milk for a naturally sweet, smooth, and nourishing latte.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "最高級の抹茶と完熟バナナに、クリーミーなミルクを合わせた、自然な甘さでなめらかなほっとするラテ。"
+          }
+        }
+      }
+    },
+    "A comforting blend of ceremonial-grade matcha and ripe banana.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "最高級の抹茶と完熟バナナの、ほっとする組み合わせ。"
+          }
+        }
+      }
+    },
+    "A dreamy fusion of earthy ceremonial-grade matcha and velvety ube, layered with creamy milk for a beautifully balanced sip that's nutty, subtly sweet, and irresistibly smooth.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "最高級の抹茶となめらかなウベを、クリーミーなミルクと重ねた夢のような組み合わせ。香ばしく、ほんのり甘く、とてもなめらかな一杯です。"
+          }
+        }
+      }
+    },
+    "A dreamy fusion of earthy matcha and velvety ube, layered with creamy milk.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "抹茶となめらかなウベを、クリーミーなミルクと重ねて。"
+          }
+        }
+      }
+    },
+    "A stamp is added to your card with every order.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ご注文ごとにカードにスタンプが追加されます。"
+          }
+        }
+      }
+    },
+    "Account Name": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アカウント名義"
+          }
+        }
+      }
+    },
+    "Add New Address": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "新しい住所を追加"
+          }
+        }
+      }
+    },
+    "Add Payment Method": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "支払い方法を追加"
+          }
+        }
+      }
+    },
+    "Add Photo": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "写真を追加"
+          }
+        }
+      }
+    },
+    "Add a payment method to place your order.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ご注文には支払い方法の追加が必要です。"
+          }
+        }
+      }
+    },
+    "Add a way to pay for this order.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "この注文の支払い方法を追加してください。"
+          }
+        }
+      }
+    },
+    "Add an address to deliver to.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "お届け先の住所を追加してください。"
+          }
+        }
+      }
+    },
+    "Add to cart · %@": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "カートに追加 · %@"
+          }
+        }
+      }
+    },
+    "Added!": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "追加しました！"
+          }
+        }
+      }
+    },
+    "Address": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "住所"
+          }
+        }
+      }
+    },
+    "Almond": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アーモンド"
+          }
+        }
+      }
+    },
+    "Anonymous usage data to help improve Osacha": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Osachaの改善に役立つ匿名の利用データ"
+          }
+        }
+      }
+    },
+    "App language. Menu items keep their original names.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アプリの表示言語です。メニューの商品名は元の名前のまま表示されます。"
+          }
+        }
+      }
+    },
+    "Arrives:": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "到着:"
+          }
+        }
+      }
+    },
+    "Automated answers · a person is a tap away": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "自動応答 · スタッフにもすぐおつなぎします"
+          }
+        }
+      }
+    },
+    "Back to Home": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ホームに戻る"
+          }
+        }
+      }
+    },
+    "Barangay": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "バランガイ"
+          }
+        }
+      }
+    },
+    "Barangay (optional)": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "バランガイ（任意）"
+          }
+        }
+      }
+    },
+    "Bold matcha meets fluffy tiramisu in creamy, gently sweet layers.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "濃い抹茶とふわふわのティラミスを、やさしい甘さの層に。"
+          }
+        }
+      }
+    },
+    "Bold matcha meets fluffy tiramisu — creamy layers, gentle sweetness, and a cloud of calm in every sip.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "濃い抹茶とふわふわのティラミス。クリーミーな層とやさしい甘さが広がる一杯です。"
+          }
+        }
+      }
+    },
+    "Burnt Basque-style cheesecake baked with matcha for a bittersweet finish.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "抹茶を練り込んで焼き上げた、ほろ苦いバスク風チーズケーキ。"
+          }
+        }
+      }
+    },
+    "CONTACT US": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "お問い合わせ"
+          }
+        }
+      }
+    },
+    "CVV": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "セキュリティコード"
+          }
+        }
+      }
+    },
+    "Cakes, tiramisu, puddings,\nand matcha sweets": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ケーキ、ティラミス、プリン、\n抹茶スイーツ"
+          }
+        }
+      }
+    },
+    "Call the store": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "店舗に電話"
+          }
+        }
+      }
+    },
+    "Call us at %@": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@までお電話ください。"
+          }
+        }
+      }
+    },
+    "Can I change my order?": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "注文を変更できますか？"
+          }
+        }
+      }
+    },
+    "Cancel": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "キャンセル"
+          }
+        }
+      }
+    },
+    "Card": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "カード"
+          }
+        }
+      }
+    },
+    "Card Number": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "カード番号"
+          }
+        }
+      }
+    },
+    "Cardholder Name": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "カード名義"
+          }
+        }
+      }
+    },
+    "Ceremonial matcha over sakura milk, crowned with sakura foam.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "桜ミルクに抹茶を注ぎ、桜フォームをのせて。"
+          }
+        }
+      }
+    },
+    "Ceremonial-grade matcha blended with coconut water and topped with a velvety cloud for a smooth, tropical, and refreshing finish.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "最高級の抹茶をココナッツウォーターと合わせ、なめらかなクラウドをのせた、トロピカルで爽やかな一杯。"
+          }
+        }
+      }
+    },
+    "Ceremonial-grade matcha blended with fragrant Earl Grey tea and creamy milk for a smooth, aromatic latte with delicate bergamot notes.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "最高級の抹茶に香り高いアールグレイとクリーミーなミルクを合わせた、ベルガモットがほのかに香るラテ。"
+          }
+        }
+      }
+    },
+    "Ceremonial-grade matcha blended with fragrant Earl Grey tea.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "最高級の抹茶と香り高いアールグレイのブレンド。"
+          }
+        }
+      }
+    },
+    "Ceremonial-grade matcha finished with a velvety cheese cloud.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "最高級の抹茶に、なめらかなチーズクラウドをのせて。"
+          }
+        }
+      }
+    },
+    "Ceremonial-grade matcha layered with ripe strawberries and creamy milk for a refreshing latte with fruity sweetness and earthy depth.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "最高級の抹茶に完熟いちごとクリーミーなミルクを重ねた、フルーティーな甘さと深みのある爽やかなラテ。"
+          }
+        }
+      }
+    },
+    "Ceremonial-grade matcha layered with ripe strawberries and creamy milk.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "最高級の抹茶に完熟いちごとクリーミーなミルクを重ねて。"
+          }
+        }
+      }
+    },
+    "Ceremonial-grade matcha poured over creamy sakura milk and crowned with a soft pink sakura cream foam — a floral, gently sweet sip of spring in every glass.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "クリーミーな桜ミルクに最高級の抹茶を注ぎ、淡いピンクの桜クリームフォームをのせました。華やかでやさしい甘さの、春を感じる一杯です。"
+          }
+        }
+      }
+    },
+    "Ceremonial-grade matcha with silky milk — smooth and creamy.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "最高級の抹茶となめらかなミルク。まろやかでクリーミー。"
+          }
+        }
+      }
+    },
+    "Change": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "変更"
+          }
+        }
+      }
+    },
+    "Change Photo": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "写真を変更"
+          }
+        }
+      }
+    },
+    "Chat with us": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "チャットで相談"
+          }
+        }
+      }
+    },
+    "Checkout": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "お会計"
+          }
+        }
+      }
+    },
+    "City": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "市区町村"
+          }
+        }
+      }
+    },
+    "Completed": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "完了"
+          }
+        }
+      }
+    },
+    "Confirm Order": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "注文を確定"
+          }
+        }
+      }
+    },
+    "Continue": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "続ける"
+          }
+        }
+      }
+    },
+    "Continue as guest": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ゲストとして続ける"
+          }
+        }
+      }
+    },
+    "Couldn't open Mail": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "メールを開けませんでした"
+          }
+        }
+      }
+    },
+    "Couldn't start a call": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "電話をかけられませんでした"
+          }
+        }
+      }
+    },
+    "Couldn't use that photo": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "この写真は使用できません"
+          }
+        }
+      }
+    },
+    "Date:": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "日時:"
+          }
+        }
+      }
+    },
+    "Deals based on what you order": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ご注文内容に合わせたおすすめ"
+          }
+        }
+      }
+    },
+    "Delete Account": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アカウントを削除"
+          }
+        }
+      }
+    },
+    "Delete Address": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "住所を削除"
+          }
+        }
+      }
+    },
+    "Delicate sakura mousse over soft matcha sponge and a tart berry layer, finished with fresh cream and a strawberry.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "やわらかい抹茶スポンジと甘酸っぱいベリーの層に繊細な桜ムースを重ね、生クリームといちごで仕上げました。"
+          }
+        }
+      }
+    },
+    "Deliver to": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "お届け先"
+          }
+        }
+      }
+    },
+    "Delivered": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "配達完了"
+          }
+        }
+      }
+    },
+    "Delivery": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "デリバリー"
+          }
+        }
+      }
+    },
+    "Delivery Addresses": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "お届け先住所"
+          }
+        }
+      }
+    },
+    "Delivery Notes (optional)": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "配達メモ（任意）"
+          }
+        }
+      }
+    },
+    "Delivery areas": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "配達エリア"
+          }
+        }
+      }
+    },
+    "Delivery time": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "お届け時間"
+          }
+        }
+      }
+    },
+    "Dense, fudgy brownie swirled with ceremonial-grade matcha.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "最高級の抹茶を練り込んだ、濃厚でしっとりしたブラウニー。"
+          }
+        }
+      }
+    },
+    "Desserts": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "デザート"
+          }
+        }
+      }
+    },
+    "Didn't get the code?": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "コードが届きませんか？"
+          }
+        }
+      }
+    },
+    "Double tap to turn the card over": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ダブルタップでカードを裏返します"
+          }
+        }
+      }
+    },
+    "Download My Data": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "データをダウンロード"
+          }
+        }
+      }
+    },
+    "Dozens of paper-thin matcha crepes layered with fresh cream.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "薄く焼いた抹茶クレープを、生クリームと何層にも重ねて。"
+          }
+        }
+      }
+    },
+    "ENJOY YOUR MATCHA": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "抹茶をお楽しみください"
+          }
+        }
+      }
+    },
+    "Earthy matcha beneath a cloud of rich Einspanner cream — a beautifully balanced latte that's creamy, smooth, and effortlessly indulgent.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "濃厚なアインシュペナークリームの下に抹茶を重ねた、クリーミーでなめらかな贅沢ラテ。"
+          }
+        }
+      }
+    },
+    "Earthy matcha beneath a cloud of rich Einspanner cream.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "濃厚なアインシュペナークリームの下に抹茶を重ねて。"
+          }
+        }
+      }
+    },
+    "Earthy roasted hojicha over cold milk, topped with a velvety ube cream foam and a dusting of hojicha powder — nutty, sweet and beautifully layered.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "冷たいミルクに香ばしいほうじ茶を注ぎ、なめらかなウベクリームフォームとほうじ茶パウダーをのせた、甘く美しい層の一杯。"
+          }
+        }
+      }
+    },
+    "Edit": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "編集"
+          }
+        }
+      }
+    },
+    "Edit Address": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "住所を編集"
+          }
+        }
+      }
+    },
+    "Edit Profile": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "プロフィールを編集"
+          }
+        }
+      }
+    },
+    "Email support": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "メールサポート"
+          }
+        }
+      }
+    },
+    "Email us at %@": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@までメールでお問い合わせください。"
+          }
+        }
+      }
+    },
+    "Enter Mobile Number": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "携帯電話番号を入力"
+          }
+        }
+      }
+    },
+    "Espresso over sparkling sakura and ice, topped with blossoms.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "スパークリング桜と氷にエスプレッソを注ぎ、桜の花をのせて。"
+          }
+        }
+      }
+    },
+    "Espresso-soaked ladyfingers layered with matcha mascarpone cream.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "エスプレッソを染み込ませたフィンガービスケットに、抹茶マスカルポーネクリームを重ねて。"
+          }
+        }
+      }
+    },
+    "Every order adds a stamp to your card. Collect 9 and your 10th matcha is on us — see Profile › Loyalty Card.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ご注文ごとにスタンプが1つ貯まります。9個集めると10杯目の抹茶が無料です。プロフィール › ポイントカードでご確認ください。"
+          }
+        }
+      }
+    },
+    "Expires %@": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "有効期限 %@"
+          }
+        }
+      }
+    },
+    "Expiry": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "有効期限"
+          }
+        }
+      }
+    },
+    "FAQ": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "よくある質問"
+          }
+        }
+      }
+    },
+    "Favorites": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "お気に入り"
+          }
+        }
+      }
+    },
+    "Find your address and track your rider": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "住所の検索と配達員の追跡に使います"
+          }
+        }
+      }
+    },
+    "Fluffy matcha souffle pancake topped with mochi and a fresh strawberry.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ふわふわの抹茶スフレパンケーキに、お餅と新鮮ないちごをのせて。"
+          }
+        }
+      }
+    },
+    "Fluffy shaved milk ice with sakura syrup and sakura ice cream, piled with chewy mochi and cherry-blossom cookies.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ふわふわのミルクかき氷に桜シロップと桜アイスをのせ、もちもちのお餅と桜クッキーをトッピング。"
+          }
+        }
+      }
+    },
+    "Fluffy souffle pancake with mochi.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "お餅をのせた、ふわふわのスフレパンケーキ。"
+          }
+        }
+      }
+    },
+    "For you": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "あなたへのおすすめ"
+          }
+        }
+      }
+    },
+    "Free matcha earned": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "無料の抹茶を獲得"
+          }
+        }
+      }
+    },
+    "Full Name": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "氏名"
+          }
+        }
+      }
+    },
+    "Full refund if an order is wrong or undelivered. Reach out within 24 hours via Chat.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "注文内容の誤りや未配達の場合は全額返金いたします。24時間以内にチャットでご連絡ください。"
+          }
+        }
+      }
+    },
+    "Gate code, landmark…": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "門の暗証番号、目印など…"
+          }
+        }
+      }
+    },
+    "Got it — I've noted that down.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "承知しました。記録しておきます。"
+          }
+        }
+      }
+    },
+    "Grande": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "グランデ"
+          }
+        }
+      }
+    },
+    "Hello %@,\nWelcome back!": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@さん、\nおかえりなさい！"
+          }
+        }
+      }
+    },
+    "Hello there,\nWelcome to Osacha!": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "こんにちは、\nOsachaへようこそ！"
+          }
+        }
+      }
+    },
+    "Hello! What can I help you with today?": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "こんにちは！本日はどのようなご用件でしょうか？"
+          }
+        }
+      }
+    },
+    "Hello, %@": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "こんにちは、%@さん"
+          }
+        }
+      }
+    },
+    "Help & Support": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ヘルプとサポート"
+          }
+        }
+      }
+    },
+    "Hi! I'm Osacha's chat helper. Ask me about your order, delivery, opening hours, stamps or payment — or ask for a person anytime.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "こんにちは！Osachaのチャットアシスタントです。ご注文、配達、営業時間、スタンプ、お支払いについてお気軽にどうぞ。スタッフへの接続もいつでもお申し付けください。"
+          }
+        }
+      }
+    },
+    "Hi, I'm %@ from Osacha. I've read through your messages — give me a moment to look into this for you.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "こんにちは、Osachaの%@です。メッセージを拝見しました。確認しますので少々お待ちください。"
+          }
+        }
+      }
+    },
+    "Hojicha Series": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ほうじ茶シリーズ"
+          }
+        }
+      }
+    },
+    "Home": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ホーム"
+          }
+        }
+      }
+    },
+    "Home (address)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Home"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "自宅"
+          }
+        }
+      }
+    },
+    "How do I track my order?": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "注文の状況はどこで確認できますか？"
+          }
+        }
+      }
+    },
+    "I'm still on it. Is there anything else you'd like me to check while I'm here?": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "引き続き確認中です。ほかに確認してほしいことはありますか？"
+          }
+        }
+      }
+    },
+    "Iced hojicha latte crowned with pistachio cream.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ピスタチオクリームをのせた、アイスほうじ茶ラテ。"
+          }
+        }
+      }
+    },
+    "Iced hojicha latte under a spiced cookie butter cream.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "スパイスの効いたクッキーバタークリームをのせた、アイスほうじ茶ラテ。"
+          }
+        }
+      }
+    },
+    "Iced hojicha latte with a vanilla sea salt cream top.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "バニラシーソルトクリームをのせた、アイスほうじ茶ラテ。"
+          }
+        }
+      }
+    },
+    "Iced lattes, cloud foams,\nand specialty matcha creations": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アイスラテ、クラウドフォーム\nこだわりの抹茶ドリンク"
+          }
+        }
+      }
+    },
+    "Inspired by Vietnam's beloved egg coffee, this indulgent creation pairs ceremonial-grade matcha with a velvety whipped egg cream, offering a rich, silky texture and a beautifully balanced earthy finish.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ベトナムで愛されるエッグコーヒーから生まれた一杯。最高級の抹茶になめらかなホイップエッグクリームを合わせた、濃厚でシルキーな味わいです。"
+          }
+        }
+      }
+    },
+    "Inspired by Vietnam's egg coffee, with velvety whipped egg cream.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ベトナムのエッグコーヒーに着想を得た、なめらかなエッグクリーム。"
+          }
+        }
+      }
+    },
+    "Items": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "商品"
+          }
+        }
+      }
+    },
+    "Just now": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "たった今"
+          }
+        }
+      }
+    },
+    "Label": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ラベル"
+          }
+        }
+      }
+    },
+    "Language": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "言語"
+          }
+        }
+      }
+    },
+    "Live updates as your order moves along": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "注文の進み具合をリアルタイムでお知らせ"
+          }
+        }
+      }
+    },
+    "Location Services": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "位置情報サービス"
+          }
+        }
+      }
+    },
+    "Log Out": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ログアウト"
+          }
+        }
+      }
+    },
+    "Log in or sign up": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ログインまたは新規登録"
+          }
+        }
+      }
+    },
+    "Log out?": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ログアウトしますか？"
+          }
+        }
+      }
+    },
+    "Login to Order": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ログインして注文"
+          }
+        }
+      }
+    },
+    "Loved %@? Try": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@がお好きな方へ"
+          }
+        }
+      }
+    },
+    "Loyalty Card": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ポイントカード"
+          }
+        }
+      }
+    },
+    "Loyalty stamps": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "スタンプについて"
+          }
+        }
+      }
+    },
+    "Made with ceremonial-grade matcha and finished with a velvety cheese cloud, this signature drink brings together earthy depth, creamy richness, and a subtle savory touch in every thoughtfully made cup.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "最高級の抹茶になめらかなチーズクラウドをのせた看板ドリンク。抹茶の深み、クリーミーなコク、ほのかな塩気が一杯に詰まっています。"
+          }
+        }
+      }
+    },
+    "Made with ceremonial-grade matcha and silky milk, our Matcha Latte celebrates the pure character of matcha — smooth, creamy, and thoughtfully made for everyday moments.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "最高級の抹茶となめらかなミルクで作る抹茶ラテ。抹茶本来の味わいを生かした、クリーミーで毎日楽しめる一杯です。"
+          }
+        }
+      }
+    },
+    "Matcha": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "抹茶"
+          }
+        }
+      }
+    },
+    "Matcha blended with coconut water, topped with a velvety cloud.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "抹茶とココナッツウォーターに、なめらかなクラウドをのせて。"
+          }
+        }
+      }
+    },
+    "Menu": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "メニュー"
+          }
+        }
+      }
+    },
+    "Method": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "種類"
+          }
+        }
+      }
+    },
+    "Method:": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "方法:"
+          }
+        }
+      }
+    },
+    "Milk": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ミルク"
+          }
+        }
+      }
+    },
+    "Mobile Number": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "携帯電話番号"
+          }
+        }
+      }
+    },
+    "Name on card": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "カードに記載の名前"
+          }
+        }
+      }
+    },
+    "Name on the account": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アカウントの名義"
+          }
+        }
+      }
+    },
+    "Next": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "次へ"
+          }
+        }
+      }
+    },
+    "No address yet": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "住所が未登録です"
+          }
+        }
+      }
+    },
+    "No favorites yet": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "お気に入りはまだありません"
+          }
+        }
+      }
+    },
+    "No items found": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "見つかりませんでした"
+          }
+        }
+      }
+    },
+    "No payment method": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "支払い方法が未登録です"
+          }
+        }
+      }
+    },
+    "No payment methods yet": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "支払い方法はまだありません"
+          }
+        }
+      }
+    },
+    "Not Now": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "今はしない"
+          }
+        }
+      }
+    },
+    "Notifications": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "お知らせ"
+          }
+        }
+      }
+    },
+    "OK": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OK"
+          }
+        }
+      }
+    },
+    "ORDER #%@": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "注文番号 #%@"
+          }
+        }
+      }
+    },
+    "ORDER RECEIPT": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ご注文明細"
+          }
+        }
+      }
+    },
+    "Oat": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "オーツ"
+          }
+        }
+      }
+    },
+    "Open Profile › Order History and tap any active order to see its live status and pickup time.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "プロフィール › 注文履歴を開き、進行中の注文をタップすると、現在の状況と受け取り時間を確認できます。"
+          }
+        }
+      }
+    },
+    "Opening hours": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "営業時間"
+          }
+        }
+      }
+    },
+    "Order #%@": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "注文 #%@"
+          }
+        }
+      }
+    },
+    "Order %@ has been delivered. Enjoy your matcha!": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "注文%@をお届けしました。抹茶をお楽しみください！"
+          }
+        }
+      }
+    },
+    "Order %@ is out for delivery.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "注文%@は配達中です。"
+          }
+        }
+      }
+    },
+    "Order %@ is ready for pickup! Show your order number at the counter.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "注文%@の準備ができました！カウンターで注文番号をお見せください。"
+          }
+        }
+      }
+    },
+    "Order %@ placed — we're preparing it now.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "注文%@を受け付けました。ただいま準備中です。"
+          }
+        }
+      }
+    },
+    "Order History": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "注文履歴"
+          }
+        }
+      }
+    },
+    "Order Placed!": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ご注文が完了しました！"
+          }
+        }
+      }
+    },
+    "Order Tracking": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "注文追跡"
+          }
+        }
+      }
+    },
+    "Order Tracking uses your location to show where your rider is on the way.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "注文追跡では位置情報を使って、配達中の配達員の現在地を表示します。"
+          }
+        }
+      }
+    },
+    "Order placed": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ご注文を受け付けました"
+          }
+        }
+      }
+    },
+    "Order something to earn your first stamp.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ご注文で最初のスタンプを集めましょう。"
+          }
+        }
+      }
+    },
+    "Order summary": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ご注文内容"
+          }
+        }
+      }
+    },
+    "Order updates and rewards will show up here.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "注文の最新情報や特典がここに表示されます。"
+          }
+        }
+      }
+    },
+    "Order:": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "注文:"
+          }
+        }
+      }
+    },
+    "Osacha café": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Osacha カフェ"
+          }
+        }
+      }
+    },
+    "Osacha helper": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Osachaアシスタント"
+          }
+        }
+      }
+    },
+    "Osacha home": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Osacha ホーム"
+          }
+        }
+      }
+    },
+    "Osacha loyalty card, front": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Osacha ポイントカード表面"
+          }
+        }
+      }
+    },
+    "Osacha support": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Osachaサポート"
+          }
+        }
+      }
+    },
+    "Osacha team": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Osachaスタッフ"
+          }
+        }
+      }
+    },
+    "Osacha uses your location to confirm your delivery address and show where your rider is.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Osachaは位置情報を使って、お届け先の確認と配達員の現在地の表示を行います。"
+          }
+        }
+      }
+    },
+    "Osacha uses your location to show where your rider is on the way.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Osachaは位置情報を使って、配達中の配達員の現在地を表示します。"
+          }
+        }
+      }
+    },
+    "Other": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "その他"
+          }
+        }
+      }
+    },
+    "Our Matcha Cloud Tiramisu Latte is a favourite, and the sakura menu is here for the season. Have a look in Search!": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "人気はMatcha Cloud Tiramisu Latteです。季節限定の桜メニューもございます。検索からぜひご覧ください！"
+          }
+        }
+      }
+    },
+    "Out for delivery": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "配達中"
+          }
+        }
+      }
+    },
+    "Paper-thin sakura crepes stacked with fresh cream, sweet red bean and matcha sponge, topped with a cherry blossom.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "薄く焼いた桜クレープに生クリーム、あんこ、抹茶スポンジを重ね、桜の花をのせました。"
+          }
+        }
+      }
+    },
+    "Pay with": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "お支払い方法"
+          }
+        }
+      }
+    },
+    "Payment Methods": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "支払い方法"
+          }
+        }
+      }
+    },
+    "Personalized Offers": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "パーソナライズされたおすすめ"
+          }
+        }
+      }
+    },
+    "Pick a different image and try again.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "別の画像を選んで、もう一度お試しください。"
+          }
+        }
+      }
+    },
+    "Pick up at": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "受け取り店舗"
+          }
+        }
+      }
+    },
+    "Pickup": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "店頭受け取り"
+          }
+        }
+      }
+    },
+    "Pickup time": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "受け取り時間"
+          }
+        }
+      }
+    },
+    "Pink sakura crepes layered with matcha sponge and red bean.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ピンクの桜クレープに、抹茶スポンジとあんこを重ねて。"
+          }
+        }
+      }
+    },
+    "Place Order": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "注文する"
+          }
+        }
+      }
+    },
+    "Preparing": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "準備中"
+          }
+        }
+      }
+    },
+    "Privacy": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "プライバシー"
+          }
+        }
+      }
+    },
+    "Profile": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "プロフィール"
+          }
+        }
+      }
+    },
+    "Quantity": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "数量"
+          }
+        }
+      }
+    },
+    "Ready for pickup": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "受け取り可能"
+          }
+        }
+      }
+    },
+    "Ready:": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "受取:"
+          }
+        }
+      }
+    },
+    "Regular": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "レギュラー"
+          }
+        }
+      }
+    },
+    "Remove Photo": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "写真を削除"
+          }
+        }
+      }
+    },
+    "Resend Code": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "コードを再送信"
+          }
+        }
+      }
+    },
+    "Roasted hojicha lattes\nwith creamy toppings": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "香ばしいほうじ茶ラテに\nクリーミーなトッピング"
+          }
+        }
+      }
+    },
+    "Roasted hojicha layered over creamy milk and sweet strawberry purée — toasty, fruity and smooth, like strawberries and cream with a roasted finish.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "クリーミーなミルクと甘いいちごピューレに香ばしいほうじ茶を重ねた、いちごミルクのようなフルーティーでなめらかな一杯。"
+          }
+        }
+      }
+    },
+    "Roasted hojicha over cold milk under a vanilla sea salt cream foam, dusted with hojicha powder — the salt brings out the tea's toasty sweetness.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "冷たいミルクにほうじ茶を注ぎ、バニラシーソルトクリームフォームとほうじ茶パウダーをのせました。塩気がお茶の香ばしい甘さを引き立てます。"
+          }
+        }
+      }
+    },
+    "Roasted hojicha over milk and sweet strawberry purée.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ミルクと甘いいちごピューレに、香ばしいほうじ茶を重ねて。"
+          }
+        }
+      }
+    },
+    "Roasted hojicha poured over cold milk and topped with a spiced cookie butter cream foam and crushed biscuit — toasty, caramelly and smooth to the last sip.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "冷たいミルクに香ばしいほうじ茶を注ぎ、スパイスの効いたクッキーバタークリームフォームと砕いたビスケットをのせました。キャラメルのような香ばしさが最後まで続きます。"
+          }
+        }
+      }
+    },
+    "Roasted hojicha poured over cold milk, crowned with a silky pistachio cream foam and chopped pistachios for a nutty, gently sweet finish.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "冷たいミルクに香ばしいほうじ茶を注ぎ、なめらかなピスタチオクリームフォームと刻んだピスタチオをのせた、ナッツの香るやさしい甘さの一杯。"
+          }
+        }
+      }
+    },
+    "Roasted hojicha under a sweet ube cream foam.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "甘いウベクリームフォームをのせた、香ばしいほうじ茶。"
+          }
+        }
+      }
+    },
+    "Sakura cakes, crepes,\nbingsu and lattes": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "桜のケーキ、クレープ、\nピンス、ラテ"
+          }
+        }
+      }
+    },
+    "Sakura mousse over matcha sponge with a tart berry layer.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "抹茶スポンジと甘酸っぱいベリーの層に、桜ムースを重ねて。"
+          }
+        }
+      }
+    },
+    "Save Address": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "住所を保存"
+          }
+        }
+      }
+    },
+    "Save Changes": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "変更を保存"
+          }
+        }
+      }
+    },
+    "Save Payment Method": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "支払い方法を保存"
+          }
+        }
+      }
+    },
+    "Scan at the counter": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "カウンターでスキャン"
+          }
+        }
+      }
+    },
+    "Search": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "検索"
+          }
+        }
+      }
+    },
+    "Search matcha drinks & treats": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "抹茶ドリンク・スイーツを検索"
+          }
+        }
+      }
+    },
+    "Seasonal": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "季節限定"
+          }
+        }
+      }
+    },
+    "Send": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "送信"
+          }
+        }
+      }
+    },
+    "Settings": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "設定"
+          }
+        }
+      }
+    },
+    "Share Analytics": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "分析データを共有"
+          }
+        }
+      }
+    },
+    "Shaved sakura milk ice with mochi and cherry-blossom cookies.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "お餅と桜クッキーをのせた、桜ミルクかき氷。"
+          }
+        }
+      }
+    },
+    "Show front": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "表面を見る"
+          }
+        }
+      }
+    },
+    "Show stamps": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "スタンプを見る"
+          }
+        }
+      }
+    },
+    "Show your order number at the counter.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "カウンターで注文番号をお見せください。"
+          }
+        }
+      }
+    },
+    "Silky matcha pudding topped with rich caramel sauce.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "なめらかな抹茶プリンに、濃厚なキャラメルソースをかけて。"
+          }
+        }
+      }
+    },
+    "Size": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "サイズ"
+          }
+        }
+      }
+    },
+    "Smooth ceremonial-grade matcha poured over ice and finished with fresh coconut — refreshing, and naturally vibrant.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "なめらかな最高級の抹茶を氷に注ぎ、フレッシュなココナッツで仕上げた爽やかな一杯。"
+          }
+        }
+      }
+    },
+    "Smooth matcha poured over ice, finished with fresh coconut.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "氷に注いだ抹茶を、フレッシュなココナッツで仕上げて。"
+          }
+        }
+      }
+    },
+    "Soft matcha sponge rolled with fresh cream and topped with strawberry.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "やわらかい抹茶スポンジで生クリームを巻き、いちごをのせて。"
+          }
+        }
+      }
+    },
+    "Sorry, I didn't quite get that. I can help with orders, delivery, opening hours, stamps and payment — or connect you with a person.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "申し訳ありません、うまく理解できませんでした。ご注文、配達、営業時間、スタンプ、お支払いについてお答えできます。スタッフにおつなぎすることもできます。"
+          }
+        }
+      }
+    },
+    "Soy": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ソイ"
+          }
+        }
+      }
+    },
+    "Stamp card back, %lld of %lld stamps collected": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "スタンプカード裏面、スタンプ%lld/%lld個"
+          }
+        }
+      }
+    },
+    "Status:": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "状況:"
+          }
+        }
+      }
+    },
+    "Street Address": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "番地・通り"
+          }
+        }
+      }
+    },
+    "THANK YOU": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ありがとうございました"
+          }
+        }
+      }
+    },
+    "TOTAL": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "合計"
+          }
+        }
+      }
+    },
+    "Talk to a person": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "スタッフと話したい"
+          }
+        }
+      }
+    },
+    "Tap the heart on any item to save it here.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "商品のハートをタップすると、ここに保存されます。"
+          }
+        }
+      }
+    },
+    "Tell us who's ordering and where to deliver.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ご注文者のお名前とお届け先を教えてください。"
+          }
+        }
+      }
+    },
+    "Thanks for the details! I'm checking on this now and will update you right here.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "詳しく教えていただきありがとうございます！ただいま確認しておりますので、こちらでお知らせします。"
+          }
+        }
+      }
+    },
+    "Thanks for your order — your matcha will be ready shortly.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ご注文ありがとうございます。まもなく抹茶をご用意します。"
+          }
+        }
+      }
+    },
+    "That's one for our team. I'm connecting you with a person now — hang tight.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "こちらはスタッフが対応いたします。ただいまおつなぎしますので、少々お待ちください。"
+          }
+        }
+      }
+    },
+    "The matcha equivalent of an Americano — ceremonial-grade matcha whisked with hot water for a light, smooth, and authentic matcha experience.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "抹茶版のアメリカーノ。最高級の抹茶をお湯で点てた、軽やかでなめらかな本格的な味わいです。"
+          }
+        }
+      }
+    },
+    "The matcha equivalent of an Americano, whisked with hot water.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "お湯で点てた、抹茶版のアメリカーノ。"
+          }
+        }
+      }
+    },
+    "The rich creaminess of banana pudding paired with vibrant ceremonial-grade matcha creates a dessert-inspired latte that's smooth, mellow, and irresistibly satisfying.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "濃厚でクリーミーなバナナプディングと鮮やかな最高級の抹茶を合わせた、デザートのようにまろやかで満足感のあるラテ。"
+          }
+        }
+      }
+    },
+    "The rich creaminess of banana pudding paired with vibrant matcha.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "濃厚なバナナプディングと鮮やかな抹茶の組み合わせ。"
+          }
+        }
+      }
+    },
+    "Total": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "合計"
+          }
+        }
+      }
+    },
+    "Track Order": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "注文を追跡"
+          }
+        }
+      }
+    },
+    "Track my order": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "注文を追跡したい"
+          }
+        }
+      }
+    },
+    "Turn On": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "オンにする"
+          }
+        }
+      }
+    },
+    "Turn on Location Services?": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "位置情報サービスをオンにしますか？"
+          }
+        }
+      }
+    },
+    "Type a message…": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "メッセージを入力…"
+          }
+        }
+      }
+    },
+    "Typing": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "入力中"
+          }
+        }
+      }
+    },
+    "Unread": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "未読"
+          }
+        }
+      }
+    },
+    "Use your mobile number to log in or register.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "携帯電話番号でログインまたは登録してください。"
+          }
+        }
+      }
+    },
+    "Venti": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ベンティ"
+          }
+        }
+      }
+    },
+    "Verification Code": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "認証コード"
+          }
+        }
+      }
+    },
+    "Verify": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "認証する"
+          }
+        }
+      }
+    },
+    "We accept cards, GCash and Maya. Add or change one under Profile › Payment Methods.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "カード、GCash、Mayaがご利用いただけます。プロフィール › 支払い方法から追加・変更できます。"
+          }
+        }
+      }
+    },
+    "We deliver across Quezon City and Makati, with more areas opening soon.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ケソン市とマカティ市の全域にお届けしています。対応エリアは順次拡大予定です。"
+          }
+        }
+      }
+    },
+    "We deliver across Quezon City and Makati, with more areas opening soon. You can also pick up at the café.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ケソン市とマカティ市の全域にお届けしています。対応エリアは順次拡大予定です。カフェでの店頭受け取りもご利用いただけます。"
+          }
+        }
+      }
+    },
+    "We sent a 6-digit code to %@": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@に6桁のコードを送信しました"
+          }
+        }
+      }
+    },
+    "We're open every day from 9AM to 8PM.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "毎日9時から20時まで営業しています。"
+          }
+        }
+      }
+    },
+    "Welcome to Osacha": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Osachaへようこそ"
+          }
+        }
+      }
+    },
+    "Welcome to Osacha!": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Osachaへようこそ！"
+          }
+        }
+      }
+    },
+    "Welcome to Osacha, %@! Your loyalty card is ready — every order earns a stamp.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@さん、Osachaへようこそ！ポイントカードの準備ができました。ご注文ごとにスタンプが貯まります。"
+          }
+        }
+      }
+    },
+    "What is the refund policy?": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "返金ポリシーを教えてください。"
+          }
+        }
+      }
+    },
+    "Where do you deliver?": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "配達エリアはどこですか？"
+          }
+        }
+      }
+    },
+    "Where vibrant matcha meets the gentle bloom of rose in a velvety latte.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "鮮やかな抹茶とやさしいローズが出会う、なめらかなラテ。"
+          }
+        }
+      }
+    },
+    "Where vibrant matcha meets the gentle bloom of rose, this smooth and creamy latte blends the subtle sweetness of rose with earthy depth, creating a velvety sip that's both refreshing and serene.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "鮮やかな抹茶にやさしく香るローズを合わせた、なめらかでクリーミーなラテ。ほのかなローズの甘さと抹茶の深みが溶け合う、爽やかで穏やかな一杯です。"
+          }
+        }
+      }
+    },
+    "With Ice Cream": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アイスクリーム追加"
+          }
+        }
+      }
+    },
+    "Work": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "職場"
+          }
+        }
+      }
+    },
+    "Yesterday": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "昨日"
+          }
+        }
+      }
+    },
+    "You can edit or cancel within 2 minutes of placing it — before the barista starts preparing.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ご注文から2分以内、バリスタが準備を始める前であれば、変更・キャンセルできます。"
+          }
+        }
+      }
+    },
+    "You can follow any order under Profile › Order History — tap an order that's still on its way to see its receipt and live status.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "プロフィール › 注文履歴から、進行中の注文をタップすると、レシートと現在の状況を確認できます。"
+          }
+        }
+      }
+    },
+    "You earned a free matcha! Your 10th drink is on us.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "無料の抹茶を獲得しました！10杯目は無料です。"
+          }
+        }
+      }
+    },
+    "You'll need to sign in again to place orders.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ご注文には再度サインインが必要です。"
+          }
+        }
+      }
+    },
+    "You're all caught up": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "新しいお知らせはありません"
+          }
+        }
+      }
+    },
+    "You're welcome! Anything else I can help with?": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "どういたしまして！ほかにお手伝いできることはありますか？"
+          }
+        }
+      }
+    },
+    "Your Cart": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "カート"
+          }
+        }
+      }
+    },
+    "Your cart is empty": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "カートは空です"
+          }
+        }
+      }
+    },
+    "Your offers are on. Place an order and we'll tailor deals to what you like.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "おすすめがオンになっています。ご注文いただくと、お好みに合わせたおすすめをお届けします。"
+          }
+        }
+      }
+    },
+    "Your usual": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "いつもの"
+          }
+        }
+      }
+    },
+    "🇵🇭  PHILIPPINES": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "🇵🇭  フィリピン"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

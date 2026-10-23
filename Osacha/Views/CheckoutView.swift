@@ -112,7 +112,7 @@ struct CheckoutView: View {
 
     // MARK: - Sections
 
-    private func sectionTitle(_ title: String) -> some View {
+    private func sectionTitle(_ title: LocalizedStringKey) -> some View {
         Text(title)
             .font(.subheadline.weight(.semibold))
             .foregroundStyle(Color.matchaDarkGreen)
@@ -120,7 +120,7 @@ struct CheckoutView: View {
 
     private var deliveryCard: some View {
         detailCard(icon: address?.kind.icon ?? "house.fill",
-                   title: address?.kind.rawValue ?? "No address yet",
+                   title: address?.kind.label ?? "No address yet",
                    lines: [address?.oneLine ?? "Add an address to deliver to.",
                            session.profile.fullName,
                            session.profile.mobileNumber]) {
@@ -143,14 +143,15 @@ struct CheckoutView: View {
     private var paymentCard: some View {
         detailCard(icon: payment?.kind.icon ?? "creditcard.fill",
                    title: payment?.title ?? "No payment method",
-                   lines: [payment?.subtitle ?? "Add a way to pay for this order."]) {
+                   lines: [payment?.displaySubtitle ?? "Add a way to pay for this order."]) {
             changeButton { PaymentMethodsView() }
         }
     }
 
     private var summaryCard: some View {
         VStack(spacing: 14) {
-            summaryRow("\(controller.cartCount) item\(controller.cartCount == 1 ? "" : "s")",
+            summaryRow(String(format: localized(controller.cartCount == 1 ? "%lld item" : "%lld items"),
+                              controller.cartCount),
                        controller.cartTotal.asPHP)
             summaryRow(fulfillment.timeLabel, PastOrder.estimatedReady(for: fulfillment), emphasised: true)
 
@@ -171,7 +172,8 @@ struct CheckoutView: View {
     // MARK: - Building blocks
 
     /// A card with an icon, a heading, supporting lines and an optional
-    /// trailing control.
+    /// trailing control. The heading and lines are looked up as translation
+    /// keys, so fixed prompts translate and the customer's own details don't.
     private func detailCard<Trailing: View>(icon: String,
                                             title: String,
                                             lines: [String],
@@ -183,11 +185,11 @@ struct CheckoutView: View {
                 .frame(width: 24)
 
             VStack(alignment: .leading, spacing: 4) {
-                Text(title)
+                Text(LocalizedStringKey(title))
                     .font(.subheadline.weight(.semibold))
                     .foregroundStyle(Color.matchaDarkGreen)
                 ForEach(lines, id: \.self) { line in
-                    Text(line)
+                    Text(LocalizedStringKey(line))
                         .font(.caption)
                         .foregroundStyle(Color.matchaDarkGreen.opacity(0.75))
                         .fixedSize(horizontal: false, vertical: true)
@@ -218,7 +220,7 @@ struct CheckoutView: View {
 
     private func summaryRow(_ label: String, _ value: String, emphasised: Bool = false) -> some View {
         HStack {
-            Text(label)
+            Text(LocalizedStringKey(label))
             Spacer()
             Text(value)
                 .fontWeight(emphasised ? .semibold : .regular)

@@ -25,7 +25,8 @@ struct MenuItemRowView: View {
                     .font(.subheadline.bold())
                     .foregroundStyle(Color.matchaDarkGreen)
 
-                Text(item.listDescription)
+                // Names stay as the café writes them; descriptions translate.
+                Text(LocalizedStringKey(item.listDescription))
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .lineLimit(2)

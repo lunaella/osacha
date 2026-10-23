@@ -91,7 +91,7 @@ Osacha is for customers who want a more considered way to order matcha: clear ch
   iPhone alerts when an order is ready or on its way
 
 **Settings**
-- Language preference
+- Language preference: switch the whole app between English and Japanese, live
 - Privacy controls for location, order tracking, personalized offers and
   analytics — saved, and each explained in a line
 - With location off, delivery orders and order tracking ask to turn it on

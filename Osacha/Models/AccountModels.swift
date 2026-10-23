@@ -72,6 +72,10 @@ struct SavedAddress: Identifiable, Codable, Equatable {
 
         var id: String { rawValue }
 
+        /// The name to show. "Home" here is a place you live, which Japanese
+        /// words differently from the Home tab, so it has its own key.
+        var label: String { self == .home ? "Home (address)" : rawValue }
+
         var icon: String {
             switch self {
             case .home: return "house.fill"
@@ -120,6 +124,13 @@ struct PaymentMethod: Identifiable, Codable, Equatable {
     var kind: Kind
     var title: String
     var subtitle: String
+
+    /// The subtitle in the app's language. A card's is saved as
+    /// "Expires 08/27", so its expiry is pulled back out to be reworded.
+    var displaySubtitle: String {
+        guard kind == .card, subtitle.hasPrefix("Expires ") else { return subtitle }
+        return String(format: localized("Expires %@"), String(subtitle.dropFirst("Expires ".count)))
+    }
 
     static let samples: [PaymentMethod] = [
         PaymentMethod(kind: .card, title: "Visa •••• 4821", subtitle: "Expires 08/27"),
@@ -181,7 +192,13 @@ struct PastOrder: Identifiable, Codable {
     var method: Fulfillment { fulfillment ?? .pickup }
 
     var summary: String {
-        "\(itemCount) item\(itemCount == 1 ? "" : "s") · \(total.asPHP)"
+        String(format: localized(itemCount == 1 ? "%lld item · %@" : "%lld items · %@"), itemCount, total.asPHP)
+    }
+
+    /// When it was placed, in the app's language. The seeded history has no
+    /// real date behind it, so it keeps the string it was recorded with.
+    var placedAtText: String {
+        placedDate.map(AppDate.dayAndTime) ?? placedAt
     }
 
     /// Derived from how long ago the order was placed, so a drink ordered
@@ -211,7 +228,7 @@ struct PastOrder: Identifiable, Codable {
     /// their own recorded string, which is already a time.
     var readyAt: String {
         guard let placedDate else { return placedAt }
-        return Self.timeFormatter.string(from: placedDate.addingTimeInterval(Self.leadTime(for: method)))
+        return AppDate.dayAndTime(placedDate.addingTimeInterval(Self.leadTime(for: method)))
     }
 
     /// How long a new order spends in each stage before moving on.
@@ -227,17 +244,8 @@ struct PastOrder: Identifiable, Codable {
     /// The pickup or delivery time an order placed right now would get,
     /// formatted the same way the receipt shows it.
     static func estimatedReady(for method: Fulfillment, from date: Date = Date()) -> String {
-        timeFormatter.string(from: date.addingTimeInterval(leadTime(for: method)))
+        AppDate.dayAndTime(date.addingTimeInterval(leadTime(for: method)))
     }
-
-    private static let timeFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        // Fixed locale for the same reason the placement stamp pins one: a
-        // 24-hour device would otherwise override "h:mm a".
-        formatter.locale = Locale(identifier: "en_US_POSIX")
-        formatter.dateFormat = "MMM d, h:mm a"
-        return formatter
-    }()
 
     static let samples: [PastOrder] = [
         PastOrder(reference: "A1042", placedAt: "Today, 3:15 PM", itemCount: 3, total: 870),
@@ -295,6 +303,18 @@ struct AppNotification: Identifiable, Codable, Equatable {
             }
         }
 
+        /// The message, with `%@` standing for the notification's detail.
+        var template: String {
+            switch self {
+            case .welcome: return "Welcome to Osacha, %@! Your loyalty card is ready — every order earns a stamp."
+            case .orderPlaced: return "Order %@ placed — we're preparing it now."
+            case .orderReady: return "Order %@ is ready for pickup! Show your order number at the counter."
+            case .outForDelivery: return "Order %@ is out for delivery."
+            case .delivered: return "Order %@ has been delivered. Enjoy your matcha!"
+            case .reward: return "You earned a free matcha! Your 10th drink is on us."
+            }
+        }
+
         /// Order updates open the order history; the reward opens the card.
         var isAboutAnOrder: Bool {
             switch self {
@@ -307,30 +327,35 @@ struct AppNotification: Identifiable, Codable, Equatable {
     var id = UUID()
     var kind: Kind
     var message: String
+    /// What fills the message's blank: the order reference, or the
+    /// customer's first name on the welcome. Kept so the message can be
+    /// written again in whichever language the app is showing.
+    var detail: String?
     /// When it happens. Order updates are filed at placement with the time
     /// each stage will be reached, and stay hidden until then.
     var date: Date
     var isRead = false
 
+    /// The message in the app's language. Notifications saved before the
+    /// detail was kept can only show the English they were written in.
+    var text: String {
+        if kind == .reward { return localized(kind.template) }
+        guard let detail else { return message }
+        return String(format: localized(kind.template), detail)
+    }
+
     /// "Just now", "12m ago", "3h ago", "Yesterday", then the date.
     func age(relativeTo now: Date) -> String {
         let seconds = now.timeIntervalSince(date)
         switch seconds {
-        case ..<60: return "Just now"
-        case ..<3600: return "\(Int(seconds / 60))m ago"
-        case ..<86_400: return "\(Int(seconds / 3600))h ago"
+        case ..<60: return localized("Just now")
+        case ..<3600: return String(format: localized("%lldm ago"), Int(seconds / 60))
+        case ..<86_400: return String(format: localized("%lldh ago"), Int(seconds / 3600))
         default:
-            if Calendar.current.isDateInYesterday(date) { return "Yesterday" }
-            return Self.dayFormatter.string(from: date)
+            if Calendar.current.isDateInYesterday(date) { return localized("Yesterday") }
+            return AppDate.day(date)
         }
     }
-
-    private static let dayFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "en_US_POSIX")
-        formatter.dateFormat = "MMM d"
-        return formatter
-    }()
 }
 
 enum AppLanguage: String, Codable, CaseIterable, Identifiable {

@@ -50,7 +50,7 @@ struct DeliveryAddressesView: View {
                 .frame(width: 26)
 
             VStack(alignment: .leading, spacing: 4) {
-                Text(address.kind.rawValue)
+                Text(LocalizedStringKey(address.kind.label))
                     .font(.subheadline.weight(.semibold))
                     .foregroundStyle(Color.matchaDarkGreen)
                 Text(address.oneLine)
@@ -105,7 +105,7 @@ struct AddressFormView: View {
 
                 HStack(spacing: 10) {
                     ForEach(SavedAddress.Kind.allCases) { option in
-                        OptionPillView(title: option.rawValue, isSelected: kind == option) {
+                        OptionPillView(title: option.label, isSelected: kind == option) {
                             kind = option
                         }
                     }
@@ -144,7 +144,7 @@ struct AddressFormView: View {
             .padding()
         }
         .accountBackground()
-        .navigationTitle(isEditing ? "Edit Address" : "Add New Address")
+        .navigationTitle(isEditing ? Text("Edit Address") : Text("Add New Address"))
         .navigationBarTitleDisplayMode(.inline)
         .onAppear(perform: prefill)
     }

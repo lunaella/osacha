@@ -34,7 +34,7 @@ struct EditProfileView: View {
                     }
 
                     PhotosPicker(selection: $pickedPhoto, matching: .images) {
-                        Text(session.profilePhoto == nil ? "Add Photo" : "Change Photo")
+                        (session.profilePhoto == nil ? Text("Add Photo") : Text("Change Photo"))
                             .font(.caption.weight(.semibold))
                             .foregroundStyle(Color.matchaGreen)
                     }

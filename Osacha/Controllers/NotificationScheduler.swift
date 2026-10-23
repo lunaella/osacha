@@ -38,8 +38,9 @@ final class NotificationScheduler: NSObject, UNUserNotificationCenterDelegate {
                 guard delay > 0 else { continue }
 
                 let content = UNMutableNotificationContent()
-                content.title = update.kind.title
-                content.body = update.message
+                // Written in the app's language as it stands when scheduled.
+                content.title = localized(update.kind.title)
+                content.body = update.text
                 content.sound = .default
 
                 let trigger = UNTimeIntervalNotificationTrigger(timeInterval: delay, repeats: false)

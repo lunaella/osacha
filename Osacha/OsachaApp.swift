@@ -13,6 +13,10 @@ struct OsachaApp: App {
     @StateObject private var session = AppSession()
     @StateObject private var navigator = NavigationCoordinator()
 
+    init() {
+        Bundle.followAppLanguage()
+    }
+
     var body: some Scene {
         WindowGroup {
             RootView()
@@ -33,11 +37,16 @@ private struct RootView: View {
     @EnvironmentObject private var session: AppSession
 
     var body: some View {
-        if session.hasLaunched {
-            ContentView()
-                .transition(.opacity)
-        } else {
-            SplashView()
+        Group {
+            if session.hasLaunched {
+                ContentView()
+                    .transition(.opacity)
+            } else {
+                SplashView()
+            }
         }
+        // Changing the locale makes every Text look its words up again, so
+        // switching language in Settings rewrites the whole app in place.
+        .environment(\.locale, session.language.locale)
     }
 }

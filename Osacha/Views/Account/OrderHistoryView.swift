@@ -42,7 +42,7 @@ struct OrderHistoryView: View {
                 Text("Order #\(order.reference)")
                     .font(.subheadline.weight(.semibold))
                     .foregroundStyle(Color.matchaDarkGreen)
-                Text(order.placedAt)
+                Text(order.placedAtText)
                     .font(.caption)
                     .foregroundStyle(.secondary)
                 Text(order.summary)
@@ -53,7 +53,7 @@ struct OrderHistoryView: View {
             Spacer()
 
             VStack(alignment: .trailing, spacing: 8) {
-                Text(order.status.rawValue)
+                Text(LocalizedStringKey(order.status.rawValue))
                     .font(.caption2.weight(.semibold))
                     .foregroundStyle(order.status.foreground)
                     .padding(.horizontal, 12)
@@ -160,9 +160,9 @@ struct OrderReceipt: View {
             ReceiptRule(title: "ORDER RECEIPT")
 
             VStack(alignment: .leading, spacing: 4) {
-                infoRow("Date:", order.placedAt)
+                infoRow("Date:", order.placedAtText)
                 infoRow("Order:", "#\(order.reference)")
-                infoRow("Method:", order.method == .pickup ? "Pickup" : "Delivery")
+                infoRow("Method:", localized(order.method.rawValue))
                 infoRow(order.method == .pickup ? "Ready:" : "Arrives:", order.readyAt)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -172,7 +172,7 @@ struct OrderReceipt: View {
             HStack {
                 Text("Status:")
                 Spacer()
-                Text(order.status.rawValue.uppercased())
+                Text(localized(order.status.rawValue).uppercased())
                     .fontWeight(.bold)
             }
             .font(.system(.subheadline, design: .monospaced))
@@ -186,7 +186,7 @@ struct OrderReceipt: View {
                         leaderRow(line.name, String(format: "x%02d", line.quantity))
                     }
                 } else {
-                    leaderRow("Items", String(format: "x%02d", order.itemCount))
+                    leaderRow(localized("Items"), String(format: "x%02d", order.itemCount))
                 }
             }
             .padding(.top, 4)
@@ -205,7 +205,7 @@ struct OrderReceipt: View {
                     ForEach(Array(stages.enumerated()), id: \.element) { index, stage in
                         HStack(spacing: 10) {
                             Text(index <= current ? "[x]" : "[ ]")
-                            Text(stage.rawValue.uppercased())
+                            Text(localized(stage.rawValue).uppercased())
                                 .fontWeight(index == current ? .bold : .regular)
                             Spacer()
                         }
@@ -221,7 +221,9 @@ struct OrderReceipt: View {
 
             VStack(spacing: 4) {
                 Text("THANK YOU")
-                    .kerning(10)
+                    // Spaced out like a till's banner; Japanese reads
+                    // better set close.
+                    .kerning(session.language == .english ? 10 : 2)
                 Text("ENJOY YOUR MATCHA")
             }
             .font(.system(.subheadline, design: .monospaced).weight(.semibold))
@@ -276,7 +278,7 @@ struct OrderReceipt: View {
         }
     }
 
-    private func infoRow(_ label: String, _ value: String) -> some View {
+    private func infoRow(_ label: LocalizedStringKey, _ value: String) -> some View {
         HStack(alignment: .firstTextBaseline, spacing: 0) {
             Text(label)
                 .frame(width: 90, alignment: .leading)
@@ -304,7 +306,7 @@ struct OrderReceipt: View {
 
 /// A row of asterisks across the receipt, with an optional heading set into it.
 private struct ReceiptRule: View {
-    var title: String?
+    var title: LocalizedStringKey?
 
     var body: some View {
         HStack(spacing: 8) {
@@ -412,7 +414,7 @@ struct NotificationsView: View {
                 .frame(width: 28)
 
             VStack(alignment: .leading, spacing: 5) {
-                Text(note.message)
+                Text(note.text)
                     .font(.caption.weight(note.isRead ? .regular : .semibold))
                     .foregroundStyle(Color.matchaDarkGreen)
                     .multilineTextAlignment(.leading)

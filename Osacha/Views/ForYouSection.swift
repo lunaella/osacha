@@ -23,7 +23,7 @@ struct ForYouSection: View {
                     ProductDetailView(item: offer.item, items: [offer.item])
                 } label: {
                     offerRow(image: offer.item.imageName,
-                             eyebrow: offer.headline,
+                             eyebrow: localized(offer.headline),
                              title: offer.item.name,
                              detail: offer.item.price.asPHP)
                 }
@@ -34,7 +34,7 @@ struct ForYouSection: View {
                         ProductDetailView(item: suggestion, items: [suggestion])
                     } label: {
                         offerRow(image: suggestion.imageName,
-                                 eyebrow: "Loved \(offer.item.name)? Try",
+                                 eyebrow: String(format: localized("Loved %@? Try"), offer.item.name),
                                  title: suggestion.name,
                                  detail: suggestion.price.asPHP)
                     }

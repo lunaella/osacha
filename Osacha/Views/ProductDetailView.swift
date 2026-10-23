@@ -221,7 +221,7 @@ struct ProductDetailView: View {
                 .padding(.horizontal, 24)
                 .fixedSize(horizontal: false, vertical: true)
 
-            Text(item.itemDescription)
+            Text(LocalizedStringKey(item.itemDescription))
                 .font(.footnote)
                 .foregroundStyle(Color.matchaDarkGreen.opacity(0.75))
                 .multilineTextAlignment(.center)
@@ -325,7 +325,7 @@ struct ProductDetailView: View {
                         dismiss()
                     }
                 } label: {
-                    Text(didAddToCart ? "Added!" : "Add to cart · \(totalPrice.asPHP)")
+                    (didAddToCart ? Text("Added!") : Text("Add to cart · \(totalPrice.asPHP)"))
                         .font(.headline)
                         .foregroundStyle(.white)
                         .frame(maxWidth: .infinity)
@@ -366,7 +366,7 @@ struct ProductDetailView: View {
     @ViewBuilder
     private func optionPageView(for page: OptionPage) -> some View {
         VStack(spacing: 12) {
-            Text(page == .milk ? "Milk" : "Size")
+            (page == .milk ? Text("Milk") : Text("Size"))
                 .font(.headline.bold())
                 .foregroundStyle(Color.matchaDarkGreen)
 

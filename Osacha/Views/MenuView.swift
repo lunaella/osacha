@@ -62,7 +62,7 @@ struct MenuView: View {
             .padding(.bottom, 12)
 
             if let heading = category?.menuHeading {
-                Text(heading)
+                Text(LocalizedStringKey(heading))
                     .font(.title3.bold())
                     .foregroundStyle(Color.matchaDarkGreen)
                     .frame(maxWidth: .infinity, alignment: .leading)

@@ -20,11 +20,11 @@ struct CategoryCardView: View {
             Color.clear
                 .frame(height: 120 - imageLift)
 
-            Text(category.title)
+            Text(LocalizedStringKey(category.title))
                 .font(.headline)
                 .foregroundStyle(Color.matchaDarkGreen)
 
-            Text(category.subtitle)
+            Text(LocalizedStringKey(category.subtitle))
                 .font(.caption2)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)

@@ -18,7 +18,8 @@ struct OptionPillView: View {
     var body: some View {
         Button(action: action) {
             VStack(spacing: 1) {
-                Text(title)
+                // Option names are translation keys, e.g. "Oat" or "Pickup".
+                Text(LocalizedStringKey(title))
                     .font(.subheadline.weight(.semibold))
 
                 if let detail {

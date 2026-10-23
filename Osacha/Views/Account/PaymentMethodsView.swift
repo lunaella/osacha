@@ -57,7 +57,7 @@ struct PaymentMethodsView: View {
                 Text(method.title)
                     .font(.subheadline.weight(.semibold))
                     .foregroundStyle(Color.matchaDarkGreen)
-                Text(method.subtitle)
+                Text(method.displaySubtitle)
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
@@ -114,7 +114,7 @@ struct AddPaymentMethodView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
                 if let prompt {
-                    Text(prompt)
+                    Text(LocalizedStringKey(prompt))
                         .font(.subheadline)
                         .foregroundStyle(Color.matchaDarkGreen.opacity(0.8))
                         .padding(.bottom, 4)

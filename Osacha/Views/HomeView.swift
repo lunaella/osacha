@@ -14,10 +14,10 @@ struct HomeView: View {
 
     /// Guests have no name to greet, and have not been here before as far as
     /// the app knows, so they get the neutral welcome instead of "back".
-    private var greeting: String {
+    private var greeting: Text {
         session.isSignedIn
-            ? "Hello \(session.profile.firstName),\nWelcome back!"
-            : "Hello there,\nWelcome to Osacha!"
+            ? Text("Hello \(session.profile.firstName),\nWelcome back!")
+            : Text("Hello there,\nWelcome to Osacha!")
     }
 
     var body: some View {
@@ -29,7 +29,7 @@ struct HomeView: View {
                     .frame(height: 120)
                     .padding(.top, 12)
 
-                Text(greeting)
+                greeting
                     .font(.title2.bold())
                     .foregroundStyle(Color.matchaDarkGreen)
                     .multilineTextAlignment(.center)

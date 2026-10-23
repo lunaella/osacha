@@ -12,6 +12,8 @@ struct CartRowView: View {
     let entry: CartEntry
 
     @EnvironmentObject private var controller: OrderController
+    /// Read so the options line is rebuilt when the language changes.
+    @Environment(\.locale) private var locale
 
     var body: some View {
         HStack(alignment: .top, spacing: 14) {
@@ -28,6 +30,7 @@ struct CartRowView: View {
                 let configParts = [entry.size?.rawValue, entry.milk?.rawValue,
                                     entry.withIceCream ? "With Ice Cream" : nil]
                     .compactMap { $0 }
+                    .map(localized)
                 if !configParts.isEmpty {
                     Text(configParts.joined(separator: " · "))
                         .font(.caption)

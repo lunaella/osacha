@@ -150,7 +150,7 @@ struct PrivacyView: View {
         }
     }
 
-    private func toggleRow(_ title: String, caption: String, isOn: Binding<Bool>) -> some View {
+    private func toggleRow(_ title: LocalizedStringKey, caption: LocalizedStringKey, isOn: Binding<Bool>) -> some View {
         Toggle(isOn: isOn) {
             VStack(alignment: .leading, spacing: 2) {
                 Text(title)
@@ -168,6 +168,21 @@ struct PrivacyView: View {
 }
 
 struct HelpSupportView: View {
+    /// Where support email goes, and the store's line. The number is a
+    /// placeholder until the café has a real one.
+    static let supportEmail = "osacha@business.co"
+    static let storePhone = "+63 2 8123 4567"
+
+    @Environment(\.openURL) private var openURL
+    /// Set when the phone has no app for the link, e.g. Mail or calls on a
+    /// simulator or an iPad, so the address or number can be shown instead.
+    @State private var unreachable: Contact?
+
+    private enum Contact: Identifiable {
+        case email, phone
+        var id: Self { self }
+    }
+
     private let faqs: [(String, String)] = [
         ("How do I track my order?", "Open Profile › Order History and tap any active order to see its live status and pickup time."),
         ("Can I change my order?", "You can edit or cancel within 2 minutes of placing it — before the barista starts preparing."),
@@ -187,13 +202,13 @@ struct HelpSupportView: View {
             VStack(spacing: 0) {
                 ForEach(Array(faqs.enumerated()), id: \.offset) { index, faq in
                     DisclosureGroup {
-                        Text(faq.1)
+                        Text(LocalizedStringKey(faq.1))
                             .font(.caption)
                             .foregroundStyle(Color.matchaDarkGreen.opacity(0.7))
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(.bottom, 12)
                     } label: {
-                        Text(faq.0)
+                        Text(LocalizedStringKey(faq.0))
                             .font(.subheadline.weight(.semibold))
                             .foregroundStyle(Color.matchaDarkGreen)
                             .padding(.vertical, 14)
@@ -215,18 +230,51 @@ struct HelpSupportView: View {
                 .padding(.top, 24)
 
             VStack(spacing: 0) {
-                AccountRow(icon: "bubble.left.and.bubble.right.fill", title: "Chat with us", value: "24/7")
+                NavigationLink { SupportChatView() } label: {
+                    AccountRow(icon: "bubble.left.and.bubble.right.fill", title: "Chat with us", value: "24/7")
+                }
                 RowDivider()
-                AccountRow(icon: "envelope.fill", title: "Email support", value: "1–2 days")
+                Button { open(.email) } label: {
+                    AccountRow(icon: "envelope.fill", title: "Email support", value: "1–2 days")
+                }
                 RowDivider()
-                AccountRow(icon: "phone.fill", title: "Call the store", value: "9AM–8PM")
+                Button { open(.phone) } label: {
+                    AccountRow(icon: "phone.fill", title: "Call the store", value: "9AM–8PM")
+                }
             }
+            .buttonStyle(.plain)
             .accountCard()
             .padding()
         }
         .accountBackground()
         .navigationTitle("Help & Support")
         .navigationBarTitleDisplayMode(.inline)
+        .alert(item: $unreachable) { contact in
+            switch contact {
+            case .email:
+                return Alert(title: Text("Couldn't open Mail"),
+                             message: Text("Email us at \(Self.supportEmail)"))
+            case .phone:
+                return Alert(title: Text("Couldn't start a call"),
+                             message: Text("Call us at \(Self.storePhone)"))
+            }
+        }
+    }
+
+    /// Opens a new email to support, or the phone app with the store's
+    /// number filled in, ready to call.
+    private func open(_ contact: Contact) {
+        let link: String
+        switch contact {
+        case .email:
+            link = "mailto:\(Self.supportEmail)?subject=\(localized("Osacha support").addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")"
+        case .phone:
+            link = "tel:" + Self.storePhone.filter { $0.isNumber || $0 == "+" }
+        }
+        guard let url = URL(string: link) else { return }
+        openURL(url) { accepted in
+            if !accepted { unreachable = contact }
+        }
     }
 }
 

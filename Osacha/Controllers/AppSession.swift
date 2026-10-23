@@ -33,7 +33,9 @@ final class AppSession: ObservableObject {
     /// The customer's stamp card. Stamps are earned by placing orders.
     @Published private(set) var loyalty = LoyaltyCard()
 
-    @Published var language: AppLanguage = .english
+    @Published var language: AppLanguage = .english {
+        didSet { AppLanguage.current = language }
+    }
 
     @Published var locationServices = true
     @Published var orderTracking = true
@@ -142,7 +144,7 @@ final class AppSession: ObservableObject {
         profile.fullName = fullName.trimmingCharacters(in: .whitespaces)
         profile.address = address.oneLine
         addresses.insert(address, at: 0)
-        notify(.welcome, "Welcome to Osacha, \(profile.firstName)! Your loyalty card is ready — every order earns a stamp.")
+        notify(.welcome, detail: profile.firstName)
         isSignedIn = true
         persist()
     }
@@ -292,27 +294,17 @@ final class AppSession: ObservableObject {
         // Catch the clock up first so the "placed" update shows immediately.
         self.now = now
         let ref = "#\(order.reference)"
-        var updates = [AppNotification(kind: .orderPlaced,
-                                       message: "Order \(ref) placed — we're preparing it now.",
-                                       date: now)]
+        var updates = [update(.orderPlaced, detail: ref, at: now)]
         let ready = now.addingTimeInterval(PastOrder.preparingDuration)
         switch fulfillment {
         case .pickup:
-            updates.append(AppNotification(kind: .orderReady,
-                                           message: "Order \(ref) is ready for pickup! Show your order number at the counter.",
-                                           date: ready))
+            updates.append(update(.orderReady, detail: ref, at: ready))
         case .delivery:
-            updates.append(AppNotification(kind: .outForDelivery,
-                                           message: "Order \(ref) is out for delivery.",
-                                           date: ready))
-            updates.append(AppNotification(kind: .delivered,
-                                           message: "Order \(ref) has been delivered. Enjoy your matcha!",
-                                           date: now.addingTimeInterval(PastOrder.deliveryDuration)))
+            updates.append(update(.outForDelivery, detail: ref, at: ready))
+            updates.append(update(.delivered, detail: ref, at: now.addingTimeInterval(PastOrder.deliveryDuration)))
         }
         if awardLoyaltyStamp() {
-            updates.append(AppNotification(kind: .reward,
-                                           message: "You earned a free matcha! Your 10th drink is on us.",
-                                           date: now))
+            updates.append(update(.reward, detail: nil, at: now))
         }
         notifications.append(contentsOf: updates)
 
@@ -363,9 +355,18 @@ final class AppSession: ObservableObject {
         if changed { persist() }
     }
 
-    private func notify(_ kind: AppNotification.Kind, _ message: String) {
+    private func notify(_ kind: AppNotification.Kind, detail: String) {
         now = Date()
-        notifications.append(AppNotification(kind: kind, message: message, date: now))
+        notifications.append(update(kind, detail: detail, at: now))
+    }
+
+    /// A notification whose message is written from its kind and detail, so
+    /// it can be shown again in either language.
+    private func update(_ kind: AppNotification.Kind, detail: String?, at date: Date) -> AppNotification {
+        AppNotification(kind: kind,
+                        message: String(format: kind.template, detail ?? ""),
+                        detail: detail,
+                        date: date)
     }
 
     // MARK: - Loyalty
@@ -419,6 +420,7 @@ final class AppSession: ObservableObject {
         if let raw = defaults.string(forKey: languageKey), let value = AppLanguage(rawValue: raw) {
             language = value
         }
+        AppLanguage.current = language
         // Privacy choices; anything never set keeps its default.
         if defaults.object(forKey: locationKey) != nil { locationServices = defaults.bool(forKey: locationKey) }
         if defaults.object(forKey: trackingKey) != nil { orderTracking = defaults.bool(forKey: trackingKey) }

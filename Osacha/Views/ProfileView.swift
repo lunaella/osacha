@@ -87,7 +87,7 @@ struct ProfileView: View {
                                 Image(systemName: row.icon)
                                     .foregroundStyle(Color.matchaGreen)
                                     .frame(width: 28)
-                                Text(row.rawValue)
+                                Text(LocalizedStringKey(row.rawValue))
                                     .foregroundStyle(Color.matchaDarkGreen)
                                 Spacer()
                                 if row == .notifications, session.unreadNotificationCount > 0 {

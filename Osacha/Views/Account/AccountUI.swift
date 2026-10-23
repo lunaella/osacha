@@ -34,7 +34,9 @@ extension View {
     func accountCard() -> some View { modifier(AccountCard()) }
 }
 
-/// One tappable row: icon, title, optional trailing value, chevron.
+/// One tappable row: icon, title, optional trailing value, chevron. The
+/// title and value are looked up as translation keys, so a literal passed in
+/// shows in the app's language and anything else shows as it is.
 struct AccountRow: View {
     let icon: String
     let title: String
@@ -47,14 +49,14 @@ struct AccountRow: View {
                 .foregroundStyle(isDestructive ? Color.red : Color.matchaGreen)
                 .frame(width: 26)
 
-            Text(title)
+            Text(LocalizedStringKey(title))
                 .font(.subheadline.weight(.semibold))
                 .foregroundStyle(isDestructive ? Color.red : Color.matchaDarkGreen)
 
             Spacer()
 
             if let value {
-                Text(value)
+                Text(LocalizedStringKey(value))
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
@@ -100,11 +102,11 @@ struct AccountField: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
-            Text(label)
+            Text(LocalizedStringKey(label))
                 .font(.caption.weight(.semibold))
                 .foregroundStyle(Color.matchaDarkGreen.opacity(0.7))
 
-            TextField(placeholder, text: $text)
+            TextField(LocalizedStringKey(placeholder), text: $text)
                 .font(.subheadline)
                 .padding(.horizontal, 14)
                 .padding(.vertical, 14)
@@ -118,7 +120,7 @@ struct PrimaryButtonLabel: View {
     let title: String
 
     var body: some View {
-        Text(title)
+        Text(LocalizedStringKey(title))
             .font(.headline)
             .foregroundStyle(.white)
             .frame(maxWidth: .infinity)

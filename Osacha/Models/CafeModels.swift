@@ -17,6 +17,7 @@ enum Cafe {
     /// Placeholder location until the café has a real one: Maginhawa Street,
     /// Quezon City.
     static let coordinate = CLLocationCoordinate2D(latitude: 14.6467, longitude: 121.0587)
+    static let address = "Maginhawa Street, Quezon City"
 
     /// Pickup times are offered on the quarter hour.
     static let slotLength: TimeInterval = 15 * 60

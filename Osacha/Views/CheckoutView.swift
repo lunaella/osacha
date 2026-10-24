@@ -68,6 +68,7 @@ struct CheckoutView: View {
                     }
                 case .pickup:
                     sectionTitle("Pick up at")
+                    CafeMapView(mapHeight: 150)
                     pickupCard
                     sectionTitle("Pickup time")
                         .padding(.top, 10)

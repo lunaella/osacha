@@ -36,6 +36,7 @@
 		B73AD1210A53F6F05FE077FF /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF43ADEE7DF8E9A82E0512D /* SettingsView.swift */; };
 		BC4746C79435A79DC087016E /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = A14DFAA1267A96E90DDFAAB3 /* Localizable.xcstrings */; };
 		BDFC4951F0611AED5FBCEBC2 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042DDD0F8082D7495652CCDA /* MenuView.swift */; };
+		BF96301C7BC35177A50BD79D /* CafeMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21756AD11AE9587626F3048 /* CafeMapView.swift */; };
 		C833F1BE3F5639F7081EF3E4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FC8173DA04568225E6C3C6F9 /* Assets.xcassets */; };
 		C91C3338781AB30FFDD7E554 /* ProductDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15646D5C8AB5D5D0E0270372 /* ProductDetailView.swift */; };
 		CA7ACCF852E993EA31574274 /* PaymentMethodsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB09CE17621A9F2897AB106A /* PaymentMethodsView.swift */; };
@@ -87,6 +88,7 @@
 		C889005A87422F9CC0C7BD4A /* Localization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Localization.swift; sourceTree = "<group>"; };
 		CAA42EFD4F3C1E9566AF2CEF /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		CB09CE17621A9F2897AB106A /* PaymentMethodsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodsView.swift; sourceTree = "<group>"; };
+		D21756AD11AE9587626F3048 /* CafeMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CafeMapView.swift; sourceTree = "<group>"; };
 		D708689FB3FBE0DCA3DDA445 /* CartRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartRowView.swift; sourceTree = "<group>"; };
 		D7C8C52C8E26AAD492343C00 /* DeliveryAddressesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryAddressesView.swift; sourceTree = "<group>"; };
 		DC0B5184B7B0886057A6622F /* AccountModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountModels.swift; sourceTree = "<group>"; };
@@ -133,6 +135,7 @@
 			isa = PBXGroup;
 			children = (
 				3369BFFAFF5DE2515C0D24E5 /* AccountUI.swift */,
+				D21756AD11AE9587626F3048 /* CafeMapView.swift */,
 				D7C8C52C8E26AAD492343C00 /* DeliveryAddressesView.swift */,
 				C6B43DCF22231D12AEA2684F /* EditProfileView.swift */,
 				A408E81EE43DE8929A215102 /* LoyaltyCardView.swift */,
@@ -278,6 +281,7 @@
 				15C510A792F5CBBCE417A640 /* AccountModels.swift in Sources */,
 				A42141F0A0DAA76801932BBA /* AccountUI.swift in Sources */,
 				723135245FB670E0C1F248BA /* AppSession.swift in Sources */,
+				BF96301C7BC35177A50BD79D /* CafeMapView.swift in Sources */,
 				6BD0B49D41250330BD3FE4DC /* CafeModels.swift in Sources */,
 				E965E55E25021C1962289EE4 /* CartRowView.swift in Sources */,
 				FFE65FE60FC5B8147BC93DE4 /* CartView.swift in Sources */,

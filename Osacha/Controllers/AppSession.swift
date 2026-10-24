@@ -315,7 +315,7 @@ final class AppSession: ObservableObject {
             updates.append(update(.outForDelivery, detail: ref, at: outForDelivery))
             updates.append(update(.delivered, detail: ref, at: ready))
         }
-        if awardLoyaltyStamp() {
+        if order.earnsStamp, awardLoyaltyStamp() {
             updates.append(update(.reward, detail: nil, at: now))
         }
         notifications.append(contentsOf: updates)

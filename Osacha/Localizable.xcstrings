@@ -1081,6 +1081,16 @@
         }
       }
     },
+    "Directions": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "経路"
+          }
+        }
+      }
+    },
     "Double tap to turn the card over": {
       "localizations": {
         "ja": {
@@ -1241,12 +1251,12 @@
         }
       }
     },
-    "Every order adds a stamp to your card. Collect 9 and your 10th matcha is on us — see Profile › Loyalty Card.": {
+    "Every order with a drink adds a stamp to your card. Collect 9 and your 10th matcha is on us — see Profile › Loyalty Card.": {
       "localizations": {
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "ご注文ごとにスタンプが1つ貯まります。9個集めると10杯目の抹茶が無料です。プロフィール › ポイントカードでご確認ください。"
+            "value": "ドリンクを含むご注文ごとにスタンプが1つ貯まります。9個集めると10杯目の抹茶が無料です。プロフィール › ポイントカードでご確認ください。"
           }
         }
       }
@@ -1547,6 +1557,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "会員QRを隠す"
+          }
+        }
+      }
+    },
+    "Hide receipt": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "レシートを閉じる"
           }
         }
       }
@@ -1853,6 +1873,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "最高級の抹茶となめらかなミルクで作る抹茶ラテ。抹茶本来の味わいを生かした、クリーミーで毎日楽しめる一杯です。"
+          }
+        }
+      }
+    },
+    "Maginhawa Street, Quezon City": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "マギンハワ通り、ケソン市"
           }
         }
       }
@@ -2257,6 +2287,26 @@
         }
       }
     },
+    "Order a drink to earn your first stamp.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ドリンクを注文して最初のスタンプをゲットしましょう。"
+          }
+        }
+      }
+    },
+    "Order details": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "注文内容"
+          }
+        }
+      }
+    },
     "Order placed": {
       "localizations": {
         "ja": {
@@ -2273,6 +2323,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "ご注文で最初のスタンプを集めましょう。"
+          }
+        }
+      }
+    },
+    "Order status": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "注文状況"
           }
         }
       }
@@ -2487,6 +2547,16 @@
         }
       }
     },
+    "Pickup at %@": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@に受け取り"
+          }
+        }
+      }
+    },
     "Pickup booked": {
       "localizations": {
         "ja": {
@@ -2593,6 +2663,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "5つ星中%lldの評価"
+          }
+        }
+      }
+    },
+    "Ready about %@": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ごろ受け取り可能"
           }
         }
       }
@@ -2937,6 +3017,16 @@
         }
       }
     },
+    "Show receipt": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "レシートを表示"
+          }
+        }
+      }
+    },
     "Show stamps": {
       "localizations": {
         "ja": {
@@ -3147,22 +3237,22 @@
         }
       }
     },
+    "Thanks for ordering!": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ご注文ありがとうございました！"
+          }
+        }
+      }
+    },
     "Thanks for the details! I'm checking on this now and will update you right here.": {
       "localizations": {
         "ja": {
           "stringUnit": {
             "state": "translated",
             "value": "詳しく教えていただきありがとうございます！ただいま確認しておりますので、こちらでお知らせします。"
-          }
-        }
-      }
-    },
-    "Thanks for your order — your matcha will be ready shortly.": {
-      "localizations": {
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "ご注文ありがとうございます。まもなく抹茶をご用意します。"
           }
         }
       }
@@ -3397,6 +3487,16 @@
         }
       }
     },
+    "Waiting for you at the counter": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "カウンターでお待ちしています"
+          }
+        }
+      }
+    },
     "We accept cards, GCash and Maya. Add or change one under Profile › Payment Methods.": {
       "localizations": {
         "ja": {
@@ -3533,6 +3633,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "鮮やかな抹茶にやさしく香るローズを合わせた、なめらかでクリーミーなラテ。ほのかなローズの甘さと抹茶の深みが溶け合う、爽やかで穏やかな一杯です。"
+          }
+        }
+      }
+    },
+    "Whisking your order now. It'll be at your door before you can say matcha.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ただいま抹茶を点てています。「抹茶」と言う間にお届けします。"
+          }
+        }
+      }
+    },
+    "Whisking your order now. Your matcha will be ready in a whisk.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ただいま抹茶を点てています。あっという間にご用意します。"
           }
         }
       }
@@ -3683,6 +3803,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "おすすめがオンになっています。ご注文いただくと、お好みに合わせたおすすめをお届けします。"
+          }
+        }
+      }
+    },
+    "Your order will be waiting here": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "こちらでご注文をお渡しします"
+          }
+        }
+      }
+    },
+    "Your pickup is booked. We'll start whisking just before you arrive.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "受け取りのご予約が完了しました。ご来店の少し前に点て始めます。"
           }
         }
       }

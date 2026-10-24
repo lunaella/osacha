@@ -68,9 +68,23 @@ final class OrderController: ObservableObject {
     }
 
     func addToCart(item: MatchaItem, size: DrinkSize?, milk: MilkOption?, withIceCream: Bool = false, quantity: Int) {
-        let entry = CartEntry(id: UUID(), item: item, size: size, milk: milk, withIceCream: withIceCream, quantity: quantity)
-        cart.append(entry)
+        merge(item: item, size: size, milk: milk, withIceCream: withIceCream, quantity: quantity)
         saveCart()
+    }
+
+    /// Adds to the line already holding this item with the same choices, so
+    /// ordering the same thing twice raises its quantity instead of listing
+    /// it again. Items are matched by name: their ids are made fresh each
+    /// launch, so a saved cart's ids never match the menu's.
+    private func merge(item: MatchaItem, size: DrinkSize?, milk: MilkOption?, withIceCream: Bool, quantity: Int) {
+        if let index = cart.firstIndex(where: {
+            $0.item.name == item.name && $0.size == size && $0.milk == milk && $0.withIceCream == withIceCream
+        }) {
+            cart[index].quantity += quantity
+        } else {
+            cart.append(CartEntry(id: UUID(), item: item, size: size, milk: milk,
+                                  withIceCream: withIceCream, quantity: quantity))
+        }
     }
 
     func updateQuantity(for entry: CartEntry, quantity: Int) {
@@ -102,8 +116,7 @@ final class OrderController: ObservableObject {
                 : nil
             let milk = item.hasMilkOptions ? (line.milk ?? .regular) : nil
             let iceCream = item.hasIceCreamOption && line.withIceCream == true
-            cart.append(CartEntry(id: UUID(), item: item, size: size, milk: milk,
-                                  withIceCream: iceCream, quantity: line.quantity))
+            merge(item: item, size: size, milk: milk, withIceCream: iceCream, quantity: line.quantity)
             added += line.quantity
         }
         saveCart()
@@ -129,7 +142,11 @@ final class OrderController: ObservableObject {
     private func loadCart() {
         guard let data = UserDefaults.standard.data(forKey: cartKey),
               let decoded = try? JSONDecoder().decode([CartEntry].self, from: data) else { return }
-        cart = decoded
+        // Folds together any repeats saved before lines were merged.
+        for entry in decoded where entry.quantity > 0 {
+            merge(item: entry.item, size: entry.size, milk: entry.milk,
+                  withIceCream: entry.withIceCream, quantity: entry.quantity)
+        }
     }
 
     private func saveCart() {

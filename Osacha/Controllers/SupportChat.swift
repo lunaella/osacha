@@ -151,7 +151,7 @@ final class SupportChat: ObservableObject {
         case .track: return "You can follow any order under Profile › Order History — tap an order that's still on its way to see its receipt and live status."
         case .delivery: return "We deliver across Quezon City and Makati, with more areas opening soon. You can also pick up at the café."
         case .hours: return "We're open every day from 9AM to 8PM."
-        case .loyalty: return "Every order adds a stamp to your card. Collect 9 and your 10th matcha is on us — see Profile › Loyalty Card."
+        case .loyalty: return "Every order with a drink adds a stamp to your card. Collect 9 and your 10th matcha is on us — see Profile › Loyalty Card."
         case .payment: return "We accept cards, GCash and Maya. Add or change one under Profile › Payment Methods."
         case .menu: return "Our Matcha Cloud Tiramisu Latte is a favourite, and the sakura menu is here for the season. Have a look in Search!"
         case .greeting: return "Hello! What can I help you with today?"

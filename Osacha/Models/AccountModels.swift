@@ -191,6 +191,9 @@ struct OrderLine: Codable, Equatable {
     }
 
     /// "Grande · Oat", for the receipt.
+    /// Drinks are the items ordered in a size; desserts have none.
+    var isDrink: Bool { size != nil }
+
     var options: String {
         [size?.rawValue, milk?.rawValue, withIceCream == true ? "With Ice Cream" : nil]
             .compactMap { $0 }
@@ -312,6 +315,14 @@ struct PastOrder: Identifiable, Codable {
         case .delivery:
             return [.preparing, .outForDelivery, .delivered]
         }
+    }
+
+    /// Only orders with a drink in them earn a loyalty stamp, since the card
+    /// rewards matcha, not pastries. Orders saved before their lines were
+    /// kept can't be told apart, so they count.
+    var earnsStamp: Bool {
+        guard let lines, !lines.isEmpty else { return true }
+        return lines.contains(where: \.isDrink)
     }
 
     /// The total before any reward came off.

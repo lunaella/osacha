@@ -190,12 +190,14 @@ private extension OrderStatus {
     }
 }
 
-/// Follows one order on its printed receipt. The full history is a tap away
-/// in the toolbar, so it doesn't crowd out what the customer is waiting on.
+/// Follows one order: where it is now first, then what was in it. The
+/// receipt was already printed on the confirmation, so here it stays folded
+/// away until asked for. The full history is a tap away in the toolbar.
 struct TrackOrderView: View {
     let order: PastOrder
 
     @EnvironmentObject private var session: AppSession
+    @State private var showsReceipt = false
 
     /// This order as the session has it now, so a rating shows once given.
     private var current: PastOrder {
@@ -206,16 +208,30 @@ struct TrackOrderView: View {
         // Reading the clock moves the screen on as the order does.
         let _ = session.now
         ScrollView {
-            VStack(spacing: 16) {
+            VStack(alignment: .leading, spacing: 28) {
                 if current.method == .delivery, current.placedDate != nil {
                     RiderTrackingView(order: current)
+                } else if current.method == .pickup {
+                    CafeMapView()
                 }
-                if current.awaitsRating {
-                    RateOrderPrompt(order: current)
+
+                section("Order status") {
+                    statusCard
+                    if current.awaitsRating {
+                        RateOrderPrompt(order: current)
+                    }
                 }
-                OrderReceipt(order: current)
+
+                section("Order details") {
+                    detailsCard
+                    if showsReceipt {
+                        OrderReceipt(order: current, showsProgress: false)
+                            .transition(.opacity)
+                    }
+                }
             }
             .padding()
+            .animation(.easeInOut(duration: 0.25), value: showsReceipt)
         }
         .background(Color.matchaSage.ignoresSafeArea())
         .toolbarBackground(Color.matchaSageDeep, for: .navigationBar)
@@ -233,6 +249,140 @@ struct TrackOrderView: View {
                 }
                 .accessibilityLabel("Order History")
             }
+        }
+    }
+
+    /// A titled block with a rule above it, so the map, the status and the
+    /// order read as separate parts of the screen.
+    private func section<Content: View>(_ title: LocalizedStringKey,
+                                        @ViewBuilder content: () -> Content) -> some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack(spacing: 10) {
+                Text(title)
+                    .font(.headline)
+                    .foregroundStyle(Color.matchaDarkGreen)
+                Rectangle()
+                    .fill(Color.matchaDarkGreen.opacity(0.2))
+                    .frame(height: 1)
+            }
+            content()
+        }
+    }
+
+    // MARK: - Status
+
+    private var statusCard: some View {
+        let stages = current.stages
+        let reached = stages.firstIndex(of: current.status) ?? 0
+
+        return VStack(alignment: .leading, spacing: 18) {
+            HStack(spacing: 14) {
+                Image(systemName: current.status.symbol)
+                    .font(.title3)
+                    .foregroundStyle(current.status.foreground)
+                    .frame(width: 48, height: 48)
+                    .background(Circle().fill(current.status.background))
+                VStack(alignment: .leading, spacing: 3) {
+                    Text(LocalizedStringKey(current.status.rawValue))
+                        .font(.title3.bold())
+                    Text(statusDetail)
+                        .font(.subheadline)
+                        .opacity(0.7)
+                }
+                .foregroundStyle(Color.matchaDarkGreen)
+            }
+
+            // One step per stage, filled in up to where the order is.
+            HStack(alignment: .top, spacing: 6) {
+                ForEach(Array(stages.enumerated()), id: \.element) { index, stage in
+                    VStack(alignment: .leading, spacing: 6) {
+                        Capsule()
+                            .fill(index <= reached ? Color.matchaGreen : Color.matchaDarkGreen.opacity(0.15))
+                            .frame(height: 6)
+                        Text(LocalizedStringKey(stage.rawValue))
+                            .font(.caption2.weight(index == reached ? .bold : .regular))
+                            .foregroundStyle(Color.matchaDarkGreen.opacity(index <= reached ? 1 : 0.5))
+                            .lineLimit(2)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                }
+            }
+        }
+        .padding(18)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(RoundedRectangle(cornerRadius: 22, style: .continuous).fill(Color.matchaCardCream))
+    }
+
+    /// What the customer is waiting for, in a line.
+    private var statusDetail: String {
+        let time = current.readyDate.map(AppDate.time) ?? current.readyAt
+        switch current.status {
+        case .scheduled: return String(format: localized("Pickup at %@"), time)
+        case .preparing:
+            return String(format: localized(current.method == .delivery ? "Arrives about %@" : "Ready about %@"), time)
+        case .outForDelivery: return String(format: localized("Arrives about %@"), time)
+        case .ready: return localized("Waiting for you at the counter")
+        case .completed, .delivered: return localized("Thanks for ordering!")
+        }
+    }
+
+    // MARK: - Details
+
+    private var detailsCard: some View {
+        VStack(spacing: 0) {
+            HStack(alignment: .top) {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Order #\(current.reference)")
+                        .font(.subheadline.weight(.semibold))
+                    Text(current.placedAtText)
+                        .font(.caption)
+                        .opacity(0.7)
+                    Text(current.summary)
+                        .font(.caption)
+                        .opacity(0.7)
+                }
+                Spacer()
+                Text(LocalizedStringKey(current.method.rawValue))
+                    .font(.caption2.weight(.semibold))
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 6)
+                    .background(Capsule().fill(Color.matchaSage))
+            }
+            .foregroundStyle(Color.matchaDarkGreen)
+            .padding(16)
+
+            Divider()
+
+            Button {
+                showsReceipt.toggle()
+            } label: {
+                HStack {
+                    Image(systemName: "doc.plaintext")
+                    Text(showsReceipt ? "Hide receipt" : "Show receipt")
+                    Spacer()
+                    Image(systemName: "chevron.down")
+                        .rotationEffect(.degrees(showsReceipt ? 180 : 0))
+                }
+                .font(.subheadline.weight(.semibold))
+                .foregroundStyle(Color.matchaGreen)
+                .padding(16)
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+        }
+        .background(RoundedRectangle(cornerRadius: 22, style: .continuous).fill(Color.matchaCardCream))
+    }
+}
+
+private extension OrderStatus {
+    var symbol: String {
+        switch self {
+        case .scheduled: return "calendar.badge.clock"
+        case .preparing: return "cup.and.saucer.fill"
+        case .ready: return "bag.fill"
+        case .outForDelivery: return "bicycle"
+        case .completed, .delivered: return "checkmark.circle.fill"
         }
     }
 }

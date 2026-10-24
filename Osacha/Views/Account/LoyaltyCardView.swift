@@ -142,7 +142,7 @@ struct LoyaltyCardView: View {
                 .foregroundStyle(Color.matchaDarkGreen)
 
             (session.loyalty.stamps == 0
-                 ? Text("Order something to earn your first stamp.")
+                 ? Text("Order a drink to earn your first stamp.")
                  : Text("\(session.loyalty.stampsRemaining) more and your 10th matcha is on us."))
                 .font(.subheadline)
                 .foregroundStyle(.secondary)

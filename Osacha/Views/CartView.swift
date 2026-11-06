@@ -65,15 +65,14 @@ struct CartView: View {
         }
     }
 
-    /// The Osacha badge, and a way back to the menu.
+    /// The Osacha bowl and whisk, and a way back to the menu.
     private var emptyState: some View {
         VStack(spacing: 10) {
             Image("OsachaBadge")
                 .resizable()
                 .scaledToFit()
-                .frame(width: 120, height: 120)
-                .clipShape(RoundedRectangle(cornerRadius: 28, style: .continuous))
-                .shadow(color: Color.matchaDarkGreen.opacity(0.2), radius: 12, y: 6)
+                .frame(width: 130, height: 130)
+                .shadow(color: Color.matchaDarkGreen.opacity(0.15), radius: 8, y: 4)
                 .accessibilityHidden(true)
                 .padding(.bottom, 14)
 

@@ -100,10 +100,47 @@ struct AddPaymentMethodView: View {
     private var canSave: Bool {
         switch kind {
         case .card:
-            return cardNumber.filter(\.isNumber).count >= 4 && !expiry.trimmingCharacters(in: .whitespaces).isEmpty
+            return cardNumber.filter(\.isNumber).count >= 4 && Self.isValidExpiry(expiry)
         case .gcash, .maya:
             return mobileNumber.filter(\.isNumber).count == 10 && !holder.trimmingCharacters(in: .whitespaces).isEmpty
         }
+    }
+
+    /// The expiry as typed, with the "/" put in after the month.
+    private var expiryText: Binding<String> {
+        Binding(
+            get: { expiry },
+            set: { expiry = Self.formatExpiry($0, previous: expiry) }
+        )
+    }
+
+    /// Keeps only digits, at most MMYY, and writes them as "MM/YY". The "/"
+    /// appears as soon as the month is complete, and deleting it takes the
+    /// slash away rather than putting it straight back. A first digit of 2–9
+    /// can only be a single-digit month, so it becomes "0X/".
+    static func formatExpiry(_ text: String, previous: String) -> String {
+        var digits = String(text.filter(\.isNumber).prefix(4))
+        let isDeleting = text.count < previous.count
+
+        if digits.count == 1, let first = digits.first, first >= "2", !isDeleting {
+            digits = "0" + digits
+        }
+
+        switch digits.count {
+        case 3...:
+            return digits.prefix(2) + "/" + digits.dropFirst(2)
+        case 2 where !isDeleting:
+            return digits + "/"
+        default:
+            return digits
+        }
+    }
+
+    /// A full MM/YY with a real month.
+    static func isValidExpiry(_ text: String) -> Bool {
+        let digits = text.filter(\.isNumber)
+        guard digits.count == 4, let month = Int(digits.prefix(2)) else { return false }
+        return (1...12).contains(month)
     }
 
     private var namePlaceholder: String {
@@ -140,7 +177,8 @@ struct AddPaymentMethodView: View {
                         .keyboardType(.numberPad)
 
                     HStack(spacing: 12) {
-                        AccountField(label: "Expiry", placeholder: "08/27", text: $expiry)
+                        AccountField(label: "Expiry", placeholder: "MM/YY", text: expiryText)
+                            .keyboardType(.numberPad)
                         AccountField(label: "CVV", placeholder: "•••", text: $cvv)
                             .keyboardType(.numberPad)
                     }

@@ -65,21 +65,17 @@ struct CartView: View {
         }
     }
 
-    /// A cup waiting on a saucer of shadow, and a way back to the menu.
+    /// The Osacha badge, and a way back to the menu.
     private var emptyState: some View {
         VStack(spacing: 10) {
-            Image("usucha")
+            Image("OsachaBadge")
                 .resizable()
                 .scaledToFit()
-                .frame(height: 130)
-                .background(alignment: .bottom) {
-                    Ellipse()
-                        .fill(Color.matchaDarkGreen.opacity(0.12))
-                        .frame(width: 90, height: 14)
-                        .blur(radius: 4)
-                        .offset(y: 6)
-                }
-                .padding(.bottom, 12)
+                .frame(width: 120, height: 120)
+                .clipShape(RoundedRectangle(cornerRadius: 28, style: .continuous))
+                .shadow(color: Color.matchaDarkGreen.opacity(0.2), radius: 12, y: 6)
+                .accessibilityHidden(true)
+                .padding(.bottom, 14)
 
             Text("Your cart is empty")
                 .font(.title3.bold())

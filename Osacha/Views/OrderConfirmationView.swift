@@ -16,13 +16,25 @@ struct OrderConfirmationView: View {
     @State private var showTracking = false
     @State private var askForLocation = false
 
+    /// This order as the session has it now, so a cancellation shows.
+    private var current: PastOrder {
+        session.orders.first { $0.id == order.id } ?? order
+    }
+
     var body: some View {
         ScrollView {
             VStack(spacing: 16) {
-                PlacedCheck()
-                    .padding(.top, 40)
+                if current.status == .cancelled {
+                    Image(systemName: "xmark.circle.fill")
+                        .font(.system(size: 64))
+                        .foregroundStyle(.red.opacity(0.75))
+                        .padding(.top, 40)
+                } else {
+                    PlacedCheck()
+                        .padding(.top, 40)
+                }
 
-                Text("Order Placed!")
+                (current.status == .cancelled ? Text("Order Cancelled") : Text("Order Placed!"))
                     .font(.title.bold())
                     .foregroundStyle(Color.matchaDarkGreen)
 
@@ -32,32 +44,14 @@ struct OrderConfirmationView: View {
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 32)
 
-                OrderReceipt(order: order, showsProgress: false)
+                OrderReceipt(order: current, showsProgress: false)
                     .padding(.top, 8)
 
-                // The order just earned a stamp, so say so here rather than
-                // leaving the customer to find it on the card.
-                if order.earnsStamp {
-                    Button {
-                        navigator.openLoyaltyCard()
-                    } label: {
-                        HStack(spacing: 8) {
-                            Image(systemName: "checkmark")
-                                .font(.caption.weight(.bold))
-                            Text("+1 stamp added to your loyalty card")
-                                .font(.subheadline.weight(.semibold))
-                            Spacer()
-                            Image(systemName: "chevron.right")
-                                .font(.caption.weight(.semibold))
-                        }
-                        .foregroundStyle(Color.matchaGreen)
-                        .padding(.horizontal, 18)
-                        .padding(.vertical, 14)
-                        .background(RoundedRectangle(cornerRadius: 16, style: .continuous)
-                            .fill(Color.matchaCardCream))
-                        .padding(.horizontal)
-                    }
-                    .buttonStyle(.plain)
+                // The order just earned a stamp, so press it onto the card
+                // here rather than leaving the customer to find it later.
+                if order.earnsStamp && current.status != .cancelled {
+                    StampCelebration()
+                        .padding(.horizontal, 4)
                 }
 
                 Button {
@@ -85,6 +79,11 @@ struct OrderConfirmationView: View {
                                 .stroke(Color.matchaGreen, lineWidth: 1.5)
                         )
                 }
+
+                if current.canCancel(at: session.now) {
+                    // Cancelling lands on tracking, which shows it called off.
+                    CancelOrderButton(order: current) { showTracking = true }
+                }
             }
             .padding()
         }
@@ -109,12 +108,115 @@ struct OrderConfirmationView: View {
     }
 
     private var caption: LocalizedStringKey {
+        if current.status == .cancelled {
+            return "You haven't been charged."
+        }
         if order.scheduledFor != nil {
             return "Your pickup is booked. We'll start whisking just before you arrive."
         }
         return order.method == .delivery
             ? "Whisking your order now. It'll be at your door before you can say matcha."
             : "Whisking your order now. Your matcha will be ready in a whisk."
+    }
+}
+
+/// The back of the stamp card with this order's gold star pressed onto it:
+/// it drops in and lands with a thump once the card scrolls into view. When
+/// the stamp fills the card, the free matcha is announced with it.
+private struct StampCelebration: View {
+    @EnvironmentObject private var session: AppSession
+    @EnvironmentObject private var navigator: NavigationCoordinator
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    @State private var started = false
+    @State private var landed = false
+
+    /// A stamp that filled the card leaves it reset to none, so show it full.
+    private var completedCard: Bool { session.loyalty.stamps == 0 }
+    private var filled: Int {
+        completedCard ? LoyaltyCard.stampsPerReward : session.loyalty.stamps
+    }
+
+    var body: some View {
+        Button {
+            navigator.openLoyaltyCard()
+        } label: {
+            VStack(spacing: 14) {
+                card
+
+                VStack(spacing: 4) {
+                    (completedCard ? Text("Card complete!") : Text("+1 stamp on your card"))
+                        .font(.headline)
+                    (completedCard
+                        ? Text("Your 10th matcha is on us — use it at checkout.")
+                        : Text("\(session.loyalty.stampsRemaining) more and your 10th matcha is on us."))
+                        .font(.subheadline)
+                        .opacity(0.75)
+                        .multilineTextAlignment(.center)
+                }
+                .foregroundStyle(Color.matchaDarkGreen)
+            }
+            .padding(16)
+            .background(RoundedRectangle(cornerRadius: 20, style: .continuous).fill(Color.matchaCardCream))
+        }
+        .buttonStyle(.plain)
+        .background {
+            GeometryReader { proxy in
+                Color.clear
+                    .onAppear { startIfVisible(proxy.frame(in: .global)) }
+                    .onChange(of: proxy.frame(in: .global).minY) { _ in
+                        startIfVisible(proxy.frame(in: .global))
+                    }
+            }
+        }
+    }
+
+    private var card: some View {
+        Image("LoyaltyCardBack")
+            .resizable()
+            .aspectRatio(LoyaltyCardView.artworkSize, contentMode: .fit)
+            .overlay {
+                GeometryReader { proxy in
+                    let scale = proxy.size.width / LoyaltyCardView.artworkSize.width
+                    let side = LoyaltyCardView.stampSide * scale
+                    ForEach(0..<min(filled, LoyaltyCardView.slotCenters.count), id: \.self) { index in
+                        let center = LoyaltyCardView.slotCenters[index]
+                        let isNew = index == filled - 1
+                        Image("LoyaltyStamp")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: side, height: side)
+                            .scaleEffect(isNew && !landed ? 2.6 : 1)
+                            .rotationEffect(.degrees(isNew && !landed ? -40 : 0))
+                            .opacity(isNew && !landed ? 0 : 1)
+                            .shadow(color: .black.opacity(isNew && !landed ? 0.35 : 0), radius: 12, y: 10)
+                            .position(x: center.x * scale, y: center.y * scale)
+                    }
+                }
+            }
+            .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+            .shadow(color: .black.opacity(0.14), radius: 10, y: 5)
+            .accessibilityLabel(Text("Stamp card back, \(filled) of \(LoyaltyCard.stampsPerReward) stamps collected"))
+    }
+
+    /// Stamps once, when the whole card can be seen.
+    private func startIfVisible(_ frame: CGRect) {
+        guard !started, frame.maxY > 0, frame.maxY < UIScreen.main.bounds.height - 40 else { return }
+        started = true
+        if reduceMotion {
+            landed = true
+            return
+        }
+        Task {
+            try? await Task.sleep(nanoseconds: 350_000_000)
+            withAnimation(.spring(response: 0.38, dampingFraction: 0.6)) { landed = true }
+            try? await Task.sleep(nanoseconds: 220_000_000)
+            Haptics.stamp()
+            if completedCard {
+                try? await Task.sleep(nanoseconds: 300_000_000)
+                Haptics.success()
+            }
+        }
     }
 }
 

@@ -26,7 +26,7 @@ struct ChatMessage: Identifiable, Equatable {
 final class SupportChat: ObservableObject {
     /// What a customer's message is about.
     enum Intent: CaseIterable {
-        case track, delivery, hours, loyalty, payment, menu, change, problem, person, greeting, thanks, unknown
+        case track, delivery, hours, loyalty, payment, options, menu, change, problem, person, greeting, thanks, unknown
 
         /// The shortcuts offered under the chat, in the order shown.
         static let quickReplies: [Intent] = [.track, .delivery, .hours, .loyalty, .person]
@@ -60,7 +60,7 @@ final class SupportChat: ObservableObject {
     private var pending: Task<Void, Never>?
 
     init() {
-        messages = [ChatMessage(sender: .bot, text: localized("Hi! I'm Osacha's chat helper. Ask me about your order, delivery, opening hours, stamps or payment — or ask for a person anytime."))]
+        messages = [ChatMessage(sender: .bot, text: localized("Hi! I'm Osacha's chat helper. Ask me about your order, delivery, opening hours, drink options, stamps or payment — or ask for a person anytime."))]
     }
 
     func send(_ text: String) {
@@ -91,7 +91,7 @@ final class SupportChat: ObservableObject {
             if misunderstandings >= 2 {
                 handOver()
             } else {
-                reply(.bot, "Sorry, I didn't quite get that. I can help with orders, delivery, opening hours, stamps and payment — or connect you with a person.")
+                reply(.bot, "Sorry, I didn't quite get that. I can help with orders, delivery, opening hours, drink options, stamps and payment — or connect you with a person.")
             }
         default:
             misunderstandings = 0
@@ -153,6 +153,7 @@ final class SupportChat: ObservableObject {
         case .hours: return "We're open every day from 9AM to 8PM."
         case .loyalty: return "Every order with a drink adds a stamp to your card. Collect 9 and your 10th matcha is on us — see Profile › Loyalty Card."
         case .payment: return "We accept cards, GCash and Maya. Add or change one under Profile › Payment Methods."
+        case .options: return "Most drinks come in Regular, Grande or Venti, with regular, oat, soy or almond milk (+₱30). Oat, soy and almond make a drink dairy-free. Each item's page shows its sizes, prices and allergens."
         case .menu: return "Our Matcha Cloud Tiramisu Latte is a favourite, and the sakura menu is here for the season. Have a look in Search!"
         case .greeting: return "Hello! What can I help you with today?"
         case .thanks: return "You're welcome! Anything else I can help with?"
@@ -168,6 +169,7 @@ final class SupportChat: ObservableObject {
         (.person, ["person", "human", "agent", "staff", "someone", "talk to", "speak to", "manager", "人と", "スタッフ", "オペレーター", "担当"]),
         (.problem, ["refund", "wrong", "missing", "cold", "spill", "damage", "late", "complain", "problem", "issue", "allerg", "返金", "間違", "届かない", "遅い", "問題", "アレルギー", "苦情"]),
         (.change, ["cancel", "change", "edit", "modify", "キャンセル", "変更"]),
+        (.options, ["milk", "oat", "soy", "almond", "dairy", "lactose", "vegan", "size", "grande", "venti", "regular", "sugar", "sweet", "caffeine", "decaf", "ミルク", "オーツ", "豆乳", "アーモンド", "乳製品", "サイズ", "甘さ", "砂糖", "カフェイン"]),
         (.delivery, ["deliver", "area", "ship", "配達", "エリア", "届け"]),
         (.hours, ["hour", "open", "close", "営業", "何時", "時間"]),
         (.loyalty, ["stamp", "loyalty", "reward", "point", "free", "スタンプ", "ポイント", "無料"]),

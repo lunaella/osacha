@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import PhotosUI
 
 /// The account sections reachable from the profile screen. The loyalty card
 /// isn't one: it's shown on the profile itself.
@@ -56,6 +57,7 @@ private enum ProfileDestination: String, CaseIterable, Identifiable {
 struct ProfileView: View {
     @EnvironmentObject private var controller: OrderController
     @EnvironmentObject private var session: AppSession
+    @State private var pickedPhoto: PhotosPickerItem?
     @EnvironmentObject private var navigator: NavigationCoordinator
 
     private let rows = ProfileDestination.allCases
@@ -91,8 +93,32 @@ struct ProfileView: View {
     /// Photo with its edit badge, the name set large, and a few numbers.
     private var banner: some View {
         HStack(alignment: .top, spacing: 18) {
-            ProfileAvatar(size: 118, cornerRadius: 24)
-                .overlay(alignment: .topTrailing) { editBadge }
+            // Tapping the photo picks a new one straight away.
+            PhotosPicker(selection: $pickedPhoto, matching: .images) {
+                ProfileAvatar(size: 118, cornerRadius: 24)
+                    .overlay(alignment: .bottom) {
+                        if session.profilePhoto == nil {
+                            Label("Add photo", systemImage: "camera.fill")
+                                .font(.caption2.weight(.semibold))
+                                .foregroundStyle(Color.matchaGreen)
+                                .padding(.bottom, 12)
+                        }
+                    }
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel(session.profilePhoto == nil ? Text("Add photo") : Text("Change Photo"))
+            .overlay(alignment: .topTrailing) { editBadge }
+            .onChange(of: pickedPhoto) { item in
+                guard let item else { return }
+                Task {
+                    if let data = try? await item.loadTransferable(type: Data.self),
+                       let image = UIImage(data: data) {
+                        session.updateProfilePhoto(image)
+                        Haptics.success()
+                    }
+                    pickedPhoto = nil
+                }
+            }
 
             VStack(alignment: .leading, spacing: 12) {
                 VStack(alignment: .leading, spacing: 0) {

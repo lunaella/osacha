@@ -139,6 +139,7 @@ struct ProductDetailView: View {
             }
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
+                    Haptics.tap()
                     controller.toggleFavorite(item)
                 } label: {
                     Image(systemName: controller.isFavorite(item) ? "heart.fill" : "heart")
@@ -291,20 +292,22 @@ struct ProductDetailView: View {
 
                 HStack(spacing: 22) {
                     Button {
-                        quantity += 1
+                        if quantity > 1 { quantity -= 1; Haptics.select() }
                     } label: {
-                        Image(systemName: "plus.circle.fill")
+                        Image(systemName: "minus.circle.fill")
                             .font(.title2)
                     }
+                    .opacity(quantity > 1 ? 1 : 0.4)
 
                     Text("\(quantity)")
                         .font(.headline)
                         .frame(minWidth: 20)
 
                     Button {
-                        if quantity > 1 { quantity -= 1 }
+                        quantity += 1
+                        Haptics.select()
                     } label: {
-                        Image(systemName: "minus.circle.fill")
+                        Image(systemName: "plus.circle.fill")
                             .font(.title2)
                     }
                 }
@@ -322,6 +325,7 @@ struct ProductDetailView: View {
                         withIceCream: item.hasIceCreamOption ? withIceCream : false,
                         quantity: quantity
                     )
+                    Haptics.success()
                     didAddToCart = true
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                         dismiss()

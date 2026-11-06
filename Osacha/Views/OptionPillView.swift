@@ -16,7 +16,10 @@ struct OptionPillView: View {
     let action: () -> Void
 
     var body: some View {
-        Button(action: action) {
+        Button {
+            if !isSelected { Haptics.select() }
+            action()
+        } label: {
             VStack(spacing: 1) {
                 // Option names are translation keys, e.g. "Oat" or "Pickup".
                 Text(LocalizedStringKey(title))

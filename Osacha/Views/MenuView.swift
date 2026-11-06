@@ -15,6 +15,13 @@ struct MenuView: View {
     @EnvironmentObject private var navigator: NavigationCoordinator
     @EnvironmentObject private var session: AppSession
 
+    /// Pops the cart badge when something new goes in.
+    @State private var badgeBounce = false
+    /// The count the badge last showed while this screen was in view, so
+    /// coming back from adding an item can bounce it then.
+    @State private var shownCartCount: Int?
+    @State private var isVisible = false
+
     /// Count of everything in the cart, sitting on the corner of the cart
     /// icon. Hidden when empty so the toolbar stays quiet.
     ///
@@ -29,7 +36,21 @@ struct MenuView: View {
                 .foregroundStyle(.white)
                 .frame(width: 14, height: 14)
                 .background(Circle().fill(Color.matchaPinkDeep))
+                .scaleEffect(badgeBounce ? 1.6 : 1)
                 .offset(x: 7, y: -7)
+        }
+    }
+
+    /// Bounces the badge if the cart grew since it was last seen.
+    private func bounceIfCartGrew() {
+        defer { shownCartCount = controller.cartCount }
+        guard let shown = shownCartCount, controller.cartCount > shown else { return }
+        Task {
+            // Let a returning screen finish sliding in first.
+            try? await Task.sleep(nanoseconds: 350_000_000)
+            withAnimation(.spring(response: 0.2, dampingFraction: 0.45)) { badgeBounce = true }
+            try? await Task.sleep(nanoseconds: 180_000_000)
+            withAnimation(.spring(response: 0.3, dampingFraction: 0.5)) { badgeBounce = false }
         }
     }
 
@@ -106,6 +127,14 @@ struct MenuView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.matchaSage.ignoresSafeArea())
+        .onAppear {
+            isVisible = true
+            bounceIfCartGrew()
+        }
+        .onDisappear { isVisible = false }
+        .onChange(of: controller.cartCount) { _ in
+            if isVisible { bounceIfCartGrew() }
+        }
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             // The brand mark replaces the written category title.

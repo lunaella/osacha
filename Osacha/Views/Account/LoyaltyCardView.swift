@@ -22,12 +22,12 @@ struct LoyaltyCardView: View {
 
     /// Pixel size of the card artwork, used for its proportions and to turn
     /// the measured slot positions below into fractions of the card.
-    private static let artworkSize = CGSize(width: 1748, height: 1240)
+    static let artworkSize = CGSize(width: 1748, height: 1240)
 
     /// Centres of the nine stampable slots on the back artwork, in artwork
     /// pixels: top row left to right, then the bottom row. The tenth slot
     /// carries the printed bowl and is the free matcha, so it never takes one.
-    private static let slotCenters: [CGPoint] = {
+    static let slotCenters: [CGPoint] = {
         let columns: [CGFloat] = [255, 564, 873, 1182, 1491]
         let rows: [CGFloat] = [465, 823]
         return Array(rows.flatMap { y in columns.map { CGPoint(x: $0, y: y) } }
@@ -37,7 +37,7 @@ struct LoyaltyCardView: View {
     /// Side of the sticker image in artwork pixels. The star fills 1251 of the
     /// image's 2000px, so this makes the star 286px — overhanging its 260px
     /// slot slightly, as on the printed sample.
-    private static let stampSide: CGFloat = 457
+    static let stampSide: CGFloat = 457
 
     var body: some View {
         VStack(spacing: 16) {
@@ -165,7 +165,7 @@ struct LoyaltyCardView: View {
                     .background(RoundedRectangle(cornerRadius: 18, style: .continuous).fill(.white))
             }
 
-            Text("A stamp is added to your card with every order.")
+            Text("A stamp is added to your card with every order that includes a drink.")
                 .font(.caption)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)

@@ -31,24 +31,19 @@ struct MenuItemRowView: View {
                     .foregroundStyle(.secondary)
                     .lineLimit(2)
 
-                HStack(spacing: 6) {
-                    if item.hasSizeOptions {
-                        ForEach(item.availableSizes) { size in
-                            Text(size.rawValue.prefix(1))
-                                .font(.caption2.bold())
-                                .frame(width: 18, height: 18)
-                                .background(Circle().fill(Color.matchaSage.opacity(0.25)))
-                                .foregroundStyle(Color.matchaDarkGreen)
-                        }
-                    }
+                HStack {
                     Spacer()
-                    Text(item.price.asPHP)
+                    // Larger sizes cost more, so the list price is a floor.
+                    Text(item.availableSizes.count > 1
+                         ? String(format: localized("From %@"), item.price.asPHP)
+                         : item.price.asPHP)
                         .font(.subheadline.bold())
                         .foregroundStyle(Color.matchaGreen)
                 }
             }
 
             Button {
+                Haptics.tap()
                 controller.toggleFavorite(item)
             } label: {
                 Image(systemName: controller.isFavorite(item) ? "heart.fill" : "heart")

@@ -21,6 +21,16 @@
         }
       }
     },
+    "%@ left": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "残り %@"
+          }
+        }
+      }
+    },
     "%lld favorites · %lld in cart": {
       "localizations": {
         "ja": {
@@ -161,6 +171,16 @@
         }
       }
     },
+    "+1 stamp on your card": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "スタンプが1つ増えました"
+          }
+        }
+      }
+    },
     "1 free drink earned": {
       "localizations": {
         "ja": {
@@ -271,12 +291,12 @@
         }
       }
     },
-    "A stamp is added to your card with every order.": {
+    "A stamp is added to your card with every order that includes a drink.": {
       "localizations": {
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "ご注文ごとにカードにスタンプが追加されます。"
+            "value": "ドリンクを含むご注文ごとにカードにスタンプが追加されます。"
           }
         }
       }
@@ -357,6 +377,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "お届け先の住所を追加してください。"
+          }
+        }
+      }
+    },
+    "Add photo": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "写真を追加"
           }
         }
       }
@@ -531,6 +561,16 @@
         }
       }
     },
+    "Browse the menu": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "メニューを見る"
+          }
+        }
+      }
+    },
     "Burnt Basque-style cheesecake baked with matcha for a bittersweet finish.": {
       "localizations": {
         "ja": {
@@ -641,6 +681,46 @@
         }
       }
     },
+    "Cancel Order": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "注文をキャンセルする"
+          }
+        }
+      }
+    },
+    "Cancel order": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "注文をキャンセル"
+          }
+        }
+      }
+    },
+    "Cancel this order?": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "この注文をキャンセルしますか？"
+          }
+        }
+      }
+    },
+    "Cancelled": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "キャンセル済み"
+          }
+        }
+      }
+    },
     "Card": {
       "localizations": {
         "ja": {
@@ -657,6 +737,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "カード番号"
+          }
+        }
+      }
+    },
+    "Card complete!": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "カード完成！"
           }
         }
       }
@@ -901,6 +991,16 @@
         }
       }
     },
+    "DELIVERY": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "配達料"
+          }
+        }
+      }
+    },
     "Dairy": {
       "localizations": {
         "ja": {
@@ -1027,6 +1127,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "配達エリア"
+          }
+        }
+      }
+    },
+    "Delivery fee": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "配達料"
           }
         }
       }
@@ -1411,6 +1521,16 @@
         }
       }
     },
+    "From %@": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@〜"
+          }
+        }
+      }
+    },
     "Full Name": {
       "localizations": {
         "ja": {
@@ -1531,12 +1651,12 @@
         }
       }
     },
-    "Hi! I'm Osacha's chat helper. Ask me about your order, delivery, opening hours, stamps or payment — or ask for a person anytime.": {
+    "Hi! I'm Osacha's chat helper. Ask me about your order, delivery, opening hours, drink options, stamps or payment — or ask for a person anytime.": {
       "localizations": {
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "こんにちは！Osachaのチャットアシスタントです。ご注文、配達、営業時間、スタンプ、お支払いについてお気軽にどうぞ。スタッフへの接続もいつでもお申し付けください。"
+            "value": "こんにちは！Osachaのチャットアシスタントです。ご注文、配達、営業時間、ドリンクのオプション、スタンプ、お支払いについてお気軽にどうぞ。スタッフへの接続もいつでもお申し付けください。"
           }
         }
       }
@@ -1723,6 +1843,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "たった今"
+          }
+        }
+      }
+    },
+    "Keep Order": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "注文を続ける"
           }
         }
       }
@@ -1953,6 +2083,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "携帯電話番号"
+          }
+        }
+      }
+    },
+    "Most drinks come in Regular, Grande or Venti, with regular, oat, soy or almond milk (+₱30). Oat, soy and almond make a drink dairy-free. Each item's page shows its sizes, prices and allergens.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ほとんどのドリンクはレギュラー・グランデ・ベンティからお選びいただけ、ミルクは通常・オーツ・豆乳・アーモンド（+₱30）から選べます。オーツ・豆乳・アーモンドなら乳製品不使用になります。サイズ・価格・アレルゲンは各商品ページでご確認ください。"
           }
         }
       }
@@ -2247,6 +2387,26 @@
         }
       }
     },
+    "Order %@ was cancelled. You haven't been charged.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "注文 %@ はキャンセルされました。料金は発生していません。"
+          }
+        }
+      }
+    },
+    "Order Cancelled": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "注文はキャンセルされました"
+          }
+        }
+      }
+    },
     "Order History": {
       "localizations": {
         "ja": {
@@ -2293,6 +2453,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "ドリンクを注文して最初のスタンプをゲットしましょう。"
+          }
+        }
+      }
+    },
+    "Order cancelled": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "注文キャンセル"
           }
         }
       }
@@ -2527,6 +2697,16 @@
         }
       }
     },
+    "Pick a matcha and it'll wait for you here.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "抹茶を選ぶと、ここでお待ちしています。"
+          }
+        }
+      }
+    },
     "Pick up at": {
       "localizations": {
         "ja": {
@@ -2693,6 +2873,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "受取:"
+          }
+        }
+      }
+    },
+    "Receipt": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "レシート"
           }
         }
       }
@@ -3097,12 +3287,12 @@
         }
       }
     },
-    "Sorry, I didn't quite get that. I can help with orders, delivery, opening hours, stamps and payment — or connect you with a person.": {
+    "Sorry, I didn't quite get that. I can help with orders, delivery, opening hours, drink options, stamps and payment — or connect you with a person.": {
       "localizations": {
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "申し訳ありません、うまく理解できませんでした。ご注文、配達、営業時間、スタンプ、お支払いについてお答えできます。スタッフにおつなぎすることもできます。"
+            "value": "申し訳ありません、うまく理解できませんでした。ご注文、配達、営業時間、ドリンクのオプション、スタンプ、お支払いについてお答えできます。スタッフにおつなぎすることもできます。"
           }
         }
       }
@@ -3577,12 +3767,12 @@
         }
       }
     },
-    "Welcome to Osacha, %@! Your loyalty card is ready — every order earns a stamp.": {
+    "Welcome to Osacha, %@! Your loyalty card is ready — every order with a drink earns a stamp.": {
       "localizations": {
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@さん、Osachaへようこそ！ポイントカードの準備ができました。ご注文ごとにスタンプが貯まります。"
+            "value": "%@さん、Osachaへようこそ！ポイントカードの準備ができました。ドリンクを含むご注文ごとにスタンプが貯まります。"
           }
         }
       }
@@ -3747,6 +3937,26 @@
         }
       }
     },
+    "You haven't been charged.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "料金は発生していません。"
+          }
+        }
+      }
+    },
+    "You won't be charged. Its stamp comes off your card, and a free drink it used goes back on.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "料金は発生しません。この注文のスタンプはカードから外れ、使った無料ドリンクはカードに戻ります。"
+          }
+        }
+      }
+    },
     "You'll need to sign in again to place orders.": {
       "localizations": {
         "ja": {
@@ -3773,6 +3983,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "どういたしまして！ほかにお手伝いできることはありますか？"
+          }
+        }
+      }
+    },
+    "Your 10th matcha is on us — use it at checkout.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "10杯目の抹茶は無料です。お会計時にお使いください。"
           }
         }
       }

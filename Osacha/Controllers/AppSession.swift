@@ -281,7 +281,7 @@ final class AppSession: ObservableObject {
     @discardableResult
     func recordOrder(itemCount: Int, total: Double, fulfillment: Fulfillment, lines: [OrderLine],
                      scheduledFor: Date? = nil, note: String = "", rewardDiscount: Double = 0,
-                     deliveryAddress: String? = nil) -> PastOrder {
+                     deliveryAddress: String? = nil, deliveryFee: Double = 0) -> PastOrder {
         let reference = String(format: "A%04d", Int.random(in: 1000...9999))
         let now = Date()
         let note = note.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -295,7 +295,8 @@ final class AppSession: ObservableObject {
                               scheduledFor: fulfillment == .pickup ? scheduledFor : nil,
                               note: note.isEmpty ? nil : note,
                               discount: rewardDiscount > 0 ? rewardDiscount : nil,
-                              deliveryAddress: fulfillment == .delivery ? deliveryAddress : nil)
+                              deliveryAddress: fulfillment == .delivery ? deliveryAddress : nil,
+                              deliveryFee: fulfillment == .delivery && deliveryFee > 0 ? deliveryFee : nil)
         orders.insert(order, at: 0)
         if rewardDiscount > 0 {
             loyalty.rewardsRedeemed += 1
@@ -327,6 +328,42 @@ final class AppSession: ObservableObject {
         }
         persist()
         return order
+    }
+
+    /// Calls off an order in the minutes after it was placed: its later
+    /// updates are withdrawn, its stamp comes back off the card, and a free
+    /// drink it used is returned.
+    func cancel(_ order: PastOrder) {
+        guard let index = orders.firstIndex(where: { $0.id == order.id }),
+              orders[index].canCancel() else { return }
+        let order = orders[index]
+        let now = Date()
+        orders[index].cancelled = true
+
+        let ref = "#\(order.reference)"
+        let upcoming = notifications.filter { $0.detail == ref && $0.date > now }
+        NotificationScheduler.shared.cancel(upcoming)
+        notifications.removeAll { note in upcoming.contains { $0.id == note.id } }
+
+        if order.earnsStamp {
+            if loyalty.stamps > 0 {
+                loyalty.stamps -= 1
+            } else if loyalty.rewardsEarned > loyalty.rewardsRedeemed {
+                // This order's stamp completed a card; take the reward back.
+                loyalty.rewardsEarned -= 1
+                loyalty.stamps = LoyaltyCard.stampsPerReward - 1
+                if let reward = notifications.lastIndex(where: { $0.kind == .reward && $0.date >= order.placedDate ?? now }) {
+                    notifications.remove(at: reward)
+                }
+            }
+        }
+        if order.discount != nil {
+            loyalty.rewardsRedeemed = max(0, loyalty.rewardsRedeemed - 1)
+        }
+
+        notifications.append(update(.orderCancelled, detail: ref, at: now))
+        self.now = now
+        persist()
     }
 
     /// The latest finished order still waiting to be rated, if any.

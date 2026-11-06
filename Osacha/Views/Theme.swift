@@ -5,6 +5,10 @@
 //  Shared color palette matching the matcha cafe brand: cream backgrounds,
 //  sage-green surfaces, deep green text, and soft pink accents.
 //
+//  Backgrounds follow one rule: the ordering flow — menus, favorites, cart,
+//  checkout, the placed order, tracking and its receipt — sits on sage;
+//  the account screens reached from Profile sit on cream.
+//
 
 import SwiftUI
 

@@ -96,6 +96,12 @@ struct AddressFormView: View {
         return false
     }
 
+    /// A rider needs at least a street and a city to find the door.
+    private var canSave: Bool {
+        !street.trimmingCharacters(in: .whitespaces).isEmpty
+            && !city.trimmingCharacters(in: .whitespaces).isEmpty
+    }
+
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
@@ -121,7 +127,9 @@ struct AddressFormView: View {
                     dismiss()
                 } label: {
                     PrimaryButtonLabel(title: isEditing ? "Save Changes" : "Save Address")
+                        .opacity(canSave ? 1 : 0.5)
                 }
+                .disabled(!canSave)
                 .padding(.top, 4)
 
                 if case .edit(let address) = mode {

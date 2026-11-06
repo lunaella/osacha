@@ -162,8 +162,10 @@ enum OrderStatus: String {
     case completed = "Completed"
     case outForDelivery = "Out for delivery"
     case delivered = "Delivered"
+    case cancelled = "Cancelled"
 
-    var isFinished: Bool { self == .completed || self == .delivered }
+    /// Nothing more will happen to it: it was handed over, or called off.
+    var isFinished: Bool { self == .completed || self == .delivered || self == .cancelled }
 }
 
 /// One item line on a placed order, kept so offers can follow what the
@@ -230,6 +232,9 @@ struct PastOrder: Identifiable, Codable {
     var discount: Double?
     /// Where a delivery is going, for the rider map.
     var deliveryAddress: String?
+    /// What delivery added to the total. Nil for pickups, and for orders
+    /// placed before there was a fee.
+    var deliveryFee: Double?
 
     /// The customer's rating, from 1 to 5 stars, once they've given one.
     var rating: Int?
@@ -238,6 +243,8 @@ struct PastOrder: Identifiable, Codable {
     var ratingComment: String?
     /// The customer said "Not now" to rating it, so it isn't asked again.
     var ratingSkipped: Bool?
+    /// Called off by the customer in the minutes after placing it.
+    var cancelled: Bool?
 
     var method: Fulfillment { fulfillment ?? .pickup }
 
@@ -246,7 +253,7 @@ struct PastOrder: Identifiable, Codable {
 
     /// A finished order placed in the app that hasn't been rated or skipped.
     var awaitsRating: Bool {
-        placedDate != nil && status.isFinished && rating == nil && ratingSkipped != true
+        placedDate != nil && status.isFinished && status != .cancelled && rating == nil && ratingSkipped != true
     }
 
     var summary: String {
@@ -263,6 +270,7 @@ struct PastOrder: Identifiable, Codable {
     /// seconds ago isn't reported as already finished. Orders with no real
     /// date behind them are historical, so they read as completed.
     var status: OrderStatus {
+        if cancelled == true { return .cancelled }
         guard let placedDate else { return method == .delivery ? .delivered : .completed }
         let now = Date()
         let elapsed = now.timeIntervalSince(placedDate)
@@ -306,6 +314,21 @@ struct PastOrder: Identifiable, Codable {
         return max(placedDate, scheduledFor.addingTimeInterval(-Self.preparingDuration))
     }
 
+    /// How long after placing an order the customer can still call it off,
+    /// before the café has properly started on it.
+    static let cancelWindow: TimeInterval = 2 * 60
+
+    /// When the chance to cancel runs out, if it hasn't been taken.
+    var cancelDeadline: Date? {
+        guard cancelled != true, let placedDate else { return nil }
+        return placedDate.addingTimeInterval(Self.cancelWindow)
+    }
+
+    func canCancel(at now: Date = Date()) -> Bool {
+        guard let cancelDeadline else { return false }
+        return now < cancelDeadline
+    }
+
     /// The stages this order moves through, in order.
     var stages: [OrderStatus] {
         switch method {
@@ -325,8 +348,8 @@ struct PastOrder: Identifiable, Codable {
         return lines.contains(where: \.isDrink)
     }
 
-    /// The total before any reward came off.
-    var subtotal: Double { total + (discount ?? 0) }
+    /// What the items came to, before any reward came off or delivery went on.
+    var subtotal: Double { total + (discount ?? 0) - (deliveryFee ?? 0) }
 
     /// How long a new order spends in each stage before moving on.
     static let preparingDuration: TimeInterval = 5 * 60
@@ -391,7 +414,7 @@ extension LoyaltyCard {
 /// along, a reward earned, or a welcome when they sign up.
 struct AppNotification: Identifiable, Codable, Equatable {
     enum Kind: String, Codable {
-        case welcome, orderPlaced, orderScheduled, orderReady, outForDelivery, delivered, reward
+        case welcome, orderPlaced, orderScheduled, orderReady, outForDelivery, delivered, reward, orderCancelled
 
         var icon: String {
             switch self {
@@ -402,6 +425,7 @@ struct AppNotification: Identifiable, Codable, Equatable {
             case .outForDelivery: return "bicycle"
             case .delivered: return "checkmark.seal.fill"
             case .reward: return "gift.fill"
+            case .orderCancelled: return "xmark.circle.fill"
             }
         }
 
@@ -415,26 +439,28 @@ struct AppNotification: Identifiable, Codable, Equatable {
             case .outForDelivery: return "Out for delivery"
             case .delivered: return "Delivered"
             case .reward: return "Free matcha earned"
+            case .orderCancelled: return "Order cancelled"
             }
         }
 
         /// The message, with `%@` standing for the notification's detail.
         var template: String {
             switch self {
-            case .welcome: return "Welcome to Osacha, %@! Your loyalty card is ready — every order earns a stamp."
+            case .welcome: return "Welcome to Osacha, %@! Your loyalty card is ready — every order with a drink earns a stamp."
             case .orderPlaced: return "Order %@ placed — we're preparing it now."
             case .orderScheduled: return "Order %@ is booked — we'll have it ready at your pickup time."
             case .orderReady: return "Order %@ is ready for pickup! Show your order number at the counter."
             case .outForDelivery: return "Order %@ is out for delivery."
             case .delivered: return "Order %@ has been delivered. Enjoy your matcha!"
             case .reward: return "You earned a free matcha! Your 10th drink is on us."
+            case .orderCancelled: return "Order %@ was cancelled. You haven't been charged."
             }
         }
 
         /// Order updates open the order history; the reward opens the card.
         var isAboutAnOrder: Bool {
             switch self {
-            case .orderPlaced, .orderScheduled, .orderReady, .outForDelivery, .delivered: return true
+            case .orderPlaced, .orderScheduled, .orderReady, .outForDelivery, .delivered, .orderCancelled: return true
             case .welcome, .reward: return false
             }
         }

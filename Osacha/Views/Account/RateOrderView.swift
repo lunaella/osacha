@@ -61,6 +61,7 @@ struct RateOrderView: View {
                     }
 
                     Button {
+                        Haptics.success()
                         session.rate(order, stars: stars, tags: tags.sorted(), comment: comment)
                         dismiss()
                     } label: {
@@ -94,6 +95,7 @@ struct RateOrderView: View {
                     // Switching between praise and problems clears picks that
                     // no longer apply.
                     if (value >= 4) != (stars >= 4) { tags.removeAll() }
+                    Haptics.select()
                     stars = value
                 } label: {
                     Image(systemName: value <= stars ? "star.fill" : "star")

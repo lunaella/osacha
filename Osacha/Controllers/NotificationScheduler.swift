@@ -50,6 +50,11 @@ final class NotificationScheduler: NSObject, UNUserNotificationCenterDelegate {
         }
     }
 
+    /// Withdraws banners that were scheduled but haven't gone off yet.
+    func cancel(_ updates: [AppNotification]) {
+        center.removePendingNotificationRequests(withIdentifiers: updates.map(\.id.uuidString))
+    }
+
     // MARK: - UNUserNotificationCenterDelegate
 
     /// Show the banner even when the app is in front — otherwise iOS drops it.

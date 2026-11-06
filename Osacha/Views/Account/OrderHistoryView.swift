@@ -110,7 +110,7 @@ struct OrderHistoryView: View {
                 .foregroundStyle(Color.matchaPinkDeep)
                 .accessibilityElement(children: .ignore)
                 .accessibilityLabel(Text("Rated \(stars) of 5 stars"))
-            } else if order.placedDate != nil {
+            } else if order.placedDate != nil && order.status != .cancelled {
                 Button {
                     rating = order
                 } label: {
@@ -129,6 +129,7 @@ struct OrderHistoryView: View {
             if order.canReorder {
                 Button {
                     let added = controller.reorder(order)
+                    if added > 0 { Haptics.success() }
                     withAnimation(.spring(response: 0.35)) { reordered = added }
                 } label: {
                     Label("Reorder", systemImage: "arrow.clockwise")
@@ -178,6 +179,7 @@ private extension OrderStatus {
         case .scheduled, .preparing: return Color.matchaPinkDeep
         case .ready, .outForDelivery: return Color.matchaDarkGreen
         case .completed, .delivered: return Color.matchaGreen
+        case .cancelled: return Color.red.opacity(0.8)
         }
     }
 
@@ -186,18 +188,18 @@ private extension OrderStatus {
         case .scheduled, .preparing: return Color.matchaPinkPale
         case .ready, .outForDelivery: return Color.matchaSage
         case .completed, .delivered: return Color.matchaSage.opacity(0.45)
+        case .cancelled: return Color.red.opacity(0.1)
         }
     }
 }
 
 /// Follows one order: where it is now first, then what was in it. The
-/// receipt was already printed on the confirmation, so here it stays folded
-/// away until asked for. The full history is a tap away in the toolbar.
+/// receipt prints on a page of its own when asked for. The full history is
+/// a tap away in the toolbar.
 struct TrackOrderView: View {
     let order: PastOrder
 
     @EnvironmentObject private var session: AppSession
-    @State private var showsReceipt = false
 
     /// This order as the session has it now, so a rating shows once given.
     private var current: PastOrder {
@@ -209,7 +211,9 @@ struct TrackOrderView: View {
         let _ = session.now
         ScrollView {
             VStack(alignment: .leading, spacing: 28) {
-                if current.method == .delivery, current.placedDate != nil {
+                if current.status == .cancelled {
+                    EmptyView()
+                } else if current.method == .delivery, current.placedDate != nil {
                     RiderTrackingView(order: current)
                 } else if current.method == .pickup {
                     CafeMapView()
@@ -217,6 +221,9 @@ struct TrackOrderView: View {
 
                 section("Order status") {
                     statusCard
+                    if current.canCancel(at: session.now) {
+                        CancelOrderButton(order: current)
+                    }
                     if current.awaitsRating {
                         RateOrderPrompt(order: current)
                     }
@@ -224,14 +231,9 @@ struct TrackOrderView: View {
 
                 section("Order details") {
                     detailsCard
-                    if showsReceipt {
-                        OrderReceipt(order: current, showsProgress: false)
-                            .transition(.opacity)
-                    }
                 }
             }
             .padding()
-            .animation(.easeInOut(duration: 0.25), value: showsReceipt)
         }
         .background(Color.matchaSage.ignoresSafeArea())
         .toolbarBackground(Color.matchaSageDeep, for: .navigationBar)
@@ -293,6 +295,7 @@ struct TrackOrderView: View {
             }
 
             // One step per stage, filled in up to where the order is.
+            if current.status != .cancelled {
             HStack(alignment: .top, spacing: 6) {
                 ForEach(Array(stages.enumerated()), id: \.element) { index, stage in
                     VStack(alignment: .leading, spacing: 6) {
@@ -307,6 +310,7 @@ struct TrackOrderView: View {
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                 }
+            }
             }
         }
         .padding(18)
@@ -324,6 +328,7 @@ struct TrackOrderView: View {
         case .outForDelivery: return String(format: localized("Arrives about %@"), time)
         case .ready: return localized("Waiting for you at the counter")
         case .completed, .delivered: return localized("Thanks for ordering!")
+        case .cancelled: return localized("You haven't been charged.")
         }
     }
 
@@ -354,15 +359,14 @@ struct TrackOrderView: View {
 
             Divider()
 
-            Button {
-                showsReceipt.toggle()
+            NavigationLink {
+                ReceiptView(order: current)
             } label: {
                 HStack {
                     Image(systemName: "doc.plaintext")
-                    Text(showsReceipt ? "Hide receipt" : "Show receipt")
+                    Text("Show receipt")
                     Spacer()
-                    Image(systemName: "chevron.down")
-                        .rotationEffect(.degrees(showsReceipt ? 180 : 0))
+                    Image(systemName: "chevron.right")
                 }
                 .font(.subheadline.weight(.semibold))
                 .foregroundStyle(Color.matchaGreen)
@@ -375,6 +379,63 @@ struct TrackOrderView: View {
     }
 }
 
+/// Calls off an order while there's still time, counting down the seconds
+/// left and asking once to be sure.
+struct CancelOrderButton: View {
+    let order: PastOrder
+    /// Runs after the order is cancelled, e.g. to leave a screen about it.
+    var onCancelled: () -> Void = {}
+
+    @EnvironmentObject private var session: AppSession
+    @State private var confirming = false
+
+    var body: some View {
+        // Ticks every second so the countdown reads true.
+        TimelineView(.periodic(from: .now, by: 1)) { context in
+            if let deadline = order.cancelDeadline, context.date < deadline {
+                Button {
+                    confirming = true
+                } label: {
+                    HStack {
+                        Image(systemName: "xmark.circle")
+                        Text("Cancel order")
+                        Spacer()
+                        Text(Self.remaining(until: deadline, from: context.date))
+                            .monospacedDigit()
+                            .opacity(0.75)
+                    }
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundStyle(.red.opacity(0.85))
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 13)
+                    .background(
+                        RoundedRectangle(cornerRadius: 16, style: .continuous)
+                            .stroke(.red.opacity(0.6), lineWidth: 1.2)
+                    )
+                    .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+            }
+        }
+        .confirmationDialog("Cancel this order?", isPresented: $confirming, titleVisibility: .visible) {
+            Button("Cancel Order", role: .destructive) {
+                Haptics.warning()
+                withAnimation(.easeInOut(duration: 0.25)) { session.cancel(order) }
+                onCancelled()
+            }
+            Button("Keep Order", role: .cancel) {}
+        } message: {
+            Text("You won't be charged. Its stamp comes off your card, and a free drink it used goes back on.")
+        }
+    }
+
+    /// "1:42 left"
+    private static func remaining(until deadline: Date, from now: Date) -> String {
+        let seconds = max(0, Int(deadline.timeIntervalSince(now).rounded(.up)))
+        return String(format: localized("%@ left"), String(format: "%d:%02d", seconds / 60, seconds % 60))
+    }
+}
+
 private extension OrderStatus {
     var symbol: String {
         switch self {
@@ -383,16 +444,27 @@ private extension OrderStatus {
         case .ready: return "bag.fill"
         case .outForDelivery: return "bicycle"
         case .completed, .delivered: return "checkmark.circle.fill"
+        case .cancelled: return "xmark.circle.fill"
         }
     }
 }
 
 /// An order laid out like a till receipt, feeding out of a printer slot the
-/// first time it appears. Shared by the order confirmation and tracking.
+/// first time it appears. Shared by the order confirmation and the receipt page.
 struct OrderReceipt: View {
+    enum Style {
+        /// On brand: pink paper in the café's green-black ink.
+        case pink
+        /// The same pink slip made to feel like it came off a till: the
+        /// café's address up top, all type monospaced, a torn-off bottom
+        /// edge, and the printer heard as it feeds out.
+        case thermal
+    }
+
     let order: PastOrder
     /// The step-by-step progress, left off where tracking is one tap away.
     var showsProgress = true
+    var style: Style = .pink
 
     @EnvironmentObject private var session: AppSession
 
@@ -406,6 +478,13 @@ struct OrderReceipt: View {
 
     private var stages: [OrderStatus] { order.stages }
 
+    private var isThermal: Bool { style == .thermal }
+    /// How deep the torn teeth along the bottom of a thermal slip run.
+    private static let tooth: CGFloat = 7
+    private var paperShape: AnyShape {
+        isThermal ? AnyShape(TornEdge(tooth: Self.tooth)) : AnyShape(Rectangle())
+    }
+
     var body: some View {
         // Reading the session clock redraws the stages as the order moves on.
         let _ = session.now
@@ -417,6 +496,16 @@ struct OrderReceipt: View {
                 .scaledToFit()
                 .frame(height: 90)
                 .padding(.top, 8)
+
+            if isThermal {
+                VStack(spacing: 2) {
+                    Text(localized(Cafe.address).uppercased())
+                    Text(String(format: localized("Open daily %@"), Cafe.hoursText).uppercased())
+                }
+                .font(.system(.caption, design: .monospaced))
+                .multilineTextAlignment(.center)
+                .padding(.top, -6)
+            }
 
             ReceiptRule(title: "ORDER RECEIPT")
 
@@ -473,17 +562,26 @@ struct OrderReceipt: View {
 
             ReceiptRule()
 
-            if let discount = order.discount {
+            if order.discount != nil || order.deliveryFee != nil {
                 VStack(spacing: 6) {
                     HStack {
                         Text("SUBTOTAL")
                         Spacer()
                         Text(order.subtotal.asPHP)
                     }
-                    HStack {
-                        Text("FREE DRINK")
-                        Spacer()
-                        Text("−" + discount.asPHP)
+                    if let fee = order.deliveryFee {
+                        HStack {
+                            Text("DELIVERY")
+                            Spacer()
+                            Text(fee.asPHP)
+                        }
+                    }
+                    if let discount = order.discount {
+                        HStack {
+                            Text("FREE DRINK")
+                            Spacer()
+                            Text("−" + discount.asPHP)
+                        }
                     }
                 }
                 .font(.system(.subheadline, design: .monospaced))
@@ -536,9 +634,17 @@ struct OrderReceipt: View {
         }
         .foregroundStyle(Self.ink)
         .padding(.horizontal, 22)
-        .padding(.vertical, 24)
+        .padding(.top, 24)
+        .padding(.bottom, isThermal ? 24 + Self.tooth : 24)
         // Shadow the paper alone, not every logo and bar printed on it.
-        .background(Rectangle().fill(Color.matchaPinkPale)
+        .background(paperShape.fill(Color.matchaPinkPale)
+            .overlay {
+                // Paper curls a little off the roll.
+                if isThermal {
+                    paperShape.fill(LinearGradient(colors: [.black.opacity(0.05), .clear, .black.opacity(0.025)],
+                                                   startPoint: .top, endPoint: .bottom))
+                }
+            }
             .shadow(color: .black.opacity(0.12), radius: 12, y: 6))
         .background(GeometryReader { proxy in
             Color.clear.onAppear { paperHeight = proxy.size.height }
@@ -573,9 +679,14 @@ struct OrderReceipt: View {
             printed = 1
             return
         }
+        if isThermal { ReceiptPrinterSound.shared.prepare() }
         try? await Task.sleep(nanoseconds: 250_000_000)
         let steps = 12
         for step in 1...steps {
+            // Leaving the page mid-print stops the printer too.
+            if Task.isCancelled { return }
+            if isThermal { ReceiptPrinterSound.shared.feedLine() }
+            Haptics.printLine()
             withAnimation(.easeOut(duration: 0.12)) {
                 printed = CGFloat(step) / CGFloat(steps)
             }
@@ -596,7 +707,7 @@ struct OrderReceipt: View {
     private func leaderRow(_ name: String, _ value: String) -> some View {
         HStack(alignment: .lastTextBaseline, spacing: 8) {
             Text(name)
-                .font(.subheadline)
+                .font(isThermal ? .system(.subheadline, design: .monospaced) : .subheadline)
                 .layoutPriority(1)
             Line()
                 .stroke(style: StrokeStyle(lineWidth: 1, dash: [1.5, 4]))
@@ -633,6 +744,28 @@ private struct ReceiptRule: View {
             .frame(maxWidth: .infinity)
             .overlay(Text(String(repeating: "*", count: 80)).fixedSize())
             .clipped()
+    }
+}
+
+/// A slip of paper torn off the roll: straight along the top where it left
+/// the printer, a row of teeth along the bottom.
+private struct TornEdge: Shape {
+    var tooth: CGFloat
+
+    func path(in rect: CGRect) -> Path {
+        let teeth = max(1, Int((rect.width / (tooth * 2.2)).rounded()))
+        let step = rect.width / CGFloat(teeth)
+        var path = Path()
+        path.move(to: CGPoint(x: rect.minX, y: rect.minY))
+        path.addLine(to: CGPoint(x: rect.maxX, y: rect.minY))
+        path.addLine(to: CGPoint(x: rect.maxX, y: rect.maxY - tooth))
+        for index in 0..<teeth {
+            let x = rect.maxX - CGFloat(index) * step
+            path.addLine(to: CGPoint(x: x - step / 2, y: rect.maxY))
+            path.addLine(to: CGPoint(x: x - step, y: rect.maxY - tooth))
+        }
+        path.closeSubpath()
+        return path
     }
 }
 

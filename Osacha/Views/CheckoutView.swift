@@ -16,6 +16,9 @@ struct CheckoutView: View {
     @State private var fulfillment: Fulfillment = .delivery
     @State private var placedOrder: PastOrder?
     @State private var showConfirmation = false
+    /// Set once the placed order's items have left the cart, so coming back
+    /// to the confirmation (e.g. from Track Order) doesn't empty it again.
+    @State private var cartCleared = false
     @State private var askForLocation = false
     /// The chosen pickup time; nil is as soon as possible.
     @State private var pickupTime: Date?
@@ -32,7 +35,9 @@ struct CheckoutView: View {
         return controller.rewardDrinkPrice ?? 0
     }
 
-    private var total: Double { controller.cartTotal - discount }
+    private var deliveryFee: Double { fulfillment == .delivery ? Cafe.deliveryFee : 0 }
+
+    private var total: Double { controller.cartTotal - discount + deliveryFee }
 
     private var address: SavedAddress? { session.addresses.first }
     private var payment: PaymentMethod? { session.paymentMethods.first }
@@ -93,28 +98,16 @@ struct CheckoutView: View {
                     .padding(.top, 10)
                 summaryCard
 
-                Button {
-                    // Delivery leans on location; ask if it's switched off.
-                    if fulfillment == .delivery && !session.locationServices {
-                        askForLocation = true
-                    } else {
-                        placeOrder()
-                    }
-                } label: {
-                    Text("Confirm Order")
-                        .font(.headline)
-                        .foregroundStyle(.white)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 16)
-                        .background(
-                            RoundedRectangle(cornerRadius: 18, style: .continuous)
-                                .fill(Color.matchaPinkDeep.opacity(canConfirm ? 1 : 0.45))
-                        )
-                }
-                .disabled(!canConfirm)
-                .padding(.top, 24)
             }
             .padding()
+        }
+        // Pinned above the tab bar so it's never half-hidden behind it.
+        .safeAreaInset(edge: .bottom, spacing: 0) {
+            confirmButton
+                .padding(.horizontal)
+                .padding(.top, 10)
+                .padding(.bottom, 8)
+                .background(Color.matchaSage.opacity(0.96).ignoresSafeArea())
         }
         .background(Color.matchaSage.ignoresSafeArea())
         .navigationTitle("Checkout")
@@ -142,7 +135,11 @@ struct CheckoutView: View {
         .navigationDestination(isPresented: $showConfirmation) {
             if let placedOrder {
                 OrderConfirmationView(order: placedOrder)
-                    .onAppear { controller.clearCart() }
+                    .onAppear {
+                        guard !cartCleared else { return }
+                        cartCleared = true
+                        controller.clearCart()
+                    }
             }
         }
     }
@@ -155,8 +152,33 @@ struct CheckoutView: View {
                                           scheduledFor: fulfillment == .pickup ? pickupTime : nil,
                                           note: note,
                                           rewardDiscount: discount,
-                                          deliveryAddress: address?.oneLine)
+                                          deliveryAddress: address?.oneLine,
+                                          deliveryFee: deliveryFee)
+        cartCleared = false
+        Haptics.success()
         showConfirmation = true
+    }
+
+    private var confirmButton: some View {
+        Button {
+            // Delivery leans on location; ask if it's switched off.
+            if fulfillment == .delivery && !session.locationServices {
+                askForLocation = true
+            } else {
+                placeOrder()
+            }
+        } label: {
+            Text("Confirm Order")
+                .font(.headline)
+                .foregroundStyle(.white)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 16)
+                .background(
+                    RoundedRectangle(cornerRadius: 18, style: .continuous)
+                        .fill(Color.matchaPinkDeep.opacity(canConfirm ? 1 : 0.45))
+                )
+        }
+        .disabled(!canConfirm)
     }
 
     // MARK: - Sections
@@ -180,11 +202,10 @@ struct CheckoutView: View {
     /// There's one café, so there's nothing to change here — just who is
     /// collecting and what to show at the counter.
     private var pickupCard: some View {
-        detailCard(icon: "bag.fill",
-                   title: "Osacha café",
+        // The map card above already names the café and its hours.
+        detailCard(icon: "person.fill",
+                   title: session.profile.fullName,
                    lines: ["Show your order number at the counter.",
-                           String(format: localized("Open daily %@"), Cafe.hoursText),
-                           session.profile.fullName,
                            session.profile.mobileNumber]) {
             EmptyView()
         }
@@ -329,6 +350,9 @@ struct CheckoutView: View {
             summaryRow(String(format: localized(controller.cartCount == 1 ? "%lld item" : "%lld items"),
                               controller.cartCount),
                        controller.cartTotal.asPHP)
+            if deliveryFee > 0 {
+                summaryRow("Delivery fee", deliveryFee.asPHP)
+            }
             if discount > 0 {
                 summaryRow("Free drink reward", "−" + discount.asPHP)
             }

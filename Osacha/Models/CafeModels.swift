@@ -19,6 +19,9 @@ enum Cafe {
     static let coordinate = CLLocationCoordinate2D(latitude: 14.6467, longitude: 121.0587)
     static let address = "Maginhawa Street, Quezon City"
 
+    /// A flat fee for bringing an order to the door. Pickups have none.
+    static let deliveryFee: Double = 49
+
     /// Pickup times are offered on the quarter hour.
     static let slotLength: TimeInterval = 15 * 60
 

@@ -46,6 +46,7 @@ struct CartRowView: View {
 
             HStack(spacing: 10) {
                 Button {
+                    Haptics.select()
                     controller.updateQuantity(for: entry, quantity: entry.quantity - 1)
                 } label: {
                     Image(systemName: "minus.circle.fill")
@@ -54,6 +55,7 @@ struct CartRowView: View {
                     .font(.subheadline.bold())
                     .frame(minWidth: 16)
                 Button {
+                    Haptics.select()
                     controller.updateQuantity(for: entry, quantity: entry.quantity + 1)
                 } label: {
                     Image(systemName: "plus.circle.fill")

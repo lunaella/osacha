@@ -12,6 +12,7 @@ import SwiftUI
 struct CartView: View {
     @EnvironmentObject private var controller: OrderController
     @EnvironmentObject private var session: AppSession
+    @Environment(\.dismiss) private var dismiss
     @State private var showAddPayment = false
     @State private var showCheckout = false
 
@@ -19,12 +20,7 @@ struct CartView: View {
         VStack(spacing: 0) {
             if controller.cart.isEmpty {
                 Spacer()
-                Text("🍵")
-                    .font(.system(size: 56))
-                Text("Your cart is empty")
-                    .font(.headline)
-                    .foregroundStyle(Color.matchaDarkGreen)
-                    .padding(.top, 8)
+                emptyState
                 Spacer()
             } else {
                 ScrollView {
@@ -67,6 +63,46 @@ struct CartView: View {
                     }
             }
         }
+    }
+
+    /// A cup waiting on a saucer of shadow, and a way back to the menu.
+    private var emptyState: some View {
+        VStack(spacing: 10) {
+            Image("usucha")
+                .resizable()
+                .scaledToFit()
+                .frame(height: 130)
+                .background(alignment: .bottom) {
+                    Ellipse()
+                        .fill(Color.matchaDarkGreen.opacity(0.12))
+                        .frame(width: 90, height: 14)
+                        .blur(radius: 4)
+                        .offset(y: 6)
+                }
+                .padding(.bottom, 12)
+
+            Text("Your cart is empty")
+                .font(.title3.bold())
+                .foregroundStyle(Color.matchaDarkGreen)
+
+            Text("Pick a matcha and it'll wait for you here.")
+                .font(.subheadline)
+                .foregroundStyle(Color.matchaDarkGreen.opacity(0.7))
+                .multilineTextAlignment(.center)
+
+            Button {
+                dismiss()
+            } label: {
+                Text("Browse the menu")
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundStyle(.white)
+                    .padding(.horizontal, 28)
+                    .padding(.vertical, 12)
+                    .background(Capsule().fill(Color.matchaPinkDeep))
+            }
+            .padding(.top, 10)
+        }
+        .padding(.horizontal, 32)
     }
 
     private var summaryPanel: some View {

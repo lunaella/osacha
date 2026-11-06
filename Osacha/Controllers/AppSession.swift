@@ -491,6 +491,11 @@ final class AppSession: ObservableObject {
         isSignedIn = defaults.bool(forKey: signedInKey)
         if let raw = defaults.string(forKey: languageKey), let value = AppLanguage(rawValue: raw) {
             language = value
+        } else {
+            // Record the default straight away. Until the app has saved any
+            // preference, SwiftUI's string lookup on a fresh install fell
+            // back to Japanese even with English chosen.
+            defaults.set(language.rawValue, forKey: languageKey)
         }
         AppLanguage.current = language
         // Privacy choices; anything never set keeps its default.

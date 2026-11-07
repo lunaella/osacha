@@ -23,10 +23,11 @@ struct HomeView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 24) {
-                Image("OsachaLogoGreen")
-                    .resizable()
-                    .scaledToFit()
+                WhiskingLogo(still: "OsachaLogoGreenStill", whisk: "OsachaLogoGreenWhisk", grip: UnitPoint(x: 215.0 / 900, y: 0))
                     .frame(height: 120)
+                    .accessibilityElement()
+                    .accessibilityLabel("Osacha")
+                    .accessibilityAddTraits(.isImage)
                     .padding(.top, 12)
 
                 greeting

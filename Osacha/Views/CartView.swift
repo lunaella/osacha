@@ -68,7 +68,7 @@ struct CartView: View {
     /// The Osacha bowl being whisked, and a way back to the menu.
     private var emptyState: some View {
         VStack(spacing: 10) {
-            WhiskingBowl()
+            WhiskingLogo(still: "OsachaBowl", whisk: "OsachaWhisk", grip: UnitPoint(x: 369.0 / 700, y: 0))
                 .frame(width: 130, height: 130)
                 .shadow(color: Color.matchaDarkGreen.opacity(0.15), radius: 8, y: 4)
                 .accessibilityHidden(true)
@@ -140,37 +140,4 @@ struct CartView: View {
     }
     .environmentObject(OrderController())
     .environmentObject(AppSession())
-}
-
-/// The Osacha bowl with its whisk going: a few seconds of quick strokes
-/// side to side, a rest, then again. The whisk swings from the top of its
-/// handle, the way a hand holds it. Still when Reduce Motion is on.
-private struct WhiskingBowl: View {
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
-
-    /// Where the hand holds the whisk, as a point in the artwork.
-    private static let grip = UnitPoint(x: 369.0 / 700, y: 0)
-    private static let maxAngle = 5.0        // degrees either side
-    private static let strokesPerSecond = 4.0
-    private static let whiskFor = 1.6        // seconds of whisking
-    private static let restFor = 1.2         // seconds of rest
-
-    var body: some View {
-        TimelineView(.animation(paused: reduceMotion)) { context in
-            ZStack {
-                Image("OsachaBowl").resizable().scaledToFit()
-                Image("OsachaWhisk").resizable().scaledToFit()
-                    .rotationEffect(.degrees(reduceMotion ? 0 : angle(at: context.date)), anchor: Self.grip)
-            }
-        }
-    }
-
-    private func angle(at date: Date) -> Double {
-        let t = date.timeIntervalSinceReferenceDate
-            .truncatingRemainder(dividingBy: Self.whiskFor + Self.restFor)
-        guard t < Self.whiskFor else { return 0 }
-        // Eases into the strokes and out of them, so it never jumps.
-        let envelope = sin(.pi * t / Self.whiskFor)
-        return Self.maxAngle * envelope * sin(2 * .pi * Self.strokesPerSecond * t)
-    }
 }

@@ -18,9 +18,7 @@ struct SplashView: View {
             // Matches HomeView's background exactly, so nothing shifts on hand-off.
             MatchaBackground()
 
-            Image("OsachaLogoWhite")
-                .resizable()
-                .scaledToFit()
+            WhiskingLogo(still: "OsachaLogoWhiteStill", whisk: "OsachaLogoWhiteWhisk", grip: UnitPoint(x: 215.0 / 900, y: 0))
                 .frame(height: settled ? 120 : 184)
                 .offset(y: settled ? -320 : 0)
                 .opacity(settled ? 0 : 1)

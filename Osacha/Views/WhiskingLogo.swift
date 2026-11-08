@@ -2,8 +2,8 @@
 //  WhiskingLogo.swift
 //  Osacha
 //
-//  The Osacha bowl with its whisk going: a couple of seconds of quick
-//  strokes side to side, a rest, then again. The artwork comes as two
+//  The Osacha bowl with its whisk going: from the moment it appears, a
+//  couple of seconds of quick strokes side to side, a rest, then again. The artwork comes as two
 //  images on the same canvas, everything that stays still and the whisk on
 //  its own, and the whisk swings from the top of its handle, the way a hand
 //  holds it. Still when Reduce Motion is on.
@@ -21,6 +21,9 @@ struct WhiskingLogo: View {
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
+    /// When the logo appeared, so it starts with strokes rather than a rest.
+    @State private var start = Date()
+
     private static let maxAngle = 5.0        // degrees either side
     private static let strokesPerSecond = 4.0
     private static let whiskFor = 1.6        // seconds of whisking
@@ -37,7 +40,7 @@ struct WhiskingLogo: View {
     }
 
     private func angle(at date: Date) -> Double {
-        let t = date.timeIntervalSinceReferenceDate
+        let t = max(0, date.timeIntervalSince(start))
             .truncatingRemainder(dividingBy: Self.whiskFor + Self.restFor)
         guard t < Self.whiskFor else { return 0 }
         // Eases into the strokes and out of them, so it never jumps.

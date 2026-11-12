@@ -1,12 +1,7 @@
-//
-//  NotificationScheduler.swift
-//  Osacha
-//
-//  Hands order updates to iOS so the phone announces them — ready for
-//  pickup, out for delivery, delivered — even when the app is closed.
-//  Also shows them as banners while the app is open, and opens the
-//  Notifications screen when one is tapped.
-//
+// Hands order updates to iOS so the phone announces them — ready for
+// pickup, out for delivery, delivered — even when the app is closed.
+// Also shows them as banners while the app is open, and opens the
+// Notifications screen when one is tapped.
 
 import Foundation
 import UserNotifications

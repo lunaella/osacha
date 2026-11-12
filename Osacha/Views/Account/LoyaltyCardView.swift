@@ -1,12 +1,7 @@
-//
-//  LoyaltyCardView.swift
-//  Osacha
-//
-//  The cafe's stamp card, shown right on the Profile tab. The printed card
-//  artwork flips between its front and its back, where a star sticker lands
-//  on the next slot with each order; the member QR code the counter scans
-//  opens beneath it.
-//
+// The cafe's stamp card, shown right on the Profile tab. The printed card
+// artwork flips between its front and its back, where a star sticker lands
+// on the next slot with each order; the member QR code the counter scans
+// opens beneath it.
 
 import SwiftUI
 import CoreImage.CIFilterBuiltins

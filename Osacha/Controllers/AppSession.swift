@@ -1,11 +1,6 @@
-//
-//  AppSession.swift
-//  Osacha
-//
-//  Tracks whether someone is browsing as a guest or signed in, and owns the
-//  account data the settings screens read and write. Guests can browse the
-//  whole menu but have to sign in before an order can be placed.
-//
+// Tracks whether someone is browsing as a guest or signed in, and owns the
+// account data the settings screens read and write. Guests can browse the
+// whole menu but have to sign in before an order can be placed.
 
 import Foundation
 import Combine

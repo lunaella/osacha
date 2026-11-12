@@ -1,9 +1,4 @@
-//
-//  SettingsView.swift
-//  Osacha
-//
-//  App settings, plus the entry point to editing the profile and signing out.
-//
+// App settings, plus the entry point to editing the profile and signing out.
 
 import SwiftUI
 

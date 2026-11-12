@@ -1,11 +1,6 @@
-//
-//  Haptics.swift
-//  Osacha
-//
-//  The small taps the phone gives back, so choices and moments feel
-//  physical: a tick for picking an option, a pop for a favourite, a buzz of
-//  success when an order goes in or a stamp lands.
-//
+// The small taps the phone gives back, so choices and moments feel
+// physical: a tick for picking an option, a pop for a favourite, a buzz of
+// success when an order goes in or a stamp lands.
 
 import UIKit
 

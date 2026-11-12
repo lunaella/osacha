@@ -1,10 +1,5 @@
-//
-//  CafeMapView.swift
-//  Osacha
-//
-//  Where to collect a pickup: the café on a map, its address and hours, and
-//  a way to get directions there. The pickup counterpart of the rider map.
-//
+// Where to collect a pickup: the café on a map, its address and hours, and
+// a way to get directions there. The pickup counterpart of the rider map.
 
 import SwiftUI
 import MapKit

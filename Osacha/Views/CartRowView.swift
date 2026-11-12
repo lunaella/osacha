@@ -1,10 +1,5 @@
-//
-//  CartRowView.swift
-//  Osacha
-//
-//  Reusable cart-list row: item summary, size/milk config, quantity
-//  stepper, and a remove button.
-//
+// Reusable cart-list row: item summary, size/milk config, quantity
+// stepper, and a remove button.
 
 import SwiftUI
 

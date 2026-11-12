@@ -1,10 +1,5 @@
-//
-//  MenuView.swift
-//  Osacha
-//
-//  Lists the items in one category, or across the whole menu when no
-//  category is given (used by the Search tab), with a live search field.
-//
+// Lists the items in one category, or across the whole menu when no
+// category is given (used by the Search tab), with a live search field.
 
 import SwiftUI
 
@@ -25,9 +20,8 @@ struct MenuView: View {
     /// Count of everything in the cart, sitting on the corner of the cart
     /// icon. Hidden when empty so the toolbar stays quiet.
     ///
-    /// Capped at "9+" so it stays a fixed-size circle: a widening capsule
-    /// grew leftward across the cart glyph and read as clutter on a button
-    /// this small.
+    /// Capped at "9+" so it stays a fixed-size circle rather than widening
+    /// across the cart glyph.
     @ViewBuilder
     private var cartBadge: some View {
         if controller.cartCount > 0 {

@@ -1,10 +1,5 @@
-//
-//  AccountModels.swift
-//  Osacha
-//
-//  Data behind the account section: the signed-in profile, saved addresses,
-//  payment methods, past orders, notifications, and app preferences.
-//
+// Data behind the account section: the signed-in profile, saved addresses,
+// payment methods, past orders, notifications, and app preferences.
 
 import Foundation
 import SwiftUI

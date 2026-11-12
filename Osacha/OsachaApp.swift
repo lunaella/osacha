@@ -1,9 +1,4 @@
-//
-//  OsachaApp.swift
-//  Osacha
-//
-//  Entry point of the application.
-//
+// Entry point of the application.
 
 import SwiftUI
 

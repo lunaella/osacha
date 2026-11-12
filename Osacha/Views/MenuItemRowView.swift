@@ -1,10 +1,5 @@
-//
-//  MenuItemRowView.swift
-//  Osacha
-//
-//  Reusable menu-list row: thumbnail, name, description, price, and a
-//  favorite toggle.
-//
+// Reusable menu-list row: thumbnail, name, description, price, and a
+// favorite toggle.
 
 import SwiftUI
 

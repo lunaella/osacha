@@ -1,13 +1,8 @@
-//
-//  WhiskingLogo.swift
-//  Osacha
-//
-//  The Osacha bowl with its whisk going: from the moment it appears, a
-//  couple of seconds of quick strokes side to side, a rest, then again. The artwork comes as two
-//  images on the same canvas, everything that stays still and the whisk on
-//  its own, and the whisk swings from the top of its handle, the way a hand
-//  holds it. Still when Reduce Motion is on.
-//
+// The Osacha bowl with its whisk going: from the moment it appears, a
+// couple of seconds of quick strokes side to side, a rest, then again.
+// The artwork comes as two images on the same canvas, everything that
+// stays still and the whisk on its own, and the whisk swings from the top
+// of its handle, the way a hand holds it. Still when Reduce Motion is on.
 
 import SwiftUI
 

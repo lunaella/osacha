@@ -1,9 +1,4 @@
-//
-//  OrderHistoryView.swift
-//  Osacha
-//
-//  Past orders, newest first.
-//
+// Past orders, newest first.
 
 import SwiftUI
 import CoreImage.CIFilterBuiltins

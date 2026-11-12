@@ -1,10 +1,5 @@
-//
-//  OptionPillView.swift
-//  Osacha
-//
-//  Reusable rounded selection pill used for size and milk options on the
-//  product detail screen.
-//
+// Reusable rounded selection pill used for size and milk options on the
+// product detail screen.
 
 import SwiftUI
 

@@ -1,9 +1,4 @@
-//
-//  EditProfileView.swift
-//  Osacha
-//
-//  Name, mobile number and delivery address for the signed-in customer.
-//
+// Name, mobile number and delivery address for the signed-in customer.
 
 import PhotosUI
 import SwiftUI

@@ -1,9 +1,4 @@
-//
-//  OrderConfirmationView.swift
-//  Osacha
-//
-//  Receipt shown after an order is placed, replacing the old alert.
-//
+// Receipt shown after an order is placed.
 
 import SwiftUI
 

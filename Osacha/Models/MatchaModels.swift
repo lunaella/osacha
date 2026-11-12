@@ -1,10 +1,5 @@
-//
-//  MatchaModels.swift
-//  Osacha
-//
-//  Model layer: pure data describing the menu catalog, order
-//  customization options, and cart entries. No app state, no UI.
-//
+// Model layer: pure data describing the menu catalog, order
+// customization options, and cart entries. No app state, no UI.
 
 import Foundation
 import CryptoKit

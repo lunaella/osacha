@@ -1,10 +1,5 @@
-//
-//  ProfileView.swift
-//  Osacha
-//
-//  Customer profile screen: who they are at a glance, their loyalty card
-//  right on the page, and shortcuts into the rest of the account.
-//
+// Customer profile screen: who they are at a glance, their loyalty card
+// right on the page, and shortcuts into the rest of the account.
 
 import SwiftUI
 import PhotosUI

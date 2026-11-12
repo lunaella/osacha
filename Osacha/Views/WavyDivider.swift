@@ -1,10 +1,5 @@
-//
-//  WavyDivider.swift
-//  Osacha
-//
-//  Decorative squiggle divider used between a product's description and
-//  its customization options.
-//
+// Decorative squiggle divider used between a product's description and
+// its customization options.
 
 import SwiftUI
 

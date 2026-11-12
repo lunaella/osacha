@@ -1,12 +1,7 @@
-//
-//  RiderTrackingView.swift
-//  Osacha
-//
-//  A delivery's rider on the map: the road from the café to the customer's
-//  door, and the rider moving along it while the order is on its way. The
-//  rider is simulated, like the order stages: their place on the road comes
-//  from how far through the ride the order should be.
-//
+// A delivery's rider on the map: the road from the café to the customer's
+// door, and the rider moving along it while the order is on its way. The
+// rider is simulated, like the order stages: their place on the road comes
+// from how far through the ride the order should be.
 
 import SwiftUI
 import MapKit

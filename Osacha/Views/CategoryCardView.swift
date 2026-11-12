@@ -1,9 +1,4 @@
-//
-//  CategoryCardView.swift
-//  Osacha
-//
-//  Reusable grid tile representing one menu category on the home screen.
-//
+// Reusable grid tile representing one menu category on the home screen.
 
 import SwiftUI
 

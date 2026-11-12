@@ -1,11 +1,6 @@
-//
-//  ReceiptView.swift
-//  Osacha
-//
-//  An order's receipt on a page of its own, opened from Track Order. It
-//  prints out of the slot as a pink till slip, with the printer heard
-//  feeding it, every time the page is opened.
-//
+// An order's receipt on a page of its own, opened from Track Order. It
+// prints out of the slot as a pink till slip, with the printer heard
+// feeding it, every time the page is opened.
 
 import SwiftUI
 

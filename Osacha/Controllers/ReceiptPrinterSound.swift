@@ -1,12 +1,7 @@
-//
-//  ReceiptPrinterSound.swift
-//  Osacha
-//
-//  The chatter of a little thermal till printer, played in step with the
-//  receipt feeding out. It's synthesised here rather than shipped as a file:
-//  a stepper motor's fast ticks, its whine, and the rasp of paper, shaped
-//  into one short burst that plays for every line the receipt advances.
-//
+// The chatter of a little thermal till printer, played in step with the
+// receipt feeding out. It's synthesised here rather than shipped as a file:
+// a stepper motor's fast ticks, its whine, and the rasp of paper, shaped
+// into one short burst that plays for every line the receipt advances.
 
 import AVFoundation
 

@@ -1,12 +1,7 @@
-//
-//  SupportChat.swift
-//  Osacha
-//
-//  The "Chat with us" conversation. A bot answers the common questions and
-//  hands the customer over to a person when one is needed. The person is
-//  simulated for now: their replies are canned, but the hand-over is real
-//  enough to design and test the flow against.
-//
+// The "Chat with us" conversation. A bot answers the common questions and
+// hands the customer over to a person when one is needed. The person is
+// simulated for now: their replies are canned, but the hand-over is real
+// enough to design and test the flow against.
 
 import Foundation
 

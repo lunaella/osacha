@@ -1,11 +1,6 @@
-//
-//  CheckoutView.swift
-//  Osacha
-//
-//  The last look before an order is placed: pickup or delivery and when,
-//  a note for the café, how it's being paid for, any free drink to use, and
-//  what it costs. Nothing is charged until Confirm Order.
-//
+// The last look before an order is placed: pickup or delivery and when,
+// a note for the café, how it's being paid for, any free drink to use, and
+// what it costs. Nothing is charged until Confirm Order.
 
 import SwiftUI
 

@@ -1,9 +1,4 @@
-//
-//  FavoritesView.swift
-//  Osacha
-//
-//  Lists every menu item the customer has favorited.
-//
+// Lists every menu item the customer has favorited.
 
 import SwiftUI
 

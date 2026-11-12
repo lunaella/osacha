@@ -1,10 +1,5 @@
-//
-//  OTPView.swift
-//  Osacha
-//
-//  Six-digit verification step. A single hidden field backs the six boxes so
-//  the keyboard behaves normally while the boxes stay purely presentational.
-//
+// Six-digit verification step. A single hidden field backs the six boxes so
+// the keyboard behaves normally while the boxes stay purely presentational.
 
 import SwiftUI
 

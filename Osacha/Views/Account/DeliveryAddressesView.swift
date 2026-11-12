@@ -1,9 +1,4 @@
-//
-//  DeliveryAddressesView.swift
-//  Osacha
-//
-//  Saved delivery addresses, with add and edit flows.
-//
+// Saved delivery addresses, with add and edit flows.
 
 import SwiftUI
 

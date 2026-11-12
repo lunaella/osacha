@@ -1,10 +1,5 @@
-//
-//  ForYouSection.swift
-//  Osacha
-//
-//  Personalized picks, shown at the top of Search when the customer has
-//  opted in. Built from their own orders, so it changes as their habits do.
-//
+// Personalized picks, shown at the top of Search when the customer has
+// opted in. Built from their own orders, so it changes as their habits do.
 
 import SwiftUI
 

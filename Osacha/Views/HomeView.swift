@@ -1,9 +1,4 @@
-//
-//  HomeView.swift
-//  Osacha
-//
-//  Welcome screen with a shortcut into each menu category.
-//
+// Welcome screen with a shortcut into each menu category.
 
 import SwiftUI
 
@@ -41,12 +36,9 @@ struct HomeView: View {
                 if session.isSignedIn, let order = session.orderAwaitingRating {
                     RateOrderPrompt(order: order)
                         .padding(.horizontal)
-                        // The category photos rise above their cards.
                         .padding(.bottom, 16)
                 }
 
-                // The category images rise above their cards, so the grid
-                // needs that height back to keep clear of the greeting.
                 // Each card's photo rises above its top edge, so rows need
                 // that much extra room or the second row's photos sit on the
                 // first row's cards. Matches the 46pt row gap in the design.

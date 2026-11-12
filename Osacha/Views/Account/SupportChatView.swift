@@ -1,9 +1,4 @@
-//
-//  SupportChatView.swift
-//  Osacha
-//
-//  "Chat with us": the bot first, then a person once it hands over.
-//
+// "Chat with us": the bot first, then a person once it hands over.
 
 import SwiftUI
 

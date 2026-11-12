@@ -1,11 +1,6 @@
-//
-//  LocationAuthorizer.swift
-//  Osacha
-//
-//  Asks iOS for permission to use the customer's location, which delivery
-//  and order tracking rely on. Only the request lives here; the app doesn't
-//  read location yet.
-//
+// Asks iOS for permission to use the customer's location, which delivery
+// and order tracking rely on. Only the request lives here; the app doesn't
+// read location yet.
 
 import CoreLocation
 

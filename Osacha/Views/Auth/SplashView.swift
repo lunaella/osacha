@@ -1,10 +1,5 @@
-//
-//  SplashView.swift
-//  Osacha
-//
-//  Opening screen. Uses the same background as the home screen so the hand-off
-//  is seamless, and settles the logo into the position it occupies there.
-//
+// Opening screen. Uses the same background as the home screen so the hand-off
+// is seamless, and settles the logo into the position it occupies there.
 
 import SwiftUI
 
@@ -54,7 +49,7 @@ struct MatchaBackground: View {
                 .clipped()
         }
         // A thin cream veil, as in the design — enough to soften the greens
-        // without washing them out the way the old 45% overlay did.
+        // without washing them out.
         .overlay(Color.matchaCream.opacity(0.18))
         .background(Color.matchaCream)
         .ignoresSafeArea()

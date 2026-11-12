@@ -1,11 +1,6 @@
-//
-//  RateOrderView.swift
-//  Osacha
-//
-//  Asks how a finished order was: stars, a few quick picks, and an optional
-//  comment. Shown as a sheet from the home screen prompt, the order history
-//  and the tracking screen.
-//
+// Asks how a finished order was: stars, a few quick picks, and an optional
+// comment. Shown as a sheet from the home screen prompt, the order history
+// and the tracking screen.
 
 import SwiftUI
 
@@ -109,8 +104,8 @@ struct RateOrderView: View {
     }
 
     private var tagPicker: some View {
-        // Two rows that wrap by hand; a flowing layout needs iOS 16's Layout
-        // protocol, which is more than five chips call for.
+        // Two rows that wrap by hand; a custom flowing Layout is more than
+        // five chips call for.
         VStack(spacing: 8) {
             ForEach([Array(choices.prefix(3)), Array(choices.dropFirst(3))], id: \.self) { row in
                 HStack(spacing: 8) {

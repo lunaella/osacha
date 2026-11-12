@@ -1,10 +1,5 @@
-//
-//  AccountUI.swift
-//  Osacha
-//
-//  Small shared pieces the account screens are built from, so each screen
-//  stays declarative and they all share one look.
-//
+// Small shared pieces the account screens are built from, so each screen
+// stays declarative and they all share one look.
 
 import SwiftUI
 

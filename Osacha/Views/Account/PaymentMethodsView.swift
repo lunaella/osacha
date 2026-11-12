@@ -1,9 +1,4 @@
-//
-//  PaymentMethodsView.swift
-//  Osacha
-//
-//  Saved payment methods. Each one can be removed, and new ones added.
-//
+// Saved payment methods. Each one can be removed, and new ones added.
 
 import SwiftUI
 

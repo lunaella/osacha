@@ -1,10 +1,5 @@
-//
-//  LoginView.swift
-//  Osacha
-//
-//  Mobile-number sign in. There is no password: entering a number sends a
-//  one-time code, which the next screen verifies.
-//
+// Mobile-number sign in. There is no password: entering a number sends a
+// one-time code, which the next screen verifies.
 
 import SwiftUI
 
@@ -34,8 +29,7 @@ struct LoginView: View {
                     .ignoresSafeArea()
 
                 VStack(spacing: 0) {
-                    // Same logo and height as Home. The extra top padding keeps
-                    // it centred where the taller old logo sat.
+                    // Same logo and height as Home.
                     Image("OsachaLogoGreen")
                         .resizable()
                         .scaledToFit()

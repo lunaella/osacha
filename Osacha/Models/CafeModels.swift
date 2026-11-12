@@ -1,10 +1,5 @@
-//
-//  CafeModels.swift
-//  Osacha
-//
-//  Facts about the café itself: when it's open, which pickup times it can
-//  offer, where it is, and what goes into each item on the menu.
-//
+// Facts about the café itself: when it's open, which pickup times it can
+// offer, where it is, and what goes into each item on the menu.
 
 import Foundation
 import CoreLocation

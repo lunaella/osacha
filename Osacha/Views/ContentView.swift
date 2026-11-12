@@ -1,11 +1,6 @@
-//
-//  ContentView.swift
-//  Osacha
-//
-//  Root container. Signed-in customers get the full four-tab app; guests can
-//  browse the menu but see a "Login to Order" bar in place of the tab bar,
-//  because ordering is gated behind signing in.
-//
+// Root container. Signed-in customers get the full four-tab app; guests can
+// browse the menu but see a "Login to Order" bar in place of the tab bar,
+// because ordering is gated behind signing in.
 
 import SwiftUI
 

@@ -1,12 +1,7 @@
-//
-//  Localization.swift
-//  Osacha
-//
-//  Switches the app between English and Japanese while it runs. iOS only
-//  picks an app's language at launch, so the main bundle is pointed at the
-//  chosen translations instead: `Text("…")` then finds them by itself, and
-//  text built outside a view goes through `localized(_:)`.
-//
+// Switches the app between English and Japanese while it runs. iOS only
+// picks an app's language at launch, so the main bundle is pointed at the
+// chosen translations instead: `Text("…")` then finds them by itself, and
+// text built outside a view goes through `localized(_:)`.
 
 import Foundation
 

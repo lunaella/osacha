@@ -1,11 +1,6 @@
-//
-//  OrderController.swift
-//  Osacha
-//
-//  Controller layer: owns the menu catalog, cart, favorites, and search
-//  state; mediates every mutation the views can request; persists cart
-//  and favorites to disk. Views never touch storage directly.
-//
+// Controller layer: owns the menu catalog, cart, favorites, and search
+// state; mediates every mutation the views can request; persists cart
+// and favorites to disk. Views never touch storage directly.
 
 import Foundation
 import Combine
@@ -74,8 +69,7 @@ final class OrderController: ObservableObject {
 
     /// Adds to the line already holding this item with the same choices, so
     /// ordering the same thing twice raises its quantity instead of listing
-    /// it again. Items are matched by name: their ids are made fresh each
-    /// launch, so a saved cart's ids never match the menu's.
+    /// it again.
     private func merge(item: MatchaItem, size: DrinkSize?, milk: MilkOption?, withIceCream: Bool, quantity: Int) {
         if let index = cart.firstIndex(where: {
             $0.item.name == item.name && $0.size == size && $0.milk == milk && $0.withIceCream == withIceCream

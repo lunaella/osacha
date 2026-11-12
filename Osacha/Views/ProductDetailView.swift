@@ -1,12 +1,7 @@
-//
-//  ProductDetailView.swift
-//  Osacha
-//
-//  Lets the customer customize one menu item (size, milk, quantity) and
-//  add it to the cart. The arrows let the customer browse to the other
-//  items in the same list (category, search results, or favorites)
-//  without leaving the screen.
-//
+// Lets the customer customize one menu item (size, milk, quantity) and
+// add it to the cart. The arrows let the customer browse to the other
+// items in the same list (category, search results, or favorites)
+// without leaving the screen.
 
 import SwiftUI
 
@@ -273,8 +268,7 @@ struct ProductDetailView: View {
     private func optionsSheet(minHeight: CGFloat) -> some View {
         VStack(spacing: 18) {
             // Size and Milk are stacked and both visible, as the design has
-            // them. They used to be a paged carousel, which hid the milk
-            // options behind a swipe most people never made.
+            // them, so the milk options are never hidden behind a swipe.
             ForEach(pages, id: \.self) { page in
                 optionPageView(for: page)
             }

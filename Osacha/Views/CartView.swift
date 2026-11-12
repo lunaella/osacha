@@ -1,11 +1,6 @@
-//
-//  CartView.swift
-//  Osacha
-//
-//  Order summary screen: review cart items, adjust quantities, and start
-//  placing the order. A customer with no payment method is asked for one
-//  first; everyone then reviews their details on the checkout page.
-//
+// Order summary screen: review cart items, adjust quantities, and start
+// placing the order. A customer with no payment method is asked for one
+// first; everyone then reviews their details on the checkout page.
 
 import SwiftUI
 

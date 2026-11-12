@@ -1,10 +1,5 @@
-//
-//  CompleteProfileView.swift
-//  Osacha
-//
-//  Shown once, straight after a new number is verified: asks a first-time
-//  customer for their name and delivery address before letting them in.
-//
+// Shown once, straight after a new number is verified: asks a first-time
+// customer for their name and delivery address before letting them in.
 
 import SwiftUI
 
